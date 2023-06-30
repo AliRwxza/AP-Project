@@ -134,15 +134,9 @@ namespace WpfApp3
             if (ValuableCheckBox.IsChecked == true)
                 ratio += 1;
             if (double.TryParse(WeightBox.Text, out double weight) && weight > 0.5)
-            {
                 ratio += Math.Ceiling((weight - 0.5) * 2) * 0.2;
-                WeightBox.Style = (Style)FindResource("TextBox");
-            }
             else
-            {
                 errors += "Weight, ";
-                WeightBox.Style = (Style)FindResource("TextBoxError");
-            }
             switch (MainMenu2.Header)
             {
                 case "Not Selected":
@@ -184,6 +178,15 @@ namespace WpfApp3
                 PhoneNumberField.Style = (Style)FindResource("TextBoxError");
             else if (PhoneNumberField.Text == string.Empty || phonenumberPattern.IsMatch(PhoneNumberField.Text))
                 PhoneNumberField.Style = (Style)FindResource("TextBox");
+        }
+
+        private void WeightBox_TextChanged (object sender, TextChangedEventArgs e)
+        {
+            if (double.TryParse(WeightBox.Text, out double temp))
+            {
+                WeightBox.Style = (Style)FindResource("TextBox");
+            }
+            else { WeightBox.Style = (Style)FindResource("TextBoxError"); }
         }
     }
 }

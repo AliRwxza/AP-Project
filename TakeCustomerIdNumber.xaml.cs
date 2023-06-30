@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,6 +43,16 @@ namespace WpfApp3
                 customerSignUpWindow.Show ();
             }
             Close();
+        }
+
+        private void SsnInputBox_TextChanged (object sender, TextChangedEventArgs e)
+        {
+            Regex SsnValidation = new Regex(@"^00\d{8}$");
+
+            if (!SsnValidation.IsMatch(SsnInputBox.Text))
+                SsnInputBox.Style = (Style)FindResource("TextBoxError");
+            else if (SsnValidation.IsMatch(SsnInputBox.Text))
+                SsnInputBox.Style = (Style)FindResource("SignUpPageTextBox");
         }
     }
 }

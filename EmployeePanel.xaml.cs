@@ -36,5 +36,11 @@ namespace WpfApp3
             TakeCustomerIdNumber takeCustomerIdNumber = new TakeCustomerIdNumber ();
             takeCustomerIdNumber.Show();
         }
+
+        private void SearchOrdersButtonClick (object sender, RoutedEventArgs e)
+        {
+            SearchOrders searchOrders = new SearchOrders ();
+            searchOrders.Show ();
+        }
     }
 }

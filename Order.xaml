@@ -190,7 +190,7 @@
                 <Label Margin="24 0" FontSize="13">Contains Valuable</Label>
             </Grid>
             <Label FontSize="13">Weight in Kg</Label>
-            <TextBox Style="{DynamicResource TextBox}" x:Name="WeightBox" Width="60" HorizontalAlignment="Left" Margin="5 0"></TextBox>
+            <TextBox Name="WeightBox" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0" TextChanged="WeightBox_TextChanged"></TextBox>
             <Label FontSize="13">Delivery Type</Label>
             <Menu Margin="5 0 0 0" Width="83" HorizontalAlignment="Left" Background="White">
                 <MenuItem Name="MainMenu2" Header="Not Selected">
