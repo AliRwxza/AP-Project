@@ -70,6 +70,7 @@ namespace WpfApp3
             }
             else if (SsnValidation.IsMatch(SsnField.Text))
             {
+                // hmmm
                 SsnField.Style = (Style)FindResource("SignUpPageTextBox");
                 bools[2] = true;
             }
