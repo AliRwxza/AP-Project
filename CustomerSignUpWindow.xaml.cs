@@ -20,7 +20,7 @@ namespace WpfApp3
     /// </summary>
     public partial class CustomerSignUpWindow : Window
     {
-        static int errors = 0;
+        static bool[] bools = { false, false, false, false, false };
         public CustomerSignUpWindow ()
         {
             InitializeComponent();
@@ -34,12 +34,12 @@ namespace WpfApp3
             if (!nameValidationPattern.IsMatch(FirstNameBox.Text))
             {
                 FirstNameBox.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[0] = false;
             }
             else if (nameValidationPattern.IsMatch(FirstNameBox.Text))
             {
                 FirstNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools[0] = true;
             }
         }
 
@@ -50,12 +50,12 @@ namespace WpfApp3
             if (!nameValidationPattern.IsMatch(LastNameBox.Text))
             {
                 LastNameBox.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[1] = false;
             }
             else if (nameValidationPattern.IsMatch(LastNameBox.Text))
             {
                 LastNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools [1] = true;
             }
         }
 
@@ -66,12 +66,12 @@ namespace WpfApp3
             if (!SsnValidation.IsMatch(SsnField.Text))
             {
                 SsnField.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[2] = false;
             }
             else if (SsnValidation.IsMatch(SsnField.Text))
             {
                 SsnField.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools[2] = true;
             }
         }
 
@@ -82,12 +82,12 @@ namespace WpfApp3
             if (!emailValidation.IsMatch(EmailField.Text))
             {
                 EmailField.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[3] = false;
             }
             else if (emailValidation.IsMatch(EmailField.Text))
             {
                 EmailField.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools[3] = true;
             }
         }
 
@@ -98,28 +98,33 @@ namespace WpfApp3
             if (!phonenumberPattern.IsMatch(PhoneNumberField.Text))
             {
                 PhoneNumberField.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[4] = false;
             }
             else if (phonenumberPattern.IsMatch(PhoneNumberField.Text))
             {
                 PhoneNumberField.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools[4] = true;
             }
         }
 
         private void CustomerSignUpPageSubmitButtonClick (object sender, RoutedEventArgs e)
         {
             
-            if (errors == 0)
+            for (int i = 0; i < 5; i++)
             {
-                // generate a random and unique username and password(both must be unique)
-                // E-mail the username and password to the customer
-                // add the customer information
+                if (bools[i] == false)
+                {
+                    MessageBox.Show("Problems remain.");
 
-                Close();
+                    return;
+                }
             }
-            else
-                MessageBox.Show("Problems remain.");
+
+            // generate a random and unique username and password(both must be unique)
+            // E-mail the username and password to the customer
+            // add the customer information
+
+            Close();
         }
     }
 }

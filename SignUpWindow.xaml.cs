@@ -20,7 +20,7 @@ namespace WpfApp3
     /// </summary>
     public partial class SignUpWindow : Window
     {
-        static int errors = 0;
+        static bool[] bools = {false, false, false, false, false};
         public SignUpWindow ()
         {
             InitializeComponent();
@@ -40,13 +40,13 @@ namespace WpfApp3
                 PasswordEntry1Txt.Visibility = Visibility.Visible;
                 PasswordEntry2Txt.Visibility = Visibility.Visible;
             }
-            else if (SignUpPageCheckBox.IsChecked == false)
+            else if (SignUpPageCheckBox.IsChecked == false || SignUpPageCheckBox.IsChecked == null)
             {
                 PasswordEntry1.Visibility = Visibility.Visible;
                 PasswordEntry2.Visibility = Visibility.Visible;
 
-                PasswordEntry1Txt.Text = string.Empty;
-                PasswordEntry2Txt.Text = string.Empty;
+                PasswordEntry1Txt.Text = PasswordEntry1.Password;
+                PasswordEntry2Txt.Text = PasswordEntry2.Password;
 
                 PasswordEntry1Txt.Visibility = Visibility.Collapsed;
                 PasswordEntry2Txt.Visibility = Visibility.Collapsed;
@@ -60,12 +60,12 @@ namespace WpfApp3
             if (!nameValidationPattern.IsMatch(FirstNameBox.Text))
             {
                 FirstNameBox.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[0] = false;
             }
             else if (nameValidationPattern.IsMatch(FirstNameBox.Text))
             {
                 FirstNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools[0] = true;
             }
         }
 
@@ -76,28 +76,28 @@ namespace WpfApp3
             if (!nameValidationPattern.IsMatch(LastNameBox.Text))
             {
                 LastNameBox.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[1] = false;
             }
             else if (nameValidationPattern.IsMatch(LastNameBox.Text))
             {
                 LastNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools[1] = true;
             }
         }
 
         private void Id_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex SsnValidation = new Regex(@"^00\d{8}$");
+            Regex IdValidation = new Regex(@"^\d{2}9\d{2}$");
 
-            if (!SsnValidation.IsMatch(IdField.Text))
+            if (!IdValidation.IsMatch(IdField.Text))
             {
                 IdField.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[2] = false;
             }
-            else if (SsnValidation.IsMatch(IdField.Text))
+            else if (IdValidation.IsMatch(IdField.Text))
             {
                 IdField.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools[2] = true;
             }
         }
 
@@ -108,26 +108,32 @@ namespace WpfApp3
             if (!emailValidation.IsMatch(EmailField.Text))
             {
                 EmailField.Style = (Style)FindResource("TextBoxError");
-                errors++;
+                bools[4] = false;
             }
             else if (emailValidation.IsMatch(EmailField.Text))
             {
                 EmailField.Style = (Style)FindResource("SignUpPageTextBox");
-                errors--;
+                bools[4] = true;
             }
         }
 
         private void SignUpPageSubmitButtonClick (object sender, RoutedEventArgs e)
         {
-            Regex passwordVerification = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{3,32}$");
+            Regex passwordVerification = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$");
 
             if (passwordVerification.IsMatch(PasswordEntry1.Password) && PasswordEntry1.Password == PasswordEntry2.Password)
             {
-                if (errors != 0)
+                MessageBox.Show("here");
+                for (int i = 0; i < 5; i++)
                 {
-                    MessageBox.Show("Problems remain.");
-                    return;
+                    if (!bools[i])
+                    {
+                        MessageBox.Show("Problems Remain." + i);
+
+                        return;
+                    }
                 }
+
 
                 // continue and save the data
 
@@ -136,16 +142,33 @@ namespace WpfApp3
             else
             {
                 PasswordEntry1.Style = (Style)FindResource("PasswordBoxError");
+                PasswordEntry1Txt.Style = (Style)FindResource("TextBoxError");
+
                 PasswordEntry2.Style = (Style)FindResource("PasswordBoxError");
+                PasswordEntry2Txt.Style = (Style)FindResource("TextBoxError");
 
                 MessageBox.Show("Password is not up to the standards.");
             }
-                
         }
 
         private void UsernameField_TextChanged (object sender, TextChangedEventArgs e)
         {
+            Regex nameValidationPattern = new Regex(@"^[a-zA-Z0-9]{3,32}$");
 
+            if (!nameValidationPattern.IsMatch(UsernameField.Text))
+            {
+                UsernameField.Style = (Style)FindResource("TextBoxError");
+                bools[3] = false;
+            }
+            else if (nameValidationPattern.IsMatch(UsernameField.Text))
+            {
+                UsernameField.Style = (Style)FindResource("SignUpPageTextBox");
+                bools[3] = true;
+            }
         }
+
+        private void PasswordEntry1Txt_TextChanged (object sender, TextChangedEventArgs e) => PasswordEntry1.Password = PasswordEntry1Txt.Text;
+
+        private void PasswordEntry2Txt_TextChanged (object sender, TextChangedEventArgs e) => PasswordEntry2.Password = PasswordEntry2Txt.Text;
     }
 }

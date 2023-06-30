@@ -267,7 +267,7 @@
                     <TextBox Name="LastNameBox" Width="150" Style="{DynamicResource SignUpPageTextBox}" Margin="110 0 0 0" TextChanged="NameBox2_TextChanged"/>
                 </Grid>
                 <TextBlock Margin="0 10 0 3">Employee ID Number</TextBlock>
-                <TextBox Name="IdField" Width="175" Style="{DynamicResource SignUpPageTextBox}" HorizontalAlignment="Left" MaxLength="10" TextChanged="Id_TextChanged" ToolTip="10 digits"/>
+                <TextBox Name="IdField" Width="175" Style="{DynamicResource SignUpPageTextBox}" HorizontalAlignment="Left" MaxLength="5" TextChanged="Id_TextChanged" ToolTip="10 digits"/>
                 <TextBlock Margin="0 10 0 3">Username</TextBlock>
                 <TextBox Name="UsernameField" Width="175" Style="{DynamicResource SignUpPageTextBox}" HorizontalAlignment="Left" TextChanged="UsernameField_TextChanged"/>
                 <TextBlock HorizontalAlignment="Left" Margin="0 10 0 3">E-mail</TextBlock>
@@ -276,15 +276,15 @@
                     <StackPanel>
                         <TextBlock Margin="0 10 0 3">Password</TextBlock>
                         <Grid HorizontalAlignment="Left" Width="200">
-                            <PasswordBox Name="PasswordEntry1" Width="175" Style="{DynamicResource SignUpPagePasswordBox}" HorizontalAlignment="Left" PasswordChar="*"></PasswordBox>
-                            <TextBox Name="PasswordEntry1Txt" Width="175" Style="{DynamicResource SignUpPageTextBox}" HorizontalAlignment="Left" Visibility="Collapsed"></TextBox>
+                            <PasswordBox Name="PasswordEntry1" Width="175" Style="{DynamicResource SignUpPagePasswordBox}" HorizontalAlignment="Left" PasswordChar="*"/>
+                            <TextBox Name="PasswordEntry1Txt" Width="175" Style="{DynamicResource SignUpPageTextBox}" HorizontalAlignment="Left" Visibility="Collapsed" TextChanged="PasswordEntry1Txt_TextChanged"/>
                         </Grid>
                         <TextBlock Margin="0 10 0 3">Re-enter Password</TextBlock>
                         <Grid>
                             <PasswordBox Name="PasswordEntry2" Width="175" Style="{DynamicResource SignUpPagePasswordBox}" HorizontalAlignment="Left" PasswordChar="*" 
                                          ToolTip="Must be an exact match">
                             </PasswordBox>
-                            <TextBox Name="PasswordEntry2Txt" Width="175" Style="{DynamicResource SignUpPageTextBox}" HorizontalAlignment="Left" Visibility="Collapsed"></TextBox>
+                            <TextBox Name="PasswordEntry2Txt" Width="175" Style="{DynamicResource SignUpPageTextBox}" HorizontalAlignment="Left" Visibility="Collapsed" TextChanged="PasswordEntry2Txt_TextChanged"/>
                         </Grid>
                         <CheckBox Name="SignUpPageCheckBox" HorizontalAlignment="Left" Margin="0 5" IsChecked="False" Checked="SignUpPagePasswordCheckBox" Unchecked="SignUpPagePasswordCheckBox" Content="Password Visibility"/>
                         
