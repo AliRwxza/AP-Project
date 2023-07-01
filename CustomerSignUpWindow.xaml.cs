@@ -79,7 +79,7 @@ namespace WpfApp3
 
         private void EmailField_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex emailValidation = new Regex(@"^[a-zA-Z]{3,32}@[a-zA-Z]{3,32}.[a-zA-Z]{2,3}$");
+            Regex emailValidation = new Regex(@"^[a-zA-Z0-9_.]{3,32}@[a-zA-Z]{3,32}.[a-zA-Z]{2,3}$");
 
             if (!emailValidation.IsMatch(EmailField.Text))
             {

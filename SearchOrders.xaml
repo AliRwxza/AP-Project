@@ -169,8 +169,8 @@
             <TextBlock HorizontalAlignment="Center" FontSize="45">Search</TextBlock>
             <TextBlock HorizontalAlignment="Center" FontSize="45">Orders</TextBlock>
         </StackPanel>
-        
-        <StackPanel Grid.Column="1" Background="#ECFFDC" Grid.ColumnSpan="2">
+
+        <StackPanel Grid.Column="1" Background="#FEFAE0" Grid.ColumnSpan="2">
             <Label Margin="0 40 0 0" FontSize="13">Customer SSN</Label>
             <TextBox Name="SsnField" Style="{DynamicResource TextBox}" Width="175" HorizontalAlignment="Left" Margin="5 0 0 0" MaxLength="10" TextChanged="SsnField_TextChanged"/>
             <Menu Width="92" Height="22" HorizontalAlignment="Left" Margin="5 20 0 5" Background="White">

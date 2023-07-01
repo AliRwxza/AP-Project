@@ -20,6 +20,7 @@ namespace WpfApp3
     /// </summary>
     public partial class OrderWindow : Window
     {
+        static bool IsValuable = false;
         public OrderWindow ()
         {
             InitializeComponent();
@@ -77,11 +78,11 @@ namespace WpfApp3
         {
             if (ValuableCheckBox.IsChecked == true)
             {
-                // save the value
+                IsValuable = true;
             }
             else
             {
-                // save the value
+                IsValuable = false;
             }
         }
 
@@ -164,6 +165,8 @@ namespace WpfApp3
 
         private void SubmitOrderButtonClick (object sender, RoutedEventArgs e)
         {
+            double price = double.Parse(PricaTag.Text);
+
             // check the customer's wallet
             // if there were no problems, assign an ID number (based on the order's number)
             // and take the order's money from customer's wallet
