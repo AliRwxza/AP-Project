@@ -47,7 +47,8 @@ namespace WpfApp3
             // else if the person is a customer :
             else
             {
-                // open customer panel
+                CustomerPanel customerPanel = new CustomerPanel();
+                customerPanel.Show();
             }
             Close();
         }
@@ -72,10 +73,10 @@ namespace WpfApp3
             {
                 LoginPagePasswordBox.Visibility = Visibility.Visible;
 
-                LoginPagePasswordBoxTxt.Text = string.Empty;
-
                 LoginPagePasswordBoxTxt.Visibility = Visibility.Collapsed;
             }
         }
+
+        private void LoginPagePasswordBoxTxt_TextChanged (object sender, TextChangedEventArgs e) => LoginPagePasswordBox.Password = LoginPagePasswordBoxTxt.Text;
     }
 }

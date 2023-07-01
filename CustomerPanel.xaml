@@ -227,25 +227,176 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <ControlTemplate x:Key="LeftArrowButtonTemplate" TargetType="Button">
+            <Grid>
+                <TextBlock Text="&#x2190;" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+            </Grid>
+        </ControlTemplate>
+        <Style x:Key="FocusVisual4">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background4" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border4" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background4" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border4" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background4" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border4" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background4" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border4" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground4" Color="#FF838383"/>
+        <Style x:Key="SearchButton" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual4}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background4}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border4}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" CornerRadius="15" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background4}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border4}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background4}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border4}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background4}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border4}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground4}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <Style x:Key="TextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" CornerRadius="10" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <SolidColorBrush x:Key="TextBox.Static.Border1" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border1" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border1" Color="#FF569DE5"/>
+        <Style x:Key="TextBoxError" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border1}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="#DB005B" BorderThickness="1.5" CornerRadius="10" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border1}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border1}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle Grid.Column="0">
-            <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#8EC3B0" Offset="0"/>
-                    <GradientStop Color="#B9BBDF" Offset="1"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Grid Grid.Column="0">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Foreground="#4682B4">Panel</TextBlock>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Foreground="#4682B4" Margin="0 0 0 85">Customer</TextBlock>
+        <Grid Name="MainPanelLeftColumn" Visibility="Visible" Grid.Column="0">
+            <Rectangle Grid.Column="0">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#8EC3B0" Offset="0"/>
+                        <GradientStop Color="#B9BBDF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Grid Grid.Column="0">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Foreground="#4682B4">Panel</TextBlock>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Foreground="#4682B4" Margin="0 0 0 85">Customer</TextBlock>
+            </Grid>
         </Grid>
-        <Grid Grid.Column="1" Background="#DDE7F2">
+        <Grid Name="MainPanel" Visibility="Visible" Grid.Column="1" Background="#DDE7F2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -266,7 +417,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Style="{DynamicResource CustomerButton2}" Grid.Column="1" Grid.Row="0" Margin="0 40 40 0">
+            <Button Name="SearchAnOrder" Style="{DynamicResource CustomerButton2}" Grid.Column="1" Grid.Row="0" Margin="0 40 40 0" Click="SearchAnOrder_Click">
                 <StackPanel>
                     <TextBlock FontSize="28">Search</TextBlock>
                     <TextBlock FontSize="28">an Order</TextBlock>
@@ -299,5 +450,65 @@
                 </Button.Background>
             </Button>
         </Grid>
+        <Grid Name="OrdersReportLeftColumn" Grid.Column="0" Visibility="Collapsed">
+            <Rectangle>
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#0A4D68" Offset="0"/>
+                        <GradientStop Color="#F5EBEB" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Grid>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="0 0 0 50">Search</TextBlock>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="0 30 0 0">an Order</TextBlock>
+            </Grid>
+        </Grid>
+        <StackPanel Name="OrdersReportFirstPage" Grid.Column="1" Visibility="Collapsed" Background="#ECF8F9">
+            <Button Name="OrdersReportFirstPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
+                    Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="OrdersReportFirstPageBackButton_Click"/>
+            <Label FontSize="25" Margin="60 100 0 10">Order ID</Label>
+            <TextBox Style="{DynamicResource TextBox}" Name="OrderIdField" Width="230" Height="30" Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
+            <Button Style="{DynamicResource SearchButton}" Name="SearchButton" Background="#8696FE" Width="120" Height="60" FontSize="23" Click="SearchButton_Click">Search</Button>
+        </StackPanel>
+        <StackPanel Name="OrdersReportSecondPage" Visibility="Collapsed" Grid.Column="1" Background="#F0F0F0">
+            <Button Name="OrdersReportSecondPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
+                    Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="OrdersReportSecondPageBackButton_Click"/>
+            <TextBlock Name="DeliveryStatus" FontSize="20" Margin="5 15 0 0" Text="Delivery Status"/>
+            <Separator Width="300" HorizontalAlignment="Left" Margin="10 10 0 0"/>
+            <Label FontSize="18">Sender Address</Label>
+            <TextBlock Name="SenderAddressField" Margin="5 0" FontSize="15" Text="Address is shown here"/>
+            <Label FontSize="18">Receiver Address</Label>
+            <TextBlock Name="ReceiverAddressField" Margin="5 0" FontSize="15" Text="Address is shown here"/>
+            <Label FontSize="18">Package Type</Label>
+            <TextBlock Name="PackageTypeField" FontSize="15" Margin="5 0" Text="Package type is shown here"/>
+            <TextBlock Name="ContainsValuableField" FontSize="18" Margin="5 10" Text="Does[n't] contain valuable"/>
+            <TextBlock Name="WeightField" FontSize="18" Margin="5 0" Text="Weight: "/>
+            <TextBlock Name="PostTypeField" FontSize="18" Margin="5 10" Text="Post Type"/>
+            <TextBlock Name="PhoneNumberField" FontSize="18" Margin="5 0" Text="Phone Number [if added]"/>
+        </StackPanel>
+        <Grid Name="SecondFeatureLeftColumn" Grid.Column="0" Visibility="Collapsed">
+            <Rectangle>
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#1A5F7A" Offset="0"/>
+                        <GradientStop Color="#C9EEFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Grid>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="0 0 0 50">Order</TextBlock>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="0 30 0 0">Details</TextBlock>
+            </Grid>
+        </Grid>
+        <StackPanel Grid.Column="1" Visibility="Collapsed" Background="#DAF5FF" Grid.ColumnSpan="2">
+            <Label Margin="0 40 0 0" FontSize="13" Content="Customer SSN : value from DB"/>
+            <Separator Margin="10 5 10 0"/>
+            <Label FontSize="13" Margin="0 8 0 0">Paid Price</Label>
+            <TextBox Name="PaidPriceField" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0 20 0" TextChanged="PaidPriceField_TextChanged"/>
+            <Label Margin="0 8 0 0" FontSize="13">Weight in Kg</Label>
+            <TextBox Name="WeightBox" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0" TextChanged="WeightBox_TextChanged"/>
+            <Button Name="SecondFeatureSearchButton" Background="#E3DFFD" Width="175" Height="50" Margin="30" FontSize="30" Click="SearchOrdersButton_Click" Style="{DynamicResource SearchButton}">Search</Button>
+        </StackPanel>
     </Grid>
 </Window>

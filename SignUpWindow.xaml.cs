@@ -134,9 +134,8 @@ namespace WpfApp3
                     }
                 }
 
-
-                // continue and save the data
-
+                new Employee(FirstNameBox.Text, LastNameBox.Text, IdField.Text, EmailField.Text, UsernameField.Text, PasswordEntry1.Password);
+                
                 Close();
             }
             else

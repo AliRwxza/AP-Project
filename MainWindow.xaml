@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp3"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Login Page" Height="450" Width="800">
     <Window.Resources>
         <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
         <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
@@ -214,8 +214,8 @@
         <TextBox Name="LoginPageUsernameBox" ToolTip="Username must have (number) characters" Style="{DynamicResource RoundCornerTextBox}" Width="150" Height="25" Margin="0 0 0 0" TextChanged="TextBox_TextChanged" Background="White"></TextBox>
         <TextBlock Width="70" Margin="0 0 78 0" FontSize="12" FontFamily="MV Boli">Password</TextBlock>
         <Grid>
-            <PasswordBox Name="LoginPagePasswordBox" Style="{DynamicResource RoundCornerPasswordBox}" Width="150" Height="25" PasswordChar="*" Background="White"></PasswordBox>
-            <TextBox Name="LoginPagePasswordBoxTxt" Style="{DynamicResource RoundCornerTextBox}" Width="150" Height="25" Visibility="Collapsed"/>
+            <PasswordBox Name="LoginPagePasswordBox" Style="{DynamicResource RoundCornerPasswordBox}" Width="150" Height="25" PasswordChar="*" Background="White"/>
+            <TextBox Name="LoginPagePasswordBoxTxt" Style="{DynamicResource RoundCornerTextBox}" Width="150" Height="25" Visibility="Collapsed" TextChanged="LoginPagePasswordBoxTxt_TextChanged"/>
         </Grid>
         <CheckBox Name="CheckBox1" HorizontalAlignment="Center" Margin="0 3 108 0" Content="Show" FontSize="10" IsChecked="False" Checked="LoginWindowPasswordVisibilityChechbox" Unchecked="LoginWindowPasswordVisibilityChechbox"/>
 
