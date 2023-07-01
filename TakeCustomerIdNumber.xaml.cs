@@ -36,7 +36,7 @@ namespace WpfApp3
                 // if (ssn exists) :
 
                 // go to the order-taking menu
-                Order order = new Order();
+                OrderWindow order = new OrderWindow();
                 order.Show();
             }
             // else, sign them up

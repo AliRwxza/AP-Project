@@ -18,9 +18,9 @@ namespace WpfApp3
     /// <summary>
     /// Interaction logic for Order.xaml
     /// </summary>
-    public partial class Order : Window
+    public partial class OrderWindow : Window
     {
-        public Order ()
+        public OrderWindow ()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
