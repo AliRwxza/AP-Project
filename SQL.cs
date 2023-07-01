@@ -133,14 +133,13 @@ namespace WpfApp3
                             string Email = reader.GetString(3);
                             string Username = reader.GetString(4);
                             string Password = reader.GetString(5);
-
-                            Employee employee = new Employee(EmployeeID, FirstName, LastName, Email, Username, Password);
-                            employees.Add(employee);
+                            try
+                            {
+                                Employee employee = new Employee(EmployeeID, FirstName, LastName, Email, Username, Password);
+                                employees.Add(employee);
+                            }
+                            catch { }
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No data found.");
                     }
                 }
             }
@@ -167,14 +166,13 @@ namespace WpfApp3
                             double Wallet = reader.GetDouble(5);
                             string Username = reader.GetString(6);
                             string Password = reader.GetString(7);
-
-                            Customer customer = new Customer(SSN, FirstName, LastName, Email, Phone, Wallet, Username, Password);
-                            Customers.Add(customer);
+                            try
+                            {
+                                Customer customer = new Customer(SSN, FirstName, LastName, Email, Phone, Wallet, Username, Password);
+                                Customers.Add(customer);
+                            }
+                            catch { }
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("No data found.");
                     }
                 }
             }
@@ -202,24 +200,57 @@ namespace WpfApp3
                             string postType = reader.GetString(6);
                             string Phone = reader.GetString(7);
                             string Status = reader.GetString(8);
+                            string CustomerSSN = reader.GetString(9);
                             try
                             {
-                                Order order = new Order(OrderID, SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status));
+                                Order order = new Order(OrderID, SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status), CustomerSSN);
                                 Orders.Add(order);
                             }
-                            catch
-                            {
-
-                            }
+                            catch { }
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("No data found.");
                     }
                 }
             }
             return Orders;
+        }
+        public object UserType(string username)
+        {
+            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    List<Employee> employees = ReadEmployeesData(connection, EmployeeselectQuery);
+
+                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    List<Customer> customers = ReadCustomersData(connection, CustomerselectQuery);
+
+                    for (int i = 0; i < employees.Count(); i++)
+                    {
+                        if (employees[i].UserName == username)
+                        {
+                            return employees[i];
+                        }
+                    }
+                    for (int i = 0; i < customers.Count(); i++)
+                    {
+                        if (customers[i].UserName == username)
+                        {
+                            return customers[i];
+                        }
+                    }
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error reading data: " + ex.Message);
+                    return null;
+                }
+            }
         }
     }
 }

@@ -17,8 +17,9 @@ namespace WpfApp3
         public PostType postType { get; set; }
         public string Phone { get; set; }
         public PackageStatus Status { get; set; }
+        public string CustomerSSN { get; set; }
         public string Comment { get; set; }
-        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status)
+        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerID)
         {
             this.OrderID = OrderID;
             this.SenderAddress = SenderAddress;
@@ -29,6 +30,7 @@ namespace WpfApp3
             this.postType = postType;
             this.Phone = Phone;
             this.Status = Status;
+            this.CustomerSSN = CustomerSSN;
             SQL.AddTable<Order>();
             SQL.InsertIntoTable(this);
         }
