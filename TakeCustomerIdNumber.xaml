@@ -106,6 +106,43 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="TextBoxError" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="#DB005B" BorderThickness="1.5" CornerRadius="5" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#DB005B"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -114,7 +151,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Background="#F9F5F6">
             <TextBlock Margin="10 2">Customer SSN number:</TextBlock>
-            <TextBox Name="SsnInputBox" Style="{DynamicResource CustomerSsnField}" Margin="10 2 0 0" Width="175" HorizontalAlignment="Left" TextChanged="SsnInputBox_TextChanged"/>
+            <TextBox Name="SsnInputBox" Style="{DynamicResource CustomerSsnField}" Margin="10 2 0 0" Width="175" HorizontalAlignment="Left" MaxLength="10" TextChanged="SsnInputBox_TextChanged"/>
         </StackPanel>
         <Grid Grid.Column="1" Background="white" Margin="10">
             <Button Style="{DynamicResource SearchButton}" Background="#F8E8EE" FontSize="20" Click="SearchButtonClick">Search</Button>

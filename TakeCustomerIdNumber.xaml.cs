@@ -20,6 +20,7 @@ namespace WpfApp3
     /// </summary>
     public partial class TakeCustomerIdNumber : Window
     {
+        static bool validation = false;
         public TakeCustomerIdNumber ()
         {
             InitializeComponent();
@@ -30,8 +31,10 @@ namespace WpfApp3
         private void SearchButtonClick (object sender, RoutedEventArgs e)
         {
             // if customer is already a member
-            if (SsnInputBox.Text == "a")
+            if (validation)
             {
+                // if (ssn exists) :
+
                 // go to the order-taking menu
                 Order order = new Order();
                 order.Show();
@@ -50,9 +53,15 @@ namespace WpfApp3
             Regex SsnValidation = new Regex(@"^00\d{8}$");
 
             if (!SsnValidation.IsMatch(SsnInputBox.Text))
+            {
                 SsnInputBox.Style = (Style)FindResource("TextBoxError");
+                validation = false;
+            }
             else if (SsnValidation.IsMatch(SsnInputBox.Text))
-                SsnInputBox.Style = (Style)FindResource("SignUpPageTextBox");
+            {
+                SsnInputBox.Style = (Style)FindResource("CustomerSsnField");
+                validation = true;
+            }
         }
     }
 }

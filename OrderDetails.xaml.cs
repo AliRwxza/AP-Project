@@ -19,9 +19,99 @@ namespace WpfApp3
     /// </summary>
     public partial class OrderDetails : Window
     {
+        static bool IdValidation = false;
         public OrderDetails ()
         {
             InitializeComponent();
+            ResizeMode = ResizeMode.NoResize;
+        }
+
+        private void OrderIdField_TextChanged (object sender, TextChangedEventArgs e)
+        {
+            if (int.TryParse(OrderIdField.Text, out int Id))
+            {
+                OrderIdField.Style = (Style)FindResource("TextBox");
+                IdValidation = true;
+            }
+            else
+            {
+                OrderIdField.Style = (Style)FindResource("TextBoxError");
+                IdValidation = false;
+            }
+        }
+
+        private void SearchButton_Click (object sender, RoutedEventArgs e)
+        {
+            if (IdValidation)
+            {
+                // if (Id exists) update the window:
+                FirstPage.Visibility = Visibility.Collapsed;
+                SecondPage.Visibility = Visibility.Visible;
+                BackButton.Visibility = Visibility.Visible;
+
+                //else :
+                // MessageBox.Show("This Order ID does not exist.");
+            }
+        }
+
+        private void SubmittedOption_Checked (object sender, RoutedEventArgs e)
+        {
+            if (SubmittedOption.IsChecked == true)
+            {
+                MainMenu.Header = "Submitted";
+                ReadyToSendOption.IsChecked = false;
+                OnTheWayOption.IsChecked = false;
+            }
+        }
+
+        private void ReadyToSendOption_Checked (object sender, RoutedEventArgs e)
+        {
+            if (ReadyToSendOption.IsChecked == true)
+            {
+                MainMenu.Header = "Ready to Send";
+                SubmittedOption.IsChecked = false;
+                OnTheWayOption.IsChecked = false;
+            }
+        }
+
+        private void OnTheWayOption_Checked (object sender, RoutedEventArgs e)
+        {
+            if (OnTheWayOption.IsChecked == true)
+            {
+                MainMenu.Header = "On the Way";
+                SubmittedOption.IsChecked = false;
+                ReadyToSendOption.IsChecked = false;
+            }
+        }
+
+        private void DeliveredOption_Checked (object sender, RoutedEventArgs e)
+        {
+            if (DeliveredOption.IsChecked == true)
+            {
+                MainMenu.Header = "Delivered";
+
+                SubmittedOption.IsChecked = false;
+                ReadyToSendOption.IsChecked = false;
+                OnTheWayOption.IsChecked = false;
+
+                MainMenu.IsCheckable = false;
+                SubmittedOption.IsCheckable = false;
+                ReadyToSendOption.IsCheckable = false;
+                OnTheWayOption.IsCheckable = false;
+                DeliveredOption.IsCheckable = false;
+
+                SubmittedOption.IsEnabled = false;
+                ReadyToSendOption.IsEnabled = false;
+                OnTheWayOption.IsEnabled = false;
+                DeliveredOption.IsEnabled = false;
+            }
+        }
+
+        private void BackButton_Click (object sender, RoutedEventArgs e)
+        {
+            FirstPage.Visibility = Visibility.Visible;
+            SecondPage.Visibility = Visibility.Collapsed;
+            BackButton.Visibility = Visibility.Collapsed;
         }
     }
 }

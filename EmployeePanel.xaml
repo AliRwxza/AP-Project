@@ -153,8 +153,8 @@
             <Button Grid.Column="0" Grid.Row="0" Style="{DynamicResource EmployeePanelButton}" Margin="10" Background="#cbf3f0" FontSize="22" Click="CustomerSignUpButtonClick">Customer Signup</Button>
             <Button Grid.Column="1" Grid.Row="0" Style="{DynamicResource EmployeePanelButton}" Margin="10" Background="#cbf3f0" FontSize="22" Click="EmployeePanelOrderButton">Order</Button>
             <Button Grid.Column="0" Grid.Row="1" Style="{DynamicResource EmployeePanelButton}" Margin="10" Background="#cbf3f0" FontSize="22" Click="SearchOrdersButtonClick">Search Orders</Button>
-            <Button Grid.Column="1" Grid.Row="1" Style="{DynamicResource EmployeePanelButton}" Margin="10" Background="#cbf3f0" FontSize="22">Order Details</Button>
-            <Button Grid.Column="0" Grid.Row="2" Style="{DynamicResource EmployeePanelButton}" Margin="10" Background="#cbf3f0" FontSize="22">Receipt E-mail</Button>
+            <Button Grid.Column="1" Grid.Row="1" Style="{DynamicResource EmployeePanelButton}" Margin="10" Background="#cbf3f0" FontSize="22" Click="OrderDetailsButtonClick">Order Details</Button>
+            <Button Grid.Column="0" Grid.Row="2" Style="{DynamicResource EmployeePanelButton}" Margin="10" Background="#cbf3f0" FontSize="22" Click="ReceiptEmailButtonClick">Receipt E-mail</Button>
             <Button Grid.Column="1" Grid.Row="2" Style="{DynamicResource EmployeePanelButton}" Margin="10" Background="#cbf3f0" FontSize="22">Customer Opinion</Button>
         </Grid>
     </Grid>

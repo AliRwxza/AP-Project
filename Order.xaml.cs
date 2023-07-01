@@ -167,6 +167,7 @@ namespace WpfApp3
             // check the customer's wallet
             // if there were no problems, assign an ID number (based on the order's number)
             // and take the order's money from customer's wallet
+            // set the order status to submitted
         }
 
         private void PhoneNumberField_TextChanged (object sender, TextChangedEventArgs e)
