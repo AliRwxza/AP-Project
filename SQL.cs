@@ -12,7 +12,7 @@ namespace WpfApp3
     {
         static void AddTable<T>()
         {
-            string connectionString = "Data Source=.;Initial Catalog=db;Integrated Security = true;MultipleActiveResultSets=true";
+            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
@@ -73,11 +73,16 @@ namespace WpfApp3
         }
         /// <summary>
         /// add an instance to the table in sql server
+        /// Exa: Employee employee = new Employee();
+        /// string insertQuery = InsertIntoTable(employee);
+        /// using (SqlCommand command = new SqlCommand(insertQuery, connection))  
+        ///command.ExecuteNonQuery();
+        ///Console.WriteLine("Record inserted successfully!");
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
         /// <returns></returns>
-        static string InsertIntoTable<T>(T instance)
+    static string InsertIntoTable<T>(T instance)
         {
             Type type = typeof(T);
             string tableName = type.Name;
