@@ -16,10 +16,22 @@ namespace WpfApp3
         public double Weight { get; set; }
         public PostType postType { get; set; }
         public string Phone { get; set; }
-        public PackageStatus Status { get; set; }
+        PackageStatus _status;
+        public PackageStatus Status
+        {
+            get { return _status; }
+            set
+            {
+                if (_status != PackageStatus.Recieved)
+                {
+                    _status = value;
+                }
+            }
+        }
         public string CustomerSSN { get; set; }
+        public DateTime Date { get; set; }
         public string Comment { get; set; }
-        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerID)
+        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN, DateTime Date)
         {
             this.OrderID = OrderID;
             this.SenderAddress = SenderAddress;
@@ -29,8 +41,9 @@ namespace WpfApp3
             this.Weight = Weight;
             this.postType = postType;
             this.Phone = Phone;
-            this.Status = Status;
+            this.Status = PackageStatus.Registered;
             this.CustomerSSN = CustomerSSN;
+            this.Date = Date;
             SQL.AddTable<Order>();
             SQL.InsertIntoTable(this);
         }

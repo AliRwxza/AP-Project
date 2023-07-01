@@ -130,103 +130,35 @@ namespace WpfApp3
         }
         private string RandomUsername()
         {
-            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
-            
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            Random random = new Random();
+            string RandomUsername = "user";
+            while (true)
             {
-                try
+                RandomUsername = "user";
+                for (int i = 0; i < 4; i++)
                 {
-                    connection.Open();
-                    
-                    string EmployeeselectQuery = "SELECT * FROM Employees";
-                    List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
-
-                    string CustomerselectQuery = "SELECT * FROM Customers";
-                    List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
-                    Random random = new Random();
-                    while (true)
-                    {
-                        string RandomUsername = "user";
-                        for (int i = 0; i < 4; i++)
-                        {
-                            RandomUsername += random.Next(10).ToString();
-                        }
-                        bool Exist = false;
-                        foreach (var username in employees.Select(x => x.UserName))
-                        {
-                            if (RandomUsername == username)
-                            {
-                                Exist = true;
-                            }
-                        }
-                        foreach (var username in customers.Select(x => x.UserName))
-                        {
-                            if (RandomUsername == username)
-                            {
-                                Exist = true;
-                            }
-                        }
-                        if (!Exist)
-                        {
-                            return RandomUsername;
-                        }
-                    }
+                    RandomUsername += random.Next(10).ToString();
                 }
-                catch (Exception ex)
+                if (!SQL.UserExist(RandomUsername))
                 {
-                    MessageBox.Show("Error reading data: " + ex.Message);
-                    return null;
+                    return RandomUsername;
                 }
             }
         }
         private string RandomPassword()
         {
-            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            Random random = new Random();
+            string RandomPassword = "";
+            while (true)
             {
-                try
+                RandomPassword = "";
+                for (int i = 0; i < 8; i++)
                 {
-                    connection.Open();
-
-                    string EmployeeselectQuery = "SELECT * FROM Employees";
-                    List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
-
-                    string CustomerselectQuery = "SELECT * FROM Customers";
-                    List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
-                    Random random = new Random();
-                    while (true)
-                    {
-                        string RandomPassword = "";
-                        for (int i = 0; i < 8; i++)
-                        {
-                            RandomPassword += random.Next(10).ToString();
-                        }
-                        bool Exist = false;
-                        foreach (var password in employees.Select(x => x.Password))
-                        {
-                            if (RandomPassword == password)
-                            {
-                                Exist = true;
-                            }
-                        }
-                        foreach (var password in customers.Select(x => x.Password))
-                        {
-                            if (RandomPassword == password)
-                            {
-                                Exist = true;
-                            }
-                        }
-                        if (!Exist)
-                        {
-                            return RandomPassword;
-                        }
-                    }
+                    RandomPassword += random.Next(10).ToString();
                 }
-                catch (Exception ex)
+                if (!SQL.PasswordExist(RandomPassword))
                 {
-                    MessageBox.Show("Error reading data: " + ex.Message);
-                    return null;
+                    return RandomPassword;
                 }
             }
         }

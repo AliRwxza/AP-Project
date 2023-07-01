@@ -201,9 +201,10 @@ namespace WpfApp3
                             string Phone = reader.GetString(7);
                             string Status = reader.GetString(8);
                             string CustomerSSN = reader.GetString(9);
+                            DateTime date = reader.GetDateTime(10);
                             try
                             {
-                                Order order = new Order(OrderID, SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status), CustomerSSN);
+                                Order order = new Order(OrderID, SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status), CustomerSSN, date);
                                 Orders.Add(order);
                             }
                             catch { }
@@ -213,7 +214,89 @@ namespace WpfApp3
             }
             return Orders;
         }
-        public object UserType(string username)
+        public static bool UserExist(string Username)
+        {
+            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
+
+                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
+   
+                    foreach (var username in employees.Select(x => x.UserName))
+                    {
+                        if (Username == username)
+                        {
+                            return true;
+                        }
+                    }
+                    foreach (var username in customers.Select(x => x.UserName))
+                    {
+                        if (Username == username)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+
+                    
+                }
+                catch (Exception ex)
+                {
+                    //MessageBox.Show("Error reading data: " + ex.Message);
+                    return true;
+                }
+            }
+        }
+        public static bool PasswordExist(string Password)
+        {
+            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
+
+                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
+
+                    foreach (var password in employees.Select(x => x.Password))
+                    {
+                        if (Password == password)
+                        {
+                            return true;
+                        }
+                    }
+                    foreach (var password in customers.Select(x => x.Password))
+                    {
+                        if (Password == password)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+
+
+                }
+                catch (Exception ex)
+                {
+                    //MessageBox.Show("Error reading data: " + ex.Message);
+                    return true;
+                }
+            }
+        }
+        public static object FindUSer(string username)
         {
             string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
 
