@@ -29,6 +29,8 @@ namespace WpfApp3
             this.postType = postType;
             this.Phone = Phone;
             this.Status = Status;
+            SQL.AddTable<Order>();
+            SQL.InsertIntoTable(this);
         }
         /// <summary>
         /// محاسبه هزینه پست

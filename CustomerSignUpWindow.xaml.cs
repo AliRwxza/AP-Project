@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -127,5 +128,56 @@ namespace WpfApp3
 
             Close();
         }
+        private string RandomUsername()
+        {
+            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+            
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    
+                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
+
+                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
+                    Random random = new Random();
+                    while (true)
+                    {
+                        string RandomUsername = "user";
+                        for (int i = 0; i < 4; i++)
+                        {
+                            RandomUsername += random.Next(10).ToString();
+                        }
+                        bool Exist = false;
+                        foreach (var username in employees.Select(x => x.UserName))
+                        {
+                            if (RandomUsername == username)
+                            {
+                                Exist = true;
+                            }
+                        }
+                        foreach (var username in customers.Select(x => x.UserName))
+                        {
+                            if (RandomUsername == username)
+                            {
+                                Exist = true;
+                            }
+                        }
+                        if (!Exist)
+                        {
+                            return RandomUsername;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error reading data: " + ex.Message);
+                    return null;
+                }
+            }
+        } 
     }
 }
