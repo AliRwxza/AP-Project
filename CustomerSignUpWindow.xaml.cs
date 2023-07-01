@@ -178,6 +178,57 @@ namespace WpfApp3
                     return null;
                 }
             }
-        } 
+        }
+        private string RandomPassword()
+        {
+            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
+
+                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
+                    Random random = new Random();
+                    while (true)
+                    {
+                        string RandomPassword = "";
+                        for (int i = 0; i < 8; i++)
+                        {
+                            RandomPassword += random.Next(10).ToString();
+                        }
+                        bool Exist = false;
+                        foreach (var password in employees.Select(x => x.Password))
+                        {
+                            if (RandomPassword == password)
+                            {
+                                Exist = true;
+                            }
+                        }
+                        foreach (var password in customers.Select(x => x.Password))
+                        {
+                            if (RandomPassword == password)
+                            {
+                                Exist = true;
+                            }
+                        }
+                        if (!Exist)
+                        {
+                            return RandomPassword;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error reading data: " + ex.Message);
+                    return null;
+                }
+            }
+        }
     }
 }
