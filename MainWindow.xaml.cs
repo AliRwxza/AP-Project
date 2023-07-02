@@ -68,10 +68,10 @@ namespace WpfApp3
 
             }
             // username not found
-            //else if (user == null)
-            //{
-            //    MessageBox.Show("Error: Username not found!");
-            //}
+            else if (user == null)
+            {
+                MessageBox.Show("Error: Username not found!");
+            }
             Close();
         }
 
