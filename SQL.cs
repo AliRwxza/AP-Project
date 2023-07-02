@@ -66,8 +66,8 @@ namespace WpfApp3
                 return "INT";
             else if (type == typeof(string))
                 return "VARCHAR(32)";
-            else if (type == typeof(decimal))
-                return "DECIMAL(10,2)";
+            else if (type == typeof(double))
+                return "DOUBLE PRECISION";
             // Add more data types as needed for your class properties
 
             throw new NotSupportedException($"Data type {type.Name} is not supported.");
@@ -117,31 +117,36 @@ namespace WpfApp3
         public static List<Employee> ReadEmployeesData(SqlConnection connection, string selectQuery)
         {
             List <Employee> employees = new List<Employee>();
-            using (SqlCommand command = new SqlCommand(selectQuery, connection))
+            try
             {
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlCommand command = new SqlCommand(selectQuery, connection))
                 {
-                    // Check if there are any rows returned
-                    if (reader.HasRows)
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        // Read and process each row
-                        while (reader.Read())
+                        // Check if there are any rows returned
+                        if (reader.HasRows)
                         {
-                            string EmployeeID = reader.GetString(0);
-                            string FirstName = reader.GetString(1);
-                            string LastName = reader.GetString(2);
-                            string Email = reader.GetString(3);
-                            string Username = reader.GetString(4);
-                            string Password = reader.GetString(5);
-                            try
+                            // Read and process each row
+                            while (reader.Read())
                             {
+                                string EmployeeID = reader.GetString(0);
+                                string FirstName = reader.GetString(1);
+                                string LastName = reader.GetString(2);
+                                string Email = reader.GetString(3);
+                                string Username = reader.GetString(4);
+                                string Password = reader.GetString(5);
                                 Employee employee = new Employee(EmployeeID, FirstName, LastName, Email, Username, Password);
                                 employees.Add(employee);
+
+
                             }
-                            catch { }
                         }
                     }
                 }
+            }
+            catch
+            {
+                MessageBox.Show("Error in reading EmployeesData");
             }
             return employees;
         }
@@ -224,10 +229,10 @@ namespace WpfApp3
                 {
                     connection.Open();
 
-                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    string EmployeeselectQuery = "SELECT * FROM Employee";
                     List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
 
-                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    string CustomerselectQuery = "SELECT * FROM Customer";
                     List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
    
                     foreach (var username in employees.Select(x => x.UserName))
@@ -265,10 +270,10 @@ namespace WpfApp3
                 {
                     connection.Open();
 
-                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    string EmployeeselectQuery = "SELECT * FROM Employee";
                     List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
 
-                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    string CustomerselectQuery = "SELECT * FROM Customer";
                     List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
 
                     foreach (var password in employees.Select(x => x.Password))
@@ -298,18 +303,19 @@ namespace WpfApp3
         }
         public static object FindUSer(string username)
         {
-            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
-
+            string connectionString = "Data Source=.;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+            AddTable<Employee>();
+            AddTable<Customer>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
 
-                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    string EmployeeselectQuery = "SELECT * FROM Employee";
                     List<Employee> employees = ReadEmployeesData(connection, EmployeeselectQuery);
 
-                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    string CustomerselectQuery = "SELECT * FROM Customer";
                     List<Customer> customers = ReadCustomersData(connection, CustomerselectQuery);
 
                     for (int i = 0; i < employees.Count(); i++)
