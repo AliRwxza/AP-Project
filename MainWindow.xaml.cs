@@ -37,7 +37,7 @@ namespace WpfApp3
         private void LoginButtonClick (object sender, RoutedEventArgs e)
         {
             // if the person is a employee:
-            if (true)
+            if (false)
             {
                 EmployeePanel employeePanel = new EmployeePanel();
                 employeePanel.Show();

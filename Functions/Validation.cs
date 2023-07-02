@@ -40,10 +40,5 @@ namespace WpfApp3.Functions
             }
             return true;
         }
-        public static bool Name(string name)
-        {
-
-        }
-
     }
 }
