@@ -23,6 +23,7 @@ namespace WpfApp3
         static bool IdValidation = false;
         static bool weightValidation = false;
         static bool priceValidation = false;
+        static bool chargeAmountValidation = false;
 
         public CustomerPanel ()
         {
@@ -45,6 +46,20 @@ namespace WpfApp3
 
             MainPanel.Visibility = Visibility.Visible;
             MainPanelLeftColumn.Visibility = Visibility.Visible;
+        }
+
+        private void WalletButton_Click (object sender, RoutedEventArgs e)
+        {
+            MainPanelLeftColumn.Visibility = Visibility.Collapsed;
+            MainPanelLeftColumn.Visibility = Visibility.Collapsed;
+
+            ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Visible;
+            ThirdFeatureFirstPage.Visibility = Visibility.Visible;
+        }
+
+        private void ChangeUsernamePasswordButton_Click (object sender, RoutedEventArgs e)
+        {
+
         }
 
         //////////////////////////
@@ -168,8 +183,23 @@ namespace WpfApp3
 
         //////////////////////////////////////////////////// THIRD FEATURE
 
+        private void IncreaseBalanceButton_Click (object sender, RoutedEventArgs e)
+        {
+            ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Collapsed;
+            ThirdFeatureFirstPage.Visibility = Visibility.Collapsed;
 
+            ThirdFeatureSecondPageLeftColumn.Visibility = Visibility.Visible;
+            ChargeWalletWindow.Visibility = Visibility.Visible;
+        }
 
+        private void ThirdFeatureFirstPageBackButton_Click (object sender, RoutedEventArgs e)
+        {
+            ThirdFeatureFirstPage.Visibility = Visibility.Collapsed;
+            ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Collapsed;
+
+            MainPanel.Visibility = Visibility.Visible;
+            MainPanelLeftColumn.Visibility = Visibility.Visible;
+        }
 
         //////////////////////////////////////////////////// SECOND PAGE ( WALLET CHARGE )
         private void Changed_CVV2 (object sender, EventArgs e)
@@ -235,25 +265,43 @@ namespace WpfApp3
 
         private void PayButton_Click (object sender, EventArgs e)
         {
-            int chargeAmount = int.Parse(ChargeAmountField.Text);
+            // check card number and cvv2 and mm and yy too
+            if (chargeAmountValidation)
+            {
+                int chargeAmount = int.Parse(ChargeAmountField.Text);
 
-            // add to the wallet
-            // and ask if they want this action to get saved
-            // will need date and time
-            // will be making PDF
+                if (chargeAmount > 10000)
+                {
+                    // add to the wallet
+
+                    // and ask if they want this action to get saved
+                    PopUpWindow popUpWindow = new PopUpWindow();
+                    popUpWindow.Show();
+
+                    // will need date and time
+                    // will be making PDF
+                }
+            }
+            else
+                MessageBox.Show("Minimum value of charge amount is 10,000");
         }
 
         private void WalletChargeBackButton_Click (object sender, RoutedEventArgs e)
         {
-            // go back to the wallet
+            ThirdFeatureSecondPageLeftColumn.Visibility = Visibility.Collapsed;
+            ChargeWalletWindow.Visibility = Visibility.Collapsed;
+
+            ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Visible;
+            ThirdFeatureFirstPage.Visibility = Visibility.Visible;
         }
 
         //////////////////////////////////////////////////// GLOBAL
 
         private void OnlyNumbers_PreviewTextInput (object sender, TextCompositionEventArgs e)
         {
-            if (ContainsAlphabeticCharacters(e.Text))
-                e.Handled = true; // Cancel the event to prevent alphabetic characters
+            if (!int.TryParse(e.Text, out int number))
+                e.Handled = true;
+            chargeAmountValidation = true;
         }
 
         private bool ContainsAlphabeticCharacters (string input)
@@ -264,5 +312,7 @@ namespace WpfApp3
 
             return false;
         }
+
+        
     }
 }
