@@ -6,33 +6,61 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Windows;
+using System.Collections;
 
 namespace WpfApp3
 {
     public class SQL
     {
-        public static void AddTable<T>()
+        public static void ExecuteQuery(string Query)
         {
-            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+            string connectionString = GlobalVariables.ConnectionString;
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                try
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(Query, connection))
                 {
-                    connection.Open();
-
-                    string createTableQuery = CreateTableQuery<T>();
-
-                    using (SqlCommand command = new SqlCommand(createTableQuery, connection))
-                    {
-                        command.ExecuteNonQuery();
-                        Console.WriteLine("Table created successfully!");
-                    }
+                    command.ExecuteNonQuery();
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error creating table: " + ex.Message);
-                }
+                connection.Close();
             }
+        }
+        public static void AddEmployeeTable()
+        {
+            string createTableQuery = "CREATE TABLE Employee (EmployeeID VARCHAR(100) PRIMARY KEY, FirstName VARCHAR(100), LastName VARCHAR(100), Email VARCHAR(100), UserName VARCHAR(100), Password VARCHAR(100))";
+            try
+            {
+                ExecuteQuery(createTableQuery);
+            }
+            catch { }
+        }
+        public static void AddCustomerTable()
+        {
+            string createTableQuery = "CREATE TABLE Customer (SSN VARCHAR(100) PRIMARY KEY, FirstName VARCHAR(100), LastName VARCHAR(100), Email VARCHAR(100), UserName VARCHAR(100), Password VARCHAR(100), Phone VARCHAR(100), Wallet FLOAT)";
+            try
+            {
+                ExecuteQuery(createTableQuery);
+            }
+            catch { }
+        }
+        public static void AddOrderTable()
+        {
+            string createTableQuery = "CREATE TABLE Order (OrderID INT PRIMARY KEY, SenderAddress VARCHAR(100), Content VARCHAR(100), HasExpensiveContent BOOLEAN, Weight FLOAT, postType VARCHAR(100), Phone VARCHAR(100), Status VARCHAR(100), CustomerSSN VARCHAR(100), Date DATE, Comment VARCHAR(100))";
+            try
+            {
+                ExecuteQuery(createTableQuery);
+            }
+            catch { }
+        }
+        public static void AddTable<T>()
+        {
+            string createTableQuery = CreateTableQuery<T>();
+            try
+            {
+                ExecuteQuery(createTableQuery);
+            }
+            catch { }
         }
         public static string CreateTableQuery<T>()
         {
@@ -54,99 +82,124 @@ namespace WpfApp3
 
             return createTableQuery;
         }
-        /// <summary>
-        /// make the string of the sqlcommand for making a new table
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        /// <exception cref="NotSupportedException"></exception>
         public static string GetSqlDataType(Type type)
         {
             if (type == typeof(int))
                 return "INT";
             else if (type == typeof(string))
-                return "VARCHAR(32)";
-            else if (type == typeof(decimal))
-                return "DECIMAL(10,2)";
+                return "VARCHAR(100)";
+            else if (type == typeof(double))
+                return "DOUBLE PRECISION";
             // Add more data types as needed for your class properties
 
             throw new NotSupportedException($"Data type {type.Name} is not supported.");
         }
-        /// <summary>
-        /// add an instance to the table in sql server
-        /// Exa: Employee employee = new Employee();
-        /// string insertQuery = InsertIntoTable(employee);
-        /// using (SqlCommand command = new SqlCommand(insertQuery, connection))  
-        ///command.ExecuteNonQuery();
-        ///Console.WriteLine("Record inserted successfully!");
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        public static string InsertIntoTable<T>(T instance)
+        public static void InsertIntoTable<T>(T instance)
         {
             Type type = typeof(T);
-            string tableName = type.Name;
-            PropertyInfo[] properties = type.GetProperties();
+            try
+            {
+                string tableName = type.Name;
+                PropertyInfo[] properties = type.GetProperties();
 
-            string columns = string.Join(", ", properties.Select(p => p.Name));
-            string values = string.Join(", ", properties.Select(p => $"@{p.Name}"));
+                string columns = string.Join(", ", properties.Select(p => p.Name));
+                string values = string.Join(", ", properties.Select(p => $"@{p.Name}"));
 
-            string insertQuery = $"INSERT INTO {tableName} ({columns}) VALUES ({values})";
+                string insertQuery = $"INSERT INTO {tableName} ({columns}) VALUES ({values})";
 
-            return insertQuery;
+                string connectionString = GlobalVariables.ConnectionString;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                    {
+                        for (int i = 0; i < properties.Count(); i++)
+                        {
+                            command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance));
+                        }
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                MessageBox.Show($"{type.Name} added successfully!");
+            }
+            catch { MessageBox.Show($"An error while adding {type.Name}!"); }
         }
-        /// <summary>
-        /// edit the data of an instance that already exists in the sql server
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        public static string UpdateTable<T>(T instance)
+        public static void UpdateEmployeeTable(Employee employee) //----------------------------------------------------------------------------------
         {
-            Type type = typeof(T);
-            string tableName = type.Name;
-            PropertyInfo[] properties = type.GetProperties();
-
-            string setClause = string.Join(", ", properties.Select(p => $"{p.Name} = @{p.Name}"));
-
-            string updateQuery = $"UPDATE {tableName} SET {setClause} WHERE EmployeeID = @EmployeeID";
-
-            return updateQuery;
+            string updateQuery = $"UPDATE Employee SET EmployeeID = @{employee.EmployeeID}, FirstName = @{employee.FirstName}, LastName = @{employee.LastName}, Email = @{employee.Email}, UserName = @{employee.UserName}, Password = @{employee.Password}";
+            try
+            {
+                ExecuteQuery(updateQuery);
+            }
+            catch { MessageBox.Show("An error occured while updating employee!"); }
+        }
+        public static void UpdateCustomerTable(Customer customer)
+        {
+            string updateQuery = $"UPDATE Customer SET SSN = @{customer.SSN}, FirstName = @{customer.FirstName}, LastName = @{customer.LastName}, Email = @{customer.Email}, UserName = @{customer.UserName}, Password = @{customer.Password}, Phone = @{customer.Phone}, Wallet = @{customer.Wallet}";
+            try
+            {
+                ExecuteQuery(updateQuery);
+            }
+            catch { MessageBox.Show("An error occured while updating customer!"); }
+        }
+        public static void UpdateOrderTable(Order order)
+        {
+            string updateQuery = $"UPDATE Order SET OrderID = @{order.OrderID}, SenderAddress = @{order.SenderAddress}, RecieverAddress = @{order.RecieverAddress}, Content = @{order.Content}, HasExpensiveContent = @{order.HasExpensiveContent}, Weight = @{order.Weight}, postType = @{order.postType}, Phone = @{order.Phone}, Status = @{order.Status}, CustomerSSN = @{order.CustomerSSN}, Date = @{order.Date}, Comment = @{order.Comment}";
+            try
+            {
+                ExecuteQuery(updateQuery);
+            }
+            catch { MessageBox.Show("An error occured while updating order!"); }
         }
         public static List<Employee> ReadEmployeesData(SqlConnection connection, string selectQuery)
         {
+            AddEmployeeTable();
             List <Employee> employees = new List<Employee>();
-            using (SqlCommand command = new SqlCommand(selectQuery, connection))
+            try
             {
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlCommand command = new SqlCommand(selectQuery, connection))
                 {
-                    // Check if there are any rows returned
-                    if (reader.HasRows)
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        // Read and process each row
-                        while (reader.Read())
+                        // Check if there are any rows returned
+                        if (reader.HasRows)
                         {
-                            string EmployeeID = reader.GetString(0);
-                            string FirstName = reader.GetString(1);
-                            string LastName = reader.GetString(2);
-                            string Email = reader.GetString(3);
-                            string Username = reader.GetString(4);
-                            string Password = reader.GetString(5);
-                            try
+                            // Read and process each row
+                            while (reader.Read())
                             {
-                                Employee employee = new Employee(EmployeeID, FirstName, LastName, Email, Username, Password);
-                                employees.Add(employee);
+                                try
+                                {
+                                    string EmployeeID = reader.GetString(0);
+                                    string FirstName = reader.GetString(1);
+                                    string LastName = reader.GetString(2);
+                                    string Email = reader.GetString(3);
+                                    string Username = reader.GetString(4);
+                                    string Password = reader.GetString(5);
+
+                                    Employee employee = new Employee(EmployeeID, FirstName, LastName, Email, Username, Password);
+                                    employees.Add(employee);
+                                }
+                                catch
+                                {
+                                    MessageBox.Show("Error reading Employee data!");
+                                }
+
                             }
-                            catch { }
                         }
                     }
                 }
+            }
+            catch
+            {
+                MessageBox.Show("Error in reading EmployeesData");
             }
             return employees;
         }
         public static List<Customer> ReadCustomersData(SqlConnection connection, string selectQuery)
         {
+            AddCustomerTable();
             List<Customer> Customers = new List<Customer>();
             using (SqlCommand command = new SqlCommand(selectQuery, connection))
             {
@@ -158,20 +211,24 @@ namespace WpfApp3
                         // Read and process each row
                         while (reader.Read())
                         {
-                            string SSN = reader.GetString(0);
-                            string FirstName = reader.GetString(1);
-                            string LastName = reader.GetString(2);
-                            string Email = reader.GetString(3);
-                            string Phone = reader.GetString(4);
-                            double Wallet = reader.GetDouble(5);
-                            string Username = reader.GetString(6);
-                            string Password = reader.GetString(7);
                             try
                             {
+                                string SSN = reader.GetString(0);
+                                string FirstName = reader.GetString(1);
+                                string LastName = reader.GetString(2);
+                                string Email = reader.GetString(3);
+                                string Username = reader.GetString(4);
+                                string Password = reader.GetString(5);
+                                string Phone = reader.GetString(6);
+                                double Wallet = reader.GetDouble(7);
+                                
                                 Customer customer = new Customer(SSN, FirstName, LastName, Email, Phone, Wallet, Username, Password);
                                 Customers.Add(customer);
                             }
-                            catch { }
+                            catch
+                            {
+                                MessageBox.Show("Error reading customer data!");
+                            }
                         }
                     }
                 }
@@ -180,6 +237,7 @@ namespace WpfApp3
         }
         public static List<Order> ReadOrdersData(SqlConnection connection, string selectQuery)
         {
+            AddOrderTable();
             List<Order> Orders = new List<Order>();
             using (SqlCommand command = new SqlCommand(selectQuery, connection))
             {
@@ -204,7 +262,7 @@ namespace WpfApp3
                             DateTime date = reader.GetDateTime(10);
                             try
                             {
-                                Order order = new Order(OrderID, SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status), CustomerSSN, date);
+                                Order order = new Order(OrderID, SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status), CustomerSSN);
                                 Orders.Add(order);
                             }
                             catch { }
@@ -216,7 +274,7 @@ namespace WpfApp3
         }
         public static bool UserExist(string Username)
         {
-            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+            string connectionString = GlobalVariables.ConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -224,10 +282,10 @@ namespace WpfApp3
                 {
                     connection.Open();
 
-                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    string EmployeeselectQuery = "SELECT * FROM Employee";
                     List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
 
-                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    string CustomerselectQuery = "SELECT * FROM Customer";
                     List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
    
                     foreach (var username in employees.Select(x => x.UserName))
@@ -257,7 +315,7 @@ namespace WpfApp3
         }
         public static bool PasswordExist(string Password)
         {
-            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
+            string connectionString = GlobalVariables.ConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -265,10 +323,10 @@ namespace WpfApp3
                 {
                     connection.Open();
 
-                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    string EmployeeselectQuery = "SELECT * FROM Employee";
                     List<Employee> employees = SQL.ReadEmployeesData(connection, EmployeeselectQuery);
 
-                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    string CustomerselectQuery = "SELECT * FROM Customer";
                     List<Customer> customers = SQL.ReadCustomersData(connection, CustomerselectQuery);
 
                     foreach (var password in employees.Select(x => x.Password))
@@ -298,18 +356,20 @@ namespace WpfApp3
         }
         public static object FindUSer(string username)
         {
-            string connectionString = "Data Source=;Initial Catalog=Post;Integrated Security = true;MultipleActiveResultSets=true";
-
+            string connectionString = GlobalVariables.ConnectionString;
+            AddEmployeeTable();
+            AddCustomerTable();
+            AddOrderTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
 
-                    string EmployeeselectQuery = "SELECT * FROM Employees";
+                    string EmployeeselectQuery = "SELECT * FROM Employee";
                     List<Employee> employees = ReadEmployeesData(connection, EmployeeselectQuery);
 
-                    string CustomerselectQuery = "SELECT * FROM Customers";
+                    string CustomerselectQuery = "SELECT * FROM Customer";
                     List<Customer> customers = ReadCustomersData(connection, CustomerselectQuery);
 
                     for (int i = 0; i < employees.Count(); i++)

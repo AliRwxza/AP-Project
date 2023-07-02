@@ -28,85 +28,98 @@ namespace WpfApp3
             ResizeMode = ResizeMode.NoResize;
         }
 
-        private void NameBox_TextChanged (object sender, TextChangedEventArgs e)
+        private void NameBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Regex nameValidationPattern = new Regex(@"^[a-zA-Z]{3,32}$");
+            FirstNameBox.Style = Validation.Name(FirstNameBox.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[0] = Validation.Name(FirstNameBox.Text);
 
-            if (!nameValidationPattern.IsMatch(FirstNameBox.Text))
-            {
-                FirstNameBox.Style = (Style)FindResource("TextBoxError");
-                bools[0] = false;
-            }
-            else if (nameValidationPattern.IsMatch(FirstNameBox.Text))
-            {
-                FirstNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[0] = true;
-            }
+            //Regex nameValidationPattern = new Regex(@"^[a-zA-Z]{3,32}$");
+            //if (!nameValidationPattern.IsMatch(FirstNameBox.Text))
+            //{
+            //    FirstNameBox.Style = (Style)FindResource("TextBoxError");
+            //    bools[0] = false;
+            //}
+            //else
+            //{
+            //    FirstNameBox.Style = (Style)FindResource("SignUpPageTextBox");
+            //    bools[0] = true;
+            //}
         }
 
-        private void NameBox2_TextChanged (object sender, TextChangedEventArgs e)
+        private void NameBox2_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Regex nameValidationPattern = new Regex(@"^[a-zA-Z]{3,32}$");
+            LastNameBox.Style = Validation.Name(LastNameBox.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[1] = Validation.Name(LastNameBox.Text);
 
-            if (!nameValidationPattern.IsMatch(LastNameBox.Text))
-            {
-                LastNameBox.Style = (Style)FindResource("TextBoxError");
-                bools[1] = false;
-            }
-            else if (nameValidationPattern.IsMatch(LastNameBox.Text))
-            {
-                LastNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-                bools [1] = true;
-            }
+            //Regex nameValidationPattern = new Regex(@"^[a-zA-Z]{3,32}$");
+            //if (!nameValidationPattern.IsMatch(LastNameBox.Text))
+            //{
+            //    LastNameBox.Style = (Style)FindResource("TextBoxError");
+            //    bools[1] = false;
+            //}
+            //else if (nameValidationPattern.IsMatch(LastNameBox.Text))
+            //{
+            //    LastNameBox.Style = (Style)FindResource("SignUpPageTextBox");
+            //    bools[1] = true;
+            //}
         }
 
         private void Ssn_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex SsnValidation = new Regex(@"^00\d{8}$");
+            SsnField.Style = Validation.SSN(SsnField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[2] = Validation.SSN(SsnField.Text);
 
-            if (!SsnValidation.IsMatch(SsnField.Text))
-            {
-                SsnField.Style = (Style)FindResource("TextBoxError");
-                bools[2] = false;
-            }
-            else if (SsnValidation.IsMatch(SsnField.Text))
-            {
-                // hmmm
-                SsnField.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[2] = true;
-            }
+
+            //Regex SsnValidation = new Regex(@"^00\d{8}$");
+
+            //if (!SsnValidation.IsMatch(SsnField.Text))
+            //{
+            //    SsnField.Style = (Style)FindResource("TextBoxError");
+            //    bools[2] = false;
+            //}
+            //else if (SsnValidation.IsMatch(SsnField.Text))
+            //{
+            //    // hmmm
+            //    SsnField.Style = (Style)FindResource("SignUpPageTextBox");
+            //    bools[2] = true;
+            //}
         }
 
         private void EmailField_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex emailValidation = new Regex(@"^[a-zA-Z0-9_.]{3,32}@[a-zA-Z]{3,32}.[a-zA-Z]{2,3}$");
+            EmailField.Style = Validation.Email(EmailField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[3] = Validation.Email(EmailField.Text);
 
-            if (!emailValidation.IsMatch(EmailField.Text))
-            {
-                EmailField.Style = (Style)FindResource("TextBoxError");
-                bools[3] = false;
-            }
-            else if (emailValidation.IsMatch(EmailField.Text))
-            {
-                EmailField.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[3] = true;
-            }
+            //Regex emailValidation = new Regex(@"^[a-zA-Z]{3,32}@[a-zA-Z]{3,32}.[a-zA-Z]{2,3}$");
+            //if (!emailValidation.IsMatch(EmailField.Text))
+            //{
+            //    EmailField.Style = (Style)FindResource("TextBoxError");
+            //    bools[4] = false;
+            //}
+            //else if (emailValidation.IsMatch(EmailField.Text))
+            //{
+            //    EmailField.Style = (Style)FindResource("SignUpPageTextBox");
+            //    bools[4] = true;
+            //}
         }
 
         private void PhoneNumberField_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex phonenumberPattern = new Regex(@"^09\d{9}$");
+            PhoneNumberField.Style = Validation.Phone(PhoneNumberField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[4] = Validation.Phone(PhoneNumberField.Text);
 
-            if (!phonenumberPattern.IsMatch(PhoneNumberField.Text))
-            {
-                PhoneNumberField.Style = (Style)FindResource("TextBoxError");
-                bools[4] = false;
-            }
-            else if (phonenumberPattern.IsMatch(PhoneNumberField.Text))
-            {
-                PhoneNumberField.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[4] = true;
-            }
+            //Regex phonenumberPattern = new Regex(@"^09\d{9}$");
+
+            //if (!phonenumberPattern.IsMatch(PhoneNumberField.Text))
+            //{
+            //    PhoneNumberField.Style = (Style)FindResource("TextBoxError");
+            //    bools[4] = false;
+            //}
+            //else if (phonenumberPattern.IsMatch(PhoneNumberField.Text))
+            //{
+            //    PhoneNumberField.Style = (Style)FindResource("SignUpPageTextBox");
+            //    bools[4] = true;
+            //}
         }
 
         private void CustomerSignUpPageSubmitButtonClick (object sender, RoutedEventArgs e)
@@ -116,12 +129,19 @@ namespace WpfApp3
             {
                 if (bools[i] == false)
                 {
-                    MessageBox.Show("Problems remain.");
+                    MessageBox.Show("Problems remain. " + i);
 
                     return;
                 }
             }
+            string Username = RandomUsername();
+            string Password = RandomPassword();
 
+            Customer customer = new Customer(SsnField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, PhoneNumberField.Text, 0, Username, Password);
+            
+            SQL.InsertIntoTable(customer);
+
+            Email.SendEmail(GlobalVariables.SourceEmail, customer.Email, "Your username and password", $"Welcome to Post Company!\nUsername is: {Username}\nPassword is: {Password}");
             // generate a random and unique username and password(both must be unique)
             // E-mail the username and password to the customer
             // add the customer information
