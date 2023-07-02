@@ -22,8 +22,6 @@ namespace WpfApp3
             this.Email = Email;
             this.UserName = UserName;
             this.Password = Password;
-            SQL.AddTable<Employee>();
-            //SQL.InsertIntoTable(this);
         }
     }
 }

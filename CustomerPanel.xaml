@@ -613,7 +613,7 @@
             </StackPanel>
             
         </Grid>
-        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Collapsed" Background="White">
+        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Visible" Background="White">
             <Grid>
                 <Grid.Background>
                     <ImageBrush ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>

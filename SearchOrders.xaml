@@ -175,11 +175,11 @@
             <TextBox Name="SsnField" Style="{DynamicResource TextBox}" Width="175" HorizontalAlignment="Left" Margin="5 0 0 0" MaxLength="10" TextChanged="SsnField_TextChanged"/>
             <Menu Width="92" Height="22" HorizontalAlignment="Left" Margin="5 20 0 5" Background="White">
                 <MenuItem Name="MainMenu" Header="Package Type" FontSize="13">
-                    <MenuItem Name="ObjectOption" Header="Object" IsCheckable="True" Checked="ObjectOptionCheck" Unchecked="ObjectOptionCheck"/>
+                    <MenuItem Name="Object" Header="Object" IsCheckable="True" Checked="ObjectOptionCheck" Unchecked="ObjectOptionCheck"/>
                     <Separator Margin="5 0"/>
-                    <MenuItem Name="DocumentOption" Header="Document" IsCheckable="True" Checked="DocumentOptiUnCheck" Unchecked="DocumentOptiUnCheck"/>
+                    <MenuItem Name="Document" Header="Document" IsCheckable="True" Checked="DocumentOptiUnCheck" Unchecked="DocumentOptiUnCheck"/>
                     <Separator Margin="5 0"/>
-                    <MenuItem Name="FragileOption" Header="Fragile" IsCheckable="True" Checked="FragileOptionCheck" Unchecked="FragileOptionCheck"/>
+                    <MenuItem Name="Fragile" Header="Fragile" IsCheckable="True" Checked="FragileOptionCheck" Unchecked="FragileOptionCheck"/>
                 </MenuItem>
             </Menu>
             <Label FontSize="13" Margin="0 8 0 0">Paid Price</Label>

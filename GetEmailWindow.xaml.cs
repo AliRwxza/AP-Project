@@ -19,24 +19,31 @@ namespace WpfApp3
     /// </summary>
     public partial class GetEmailWindow : Window
     {
-        public GetEmailWindow ()
+        public GetEmailWindow()
         {
             InitializeComponent();
+            ResizeMode = ResizeMode.NoResize;
+        }
+
+        private void EmailField_TextChanged (object sender, TextChangedEventArgs e)
+        {
+            if (Validation.Email(EmailField.Text))
+                EmailField.Style = (Style)FindResource("TextBox");
+            else
+                EmailField.Style = (Style)FindResource("TextBoxError");
         }
 
         private void Button_Click (object sender, RoutedEventArgs e)
         {
-            if (Validation.Email(EmailField.Text))
-            {
-                string fromAddress = GlobalVariables.SourceEmail;
-                string toAddress = EmailField.Text; // Replace with the recipient's email address
-                string subject = "Package Delivery Report";
-                string message = "Your Package with the [Id number] was delivered\n" + // replace the Id number
-                    "Now you can let us know your opinion. ";
+            string fromAddress = GlobalVariables.SourceEmail;
+            string toAddress = EmailField.Text; // Replace with the recipient's email address
+            string subject = "Package Delivery Report";
+            string message = "Your Package with the [Id number] was delivered\n" + // replace the Id number
+                "Now you can let us know your opinion. ";
 
-                // send an email with the message above
-                Email.SendEmail(fromAddress, toAddress, subject, message);
-            }
+            // send an email with the message above
+            Email.SendEmail(fromAddress, toAddress, subject, message);
+        }
             else
                 MessageBox.Show("Not a valid Email address.");
         }

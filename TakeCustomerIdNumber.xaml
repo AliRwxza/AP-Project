@@ -153,8 +153,8 @@
             <TextBlock Margin="10 2">Customer SSN number:</TextBlock>
             <TextBox Name="SsnInputBox" Style="{DynamicResource CustomerSsnField}" Margin="10 2 0 0" Width="175" HorizontalAlignment="Left" MaxLength="10" TextChanged="SsnInputBox_TextChanged"/>
         </StackPanel>
-        <Grid Grid.Column="1" Background="white" Margin="10">
-            <Button Style="{DynamicResource SearchButton}" Background="#F8E8EE" FontSize="20" Click="SearchButtonClick">Search</Button>
+        <Grid Grid.Column="1" Background="#F9F5F6" Margin="0">
+            <Button Style="{DynamicResource SearchButton}" Background="#F8E8EE" Margin="10" FontSize="20" Click="SearchButtonClick">Search</Button>
         </Grid>
     </Grid>
 </Window>

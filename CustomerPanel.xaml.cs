@@ -312,7 +312,5 @@ namespace WpfApp3
 
             return false;
         }
-
-        
     }
 }

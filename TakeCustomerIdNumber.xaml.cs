@@ -21,6 +21,7 @@ namespace WpfApp3
     public partial class TakeCustomerIdNumber : Window
     {
         static bool validation = false;
+        Customer customer;
         public TakeCustomerIdNumber ()
         {
             InitializeComponent();
@@ -34,34 +35,47 @@ namespace WpfApp3
             if (validation)
             {
                 // if (ssn exists) :
-
-                // go to the order-taking menu
-                OrderWindow order = new OrderWindow();
-                order.Show();
+                List<Customer> Customers = SQL.ReadCustomersData(); 
+                for (int i = 0; i < Customers.Count(); i++)
+                {
+                    if (Customers[i].SSN == SsnInputBox.Text)
+                    {
+                        // go to the order-taking menu
+                        Customer customer = Customers[i];
+                        OrderWindow order = new OrderWindow(ref customer);
+                        order.Show();
+                        Close();
+                        return;
+                    }
+                }
+                MessageBox.Show("No customer was found with this SSN!\nTry registering the customer.");
+                CustomerSignUpWindow customerSignUpWindow = new CustomerSignUpWindow();
+                customerSignUpWindow.Show();
             }
-            // else, sign them up
             else
             {
-                CustomerSignUpWindow customerSignUpWindow = new CustomerSignUpWindow ();
-                customerSignUpWindow.Show ();
+                MessageBox.Show("Invalid SSN!");
             }
-            Close();
         }
 
         private void SsnInputBox_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex SsnValidation = new Regex(@"^00\d{8}$");
+            SsnInputBox.Style = Validation.SSN(SsnInputBox.Text) ? (Style)FindResource("CustomerSsnField") : (Style)FindResource("TextBoxError");
+            validation = Validation.SSN(SsnInputBox.Text);
 
-            if (!SsnValidation.IsMatch(SsnInputBox.Text))
-            {
-                SsnInputBox.Style = (Style)FindResource("TextBoxError");
-                validation = false;
-            }
-            else if (SsnValidation.IsMatch(SsnInputBox.Text))
-            {
-                SsnInputBox.Style = (Style)FindResource("CustomerSsnField");
-                validation = true;
-            }
+
+            //Regex SsnValidation = new Regex(@"^00\d{8}$");
+
+            //if (!SsnValidation.IsMatch(SsnInputBox.Text))
+            //{
+            //    SsnInputBox.Style = (Style)FindResource("TextBoxError");
+            //    validation = false;
+            //}
+            //else if (SsnValidation.IsMatch(SsnInputBox.Text))
+            //{
+            //    SsnInputBox.Style = (Style)FindResource("CustomerSsnField");
+            //    validation = true;
+            //}
         }
     }
 }
