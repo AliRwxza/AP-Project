@@ -572,7 +572,31 @@
             </Menu>
             <Button Name="SecondFeatureSearchButton" Background="#E3DFFD" Width="175" Height="50" Margin="30" FontSize="30" Click="SearchOrdersButton_Click" Style="{DynamicResource SearchButton}">Search</Button>
         </StackPanel>
-        <Grid Name="ThirdFeatureLeftColumn" Visibility="Collapsed" Grid.Column="0">
+        <Grid Name="ThirdFeatureFirstPageLeftColumn" Visibility="Collapsed" Grid.Column="0">
+            <Grid Grid.Column="0">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#8EC3B0" Offset="0"/>
+                        <GradientStop Color="#B9BBDF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 0" FontSize="40">Wallet</TextBlock>
+            </Grid>
+        </Grid>
+        <StackPanel Name="ThirdFeatureFirstPage" Grid.Column="1" Visibility="Collapsed">
+            <StackPanel.Background>
+                <ImageBrush  ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
+            </StackPanel.Background>
+            <Button Name="ThirdFeatureFirstPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
+                    Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="ThirdFeatureFirstPageBackButton_Click"/>
+            
+            <Label Margin="10 20 0 0" FontSize="20">Your current balance is :</Label>
+            <TextBlock Margin="15 0" FontSize="25" Text="5500000 (Change it)"/>
+
+            <Button Style="{DynamicResource SearchButton}" Width="240" Height="60" FontSize="22" HorizontalAlignment="Right"
+                    Margin="0 95 50 0" Background="#C5DFF8" Click="IncreaseBalanceButton_Click">Increase Balance</Button>
+        </StackPanel>
+        <Grid Name="ThirdFeatureSecondPageLeftColumn" Visibility="Visible" Grid.Column="0">
             <StackPanel Grid.Column="0">
                 <StackPanel.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -588,7 +612,7 @@
             </StackPanel>
             
         </Grid>
-        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Collapsed" Background="White">
+        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Visible" Background="White">
             <Grid>
                 <Grid.Background>
                     <ImageBrush ImageSource="C:\Users\user\Downloads\milad-fakurian-tGTa40GKSRI-unsplash.jpg"/>
