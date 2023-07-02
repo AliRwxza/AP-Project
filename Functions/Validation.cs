@@ -32,7 +32,7 @@ namespace WpfApp3
         }
         public static bool Email(string email)
         {
-            Regex EmailRegex = new Regex(@"^[a-zA-Z0-9]{3,32}@[a-zA-Z0-9]{3,32}.[a-zA-Z]{2,3}$");
+            Regex EmailRegex = new Regex(@"^[a-zA-Z0-9]{3,32}@[a-zA-Z0-9]{3,32}\.[a-zA-Z]{2,3}$");
             return EmailRegex.IsMatch(email);
         }
         public static bool Phone(string phone)

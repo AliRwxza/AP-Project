@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Windows;
+using System.Collections;
 
 namespace WpfApp3
 {
@@ -25,15 +26,42 @@ namespace WpfApp3
                 connection.Close();
             }
         }
+        public static void AddEmployeeTable()
+        {
+            string createTableQuery = "CREATE TABLE Employee (EmployeeID VARCHAR(100) PRIMARY KEY, FirstName VARCHAR(100), LastName VARCHAR(100), Email VARCHAR(100), UserName VARCHAR(100), Password VARCHAR(100))";
+            try
+            {
+                ExecuteQuery(createTableQuery);
+            }
+            catch { }
+        }
+        public static void AddCustomerTable()
+        {
+            string createTableQuery = "CREATE TABLE Customer (SSN VARCHAR(100) PRIMARY KEY, FirstName VARCHAR(100), LastName VARCHAR(100), Email VARCHAR(100), UserName VARCHAR(100), Password VARCHAR(100), Phone VARCHAR(100), Wallet FLOAT)";
+            try
+            {
+                ExecuteQuery(createTableQuery);
+            }
+            catch { }
+        }
+        public static void AddOrderTable()
+        {
+            string createTableQuery = "CREATE TABLE Order (OrderID INT PRIMARY KEY, SenderAddress VARCHAR(100), Content VARCHAR(100), HasExpensiveContent BOOLEAN, Weight FLOAT, postType VARCHAR(100), Phone VARCHAR(100), Status VARCHAR(100), CustomerSSN VARCHAR(100), Date DATE, Comment VARCHAR(100))";
+            try
+            {
+                ExecuteQuery(createTableQuery);
+            }
+            catch { }
+        }
         public static void AddTable<T>()
         {
             string createTableQuery = CreateTableQuery<T>();
-            try 
-            { 
+            try
+            {
                 ExecuteQuery(createTableQuery);
-                MessageBox.Show("Table created successfully!");
+                //MessageBox.Show("Table created successfully!");
             }
-            catch { MessageBox.Show("An error occured while creating table!"); }
+            catch { }//MessageBox.Show("An error occured while creating table!"); }
         }
         public static string CreateTableQuery<T>()
         {
@@ -67,40 +95,41 @@ namespace WpfApp3
 
             throw new NotSupportedException($"Data type {type.Name} is not supported.");
         }
-        public static void InsertEmployeeIntoTable(Employee employee)
+        public static void InsertIntoTable<T>(T instance)
         {
-            string insertQuery = $"INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, UserName, Password) VALUES ({employee.EmployeeID}, {employee.FirstName}, {employee.LastName}, {employee.Email}, {employee.UserName}, {employee.Password})";
-            try 
-            { 
-                ExecuteQuery(insertQuery);
-                MessageBox.Show("Employee added successfully!");
-            } 
-            catch { MessageBox.Show("An error occured while adding employee!"); }
-            
-        }
-        public static void InsertCustomerIntoTable(Customer customer)
-        {
-            string insertQuery = $"INSERT INTO Customer (SSN, FirstName, LastName, Email, UserName, Password, Phone, Wallet) VALUES ({customer.SSN}, {customer.FirstName}, {customer.LastName}, {customer.Email}, {customer.UserName}, {customer.Password}, {customer.Phone}, {customer.Wallet})";
+            Type type = typeof(T);
             try
             {
-                ExecuteQuery(insertQuery);
-                MessageBox.Show("Customer added successfully!");
+                string tableName = type.Name;
+                PropertyInfo[] properties = type.GetProperties();
+
+                string columns = string.Join(", ", properties.Select(p => p.Name));
+                string values = string.Join(", ", properties.Select(p => $"@{p.Name}"));
+
+                string insertQuery = $"INSERT INTO {tableName} ({columns}) VALUES ({values})";
+
+                string connectionString = GlobalVariables.ConnectionString;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                    {
+                        for (int i = 0; i < properties.Count(); i++)
+                        {
+                            command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance));
+                        }
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                MessageBox.Show($"{type.Name} added successfully!");
             }
-            catch { MessageBox.Show("An error occured while adding customer!"); }
+            catch { MessageBox.Show($"An error while adding {type.Name}!"); }
         }
-        public static void InsertOrderIntoTable(Order order)
+        public static void UpdateEmployeeTable(Employee employee) //----------------------------------------------------------------------------------
         {
-            string insertQuery = $"INSERT INTO Order (OrderID, SenderAddress, RecieverAddress, Content, HasExpensiveContent, Weight, postType, Phone, Status, CustomerSSN, Date, Comment) VALUES ({order.OrderID}, {order.SenderAddress}, {order.RecieverAddress}, {order.Content}, {order.HasExpensiveContent}, {order.Weight}, {order.postType}, {order.Phone}, {order.Phone}, {order.Status}, {order.CustomerSSN}, {order.Date}, {order.Comment})";
-            try
-            {
-                ExecuteQuery(insertQuery);
-                MessageBox.Show("Order added successfully!");
-            }
-            catch { MessageBox.Show("An error occured while adding order!"); }
-        }
-        public static void UpdateEmployeeTable(Employee employee)
-        {
-            string updateQuery = $"UPDATE Employee SET EmployeeID = {employee.EmployeeID}, FirstName = {employee.FirstName}, LastName = {employee.LastName}, Email = {employee.Email}, UserName = {employee.UserName}, Password = {employee.Password}";
+            string updateQuery = $"UPDATE Employee SET EmployeeID = @{employee.EmployeeID}, FirstName = @{employee.FirstName}, LastName = @{employee.LastName}, Email = @{employee.Email}, UserName = @{employee.UserName}, Password = @{employee.Password}";
             try
             {
                 ExecuteQuery(updateQuery);
@@ -109,7 +138,7 @@ namespace WpfApp3
         }
         public static void UpdateCustomerTable(Customer customer)
         {
-            string updateQuery = $"UPDATE Customer SET SSN = {customer.SSN}, FirstName = {customer.FirstName}, LastName = {customer.LastName}, Email = {customer.Email}, UserName = {customer.UserName}, Password = {customer.Password}, Phone = {customer.Phone}, Wallet = {customer.Wallet}";
+            string updateQuery = $"UPDATE Customer SET SSN = @{customer.SSN}, FirstName = @{customer.FirstName}, LastName = @{customer.LastName}, Email = @{customer.Email}, UserName = @{customer.UserName}, Password = @{customer.Password}, Phone = @{customer.Phone}, Wallet = @{customer.Wallet}";
             try
             {
                 ExecuteQuery(updateQuery);
@@ -118,7 +147,7 @@ namespace WpfApp3
         }
         public static void UpdateOrderTable(Order order)
         {
-            string updateQuery = $"UPDATE Order SET OrderID = {order.OrderID}, SenderAddress = {order.SenderAddress}, RecieverAddress = {order.RecieverAddress}, Content = {order.Content}, HasExpensiveContent = {order.HasExpensiveContent}, Weight = {order.Weight}, postType = {order.postType}, Phone = {order.Phone}, Status = {order.Status}, CustomerSSN = {order.CustomerSSN}, Date = {order.Date}, Comment = {order.Comment}";
+            string updateQuery = $"UPDATE Order SET OrderID = @{order.OrderID}, SenderAddress = @{order.SenderAddress}, RecieverAddress = @{order.RecieverAddress}, Content = @{order.Content}, HasExpensiveContent = @{order.HasExpensiveContent}, Weight = @{order.Weight}, postType = @{order.postType}, Phone = @{order.Phone}, Status = @{order.Status}, CustomerSSN = @{order.CustomerSSN}, Date = @{order.Date}, Comment = @{order.Comment}";
             try
             {
                 ExecuteQuery(updateQuery);
@@ -127,6 +156,7 @@ namespace WpfApp3
         }
         public static List<Employee> ReadEmployeesData(SqlConnection connection, string selectQuery)
         {
+            AddEmployeeTable();
             List <Employee> employees = new List<Employee>();
             try
             {
@@ -170,6 +200,7 @@ namespace WpfApp3
         }
         public static List<Customer> ReadCustomersData(SqlConnection connection, string selectQuery)
         {
+            AddCustomerTable();
             List<Customer> Customers = new List<Customer>();
             using (SqlCommand command = new SqlCommand(selectQuery, connection))
             {
@@ -207,6 +238,7 @@ namespace WpfApp3
         }
         public static List<Order> ReadOrdersData(SqlConnection connection, string selectQuery)
         {
+            AddOrderTable();
             List<Order> Orders = new List<Order>();
             using (SqlCommand command = new SqlCommand(selectQuery, connection))
             {
@@ -326,8 +358,9 @@ namespace WpfApp3
         public static object FindUSer(string username)
         {
             string connectionString = GlobalVariables.ConnectionString;
-            AddTable<Employee>();
-            AddTable<Customer>();
+            AddEmployeeTable();
+            AddCustomerTable();
+            AddOrderTable();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try

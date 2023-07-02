@@ -34,12 +34,8 @@ namespace WpfApp3
             this.CustomerSSN = CustomerSSN;
             Date = DateTime.Now;
             SQL.AddTable<Order>();
-            SQL.InsertOrderIntoTable(this);
+            //SQL.InsertIntoTable(this);
         }
-        /// <summary>
-        /// محاسبه هزینه پست
-        /// </summary>
-        /// <returns></returns>
         public double Calculate()
         {
             double Fee = 10000;

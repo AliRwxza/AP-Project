@@ -23,7 +23,7 @@ namespace WpfApp3
             this.UserName = UserName;
             this.Password = Password;
             SQL.AddTable<Employee>();
-            SQL.InsertEmployeeIntoTable(this);
+            //SQL.InsertIntoTable(this);
         }
     }
 }

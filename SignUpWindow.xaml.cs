@@ -143,8 +143,9 @@ namespace WpfApp3
                     }
                 }
 
-                new Employee(FirstNameBox.Text, LastNameBox.Text, IdField.Text, EmailField.Text, UsernameField.Text, PasswordEntry1.Password);
-                MessageBox.Show("Employee added!");
+                Employee employee = new Employee(IdField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, UsernameField.Text, PasswordEntry1.Password);
+                SQL.InsertIntoTable(employee);
+                //MessageBox.Show("Employee added!");
                 Close();
             }
             else
