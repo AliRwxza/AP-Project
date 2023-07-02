@@ -21,9 +21,14 @@ namespace WpfApp3
         public string CustomerSSN { get; set; }
         public DateTime Date { get; set; }
         public string Comment { get; set; }
-        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool? HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN)
+        public Order(string SenderAddress, string RecieverAddress, PackageContent Content, bool? HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN)
         {
-            this.OrderID = OrderID;
+            List<Order> orders = SQL.ReadOrdersData();
+            if (orders.Count() != 0)
+            {
+                LastOrderID = orders.Select(x => x.OrderID).Max();
+            }
+            OrderID = LastOrderID + 1;
             this.SenderAddress = SenderAddress;
             this.RecieverAddress = RecieverAddress;
             this.Content = Content;
@@ -34,8 +39,7 @@ namespace WpfApp3
             this.Status = PackageStatus.Registered;
             this.CustomerSSN = CustomerSSN;
             Date = DateTime.Now;
-            SQL.AddTable<Order>();
-            //SQL.InsertIntoTable(this);
+            Comment = "";
         }
         public double Calculate()
         {
@@ -64,12 +68,7 @@ namespace WpfApp3
             double WeightFee = 0;
             if (Weight > 0.5)
             {
-                double weight = Weight;
-                while (weight > 0.5)
-                {
-                    weight -= 0.5;
-                    WeightFee += 0.2 * Fee;
-                }
+                WeightFee = (Math.Floor(Weight / 0.5)) * (Fee * 0.2);
             }
             // handling post type
             double PostFee = 0;

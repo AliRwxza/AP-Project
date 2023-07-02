@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace WpfApp3
 {
@@ -28,12 +29,43 @@ namespace WpfApp3
             ResizeMode = ResizeMode.NoResize;
         }
 
-        private void SearchOrdersButton_Click (object sender, RoutedEventArgs e)
+        private void SearchOrdersButton_Click(object sender, RoutedEventArgs e)
         {
+            List<Order> orders = SQL.ReadOrdersData();
+            if (bools[0])
+            {
+                orders = orders.Where(x => x.CustomerSSN == SsnField.Text).ToList();
+            }
+            if (bools[1])
+            {
+                orders = orders.OrderBy(x => Math.Abs(x.Calculate() - double.Parse(PaidPriceField.Text))).ToList();
+            }
+            if (bools[2])
+            {
+                orders = orders.OrderBy(x => Math.Abs(x.Weight - double.Parse(WeightBox.Text))).ToList();
+            }
+            if (MainMenu.Header.ToString() != "Package Type")
+            {
+                orders = orders.Where(x => x.Content == Enum.Parse<PackageContent>(MainMenu.Header.ToString())).ToList();
+            }
+            if (MainMenu2.Header.ToString() != "Delivery Type")
+            {
+                orders = orders.Where(x => x.postType == Enum.Parse<PostType>(MainMenu2.Header.ToString())).ToList();
+            }
+            using (StreamWriter writer = new StreamWriter("SearchResult.csv", false))
+            {
+                writer.WriteLine("Order ID,Sender Address,Reciever Address,Content,Has Expensive Content,Weight,Post Type,Phone,Status,CustomerSSN,Date,Price,Comment");
+                foreach (var order in orders)
+                {
+                    writer.WriteLine($"{order.OrderID},{order.SenderAddress},{order.RecieverAddress},{order.Content},{order.HasExpensiveContent},{order.Weight},{order.postType},{order.Phone},{order.Status},{order.CustomerSSN},{order.Date},{order.Calculate()},{order.Comment}");
+                }
+                writer.Close();
+            }
+            MessageBox.Show("Search completed! Now you can see the search result in the .csv file in the app directory.");
+
             // search the data base
             // make a csv file for the results (sorted by order date)
             // the search range must contain every single order done by any of the employees
-
         }
 
         /////////////////////////////////////////////////////////

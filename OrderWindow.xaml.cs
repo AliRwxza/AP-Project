@@ -24,7 +24,7 @@ namespace WpfApp3
         //static bool IsValuable = false;
         Customer customer;
         double Price;
-        public OrderWindow (Customer customer)
+        public OrderWindow (ref Customer customer)
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
@@ -182,18 +182,20 @@ namespace WpfApp3
         {
             if (customer.Wallet >= Price)
             {
-                Order.LastOrderID++;
                 customer.Wallet -= Price;
-                Order order = new Order(Order.LastOrderID, SenderAddressBox.Text, ReceiverAddressBox.Text, Enum.Parse<PackageContent>(MainMenu.Name), ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), Enum.Parse<PostType>(MainMenu2.Name), PhoneNumberField.Text, PackageStatus.Registered, customer.SSN);
+                PostType postType = Enum.Parse<PostType>(MainMenu2.Header.ToString());
+                PackageContent Content = Enum.Parse<PackageContent>(MainMenu.Header.ToString());
+                Order order = new Order(SenderAddressBox.Text, ReceiverAddressBox.Text, Content, ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Registered, customer.SSN);
                 SQL.InsertIntoTable(order);
-                MessageBox.Show("Order registered!");
+                //MessageBox.Show("Order registered!");
             }
             else
             {
                 MessageBox.Show("Not enough balance in your wallet!");
                 // go to charging page
-                Close();
+                
             }
+            Close();
             // check the customer's wallet
             // if there were no problems, assign an ID number (based on the order's number)
             // and take the order's money from customer's wallet

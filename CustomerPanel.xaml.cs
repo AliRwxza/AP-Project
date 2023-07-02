@@ -99,5 +99,10 @@ namespace WpfApp3
             OrdersReportSecondPage.Visibility = Visibility.Collapsed;
             OrdersReportFirstPage.Visibility = Visibility.Visible;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

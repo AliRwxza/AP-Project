@@ -40,9 +40,9 @@ namespace WpfApp3
                 {
                     if (Customers[i].SSN == SsnInputBox.Text)
                     {
-                        customer = Customers[i];
                         // go to the order-taking menu
-                        OrderWindow order = new OrderWindow(customer);
+                        Customer customer = Customers[i];
+                        OrderWindow order = new OrderWindow(ref customer);
                         order.Show();
                         Close();
                         return;
