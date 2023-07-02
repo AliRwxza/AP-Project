@@ -44,8 +44,5 @@ namespace WpfApp3
             // send an email with the message above
             Email.SendEmail(fromAddress, toAddress, subject, message);
         }
-            else
-                MessageBox.Show("Not a valid Email address.");
-        }
     }
 }
