@@ -5,18 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace WpfApp3.Functions
+namespace WpfApp3
 {
     public class Validation
     {
         public static bool UserName(string username)
         {
-            Regex UserNameRegex = new Regex(@"^user[0-9]{4}$");
-            return (UserNameRegex.IsMatch(username) && (!SQL.UserExist(username)));
+            Regex UserNameRegex = new Regex(@"^[a-zA-Z0-9]{3,32}$");
+            return UserNameRegex.IsMatch(username); //&& (!SQL.UserExist(username));
         }
         public static bool Password(string password)
         {
-            Regex PasswordRegex = new Regex(@"^[0-9]{8}$");
+            Regex PasswordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$");
             return PasswordRegex.IsMatch(password);
         }
         public static bool Name(string name)
@@ -32,7 +32,7 @@ namespace WpfApp3.Functions
         }
         public static bool Email(string email)
         {
-            Regex EmailRegex = new Regex(@"^[a-zA-Z]{3,32}@[a-zA-Z]{3,32}.[a-zA-Z]{2,3}$");
+            Regex EmailRegex = new Regex(@"^[a-zA-Z0-9]{3,32}@[a-zA-Z0-9]{3,32}.[a-zA-Z]{2,3}$");
             return EmailRegex.IsMatch(email);
         }
         public static bool Phone(string phone)

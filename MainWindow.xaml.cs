@@ -70,7 +70,7 @@ namespace WpfApp3
             {
                 MessageBox.Show("Error: Username not found!");
             }
-            Close();
+            //Close();
         }
 
         private void SignUpButtonClick (object sender, RoutedEventArgs e)
