@@ -168,17 +168,17 @@
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45">Order</TextBlock>
         <StackPanel Grid.Column="1" Background="#ECF2FF" Grid.ColumnSpan="2">
             <Label FontSize="13">Sender Address</Label>
-            <TextBox Style="{DynamicResource TextBox}" Width="350" HorizontalAlignment="Left" Margin="5 0 0 0"/>
+            <TextBox Name ="SenderAddressBox"  Style="{DynamicResource TextBox}" Width="350" HorizontalAlignment="Left" Margin="5 0 0 0" TextChanged="TextBox_TextChanged"/>
             <Label FontSize="13">Receiver Address</Label>
-            <TextBox Style="{DynamicResource TextBox}" Width="350" HorizontalAlignment="Left" Margin="5 0 0 0"/>
+            <TextBox Name ="ReceiverAddressBox" Style="{DynamicResource TextBox}" Width="350" HorizontalAlignment="Left" Margin="5 0 0 0"/>
             <Label FontSize="13">Package Type</Label>
             <Menu Width="83" HorizontalAlignment="Left" Margin="5 0 0 0" Background="White">
                 <MenuItem Name="MainMenu" Header="Not Selected">
-                    <MenuItem Name="ObjectOption" Header="Object" IsCheckable="True" Checked="ObjectOptionCheck" Unchecked="ObjectOptionCheck"/>
+                    <MenuItem Name="Object" Header="Object" IsCheckable="True" Checked="ObjectOptionCheck" Unchecked="ObjectOptionCheck"/>
                     <Separator Margin="5 0"/>
-                    <MenuItem Name="DocumentOption" Header="Document" IsCheckable="True" Checked="DocumentOptiUnCheck" Unchecked="DocumentOptiUnCheck"/>
+                    <MenuItem Name="Document" Header="Document" IsCheckable="True" Checked="DocumentOptiUnCheck" Unchecked="DocumentOptiUnCheck"/>
                     <Separator Margin="5 0"/>
-                    <MenuItem Name="FragileOption" Header="Fragile" IsCheckable="True" Checked="FragileOptionCheck" Unchecked="FragileOptionCheck"/>
+                    <MenuItem Name="Fragile" Header="Fragile" IsCheckable="True" Checked="FragileOptionCheck" Unchecked="FragileOptionCheck"/>
                 </MenuItem>
             </Menu>
             <Grid>
@@ -194,9 +194,9 @@
             <Label FontSize="13">Delivery Type</Label>
             <Menu Margin="5 0 0 0" Width="83" HorizontalAlignment="Left" Background="White">
                 <MenuItem Name="MainMenu2" Header="Not Selected">
-                    <MenuItem Name="OrdinaryOption" Header="Ordinary" IsCheckable="True" Checked="OrdinaryOptionCheck" Unchecked="OrdinaryOptionCheck"/>
+                    <MenuItem Name="Ordinary" Header="Ordinary" IsCheckable="True" Checked="OrdinaryOptionCheck" Unchecked="OrdinaryOptionCheck"/>
                     <Separator Margin="5 0"/>
-                    <MenuItem Name="ExpressOption" Header="Express" IsCheckable="True" Checked="ExpressOptionCheck" Unchecked="ExpressOptionCheck"/>
+                    <MenuItem Name="Express" Header="Express" IsCheckable="True" Checked="ExpressOptionCheck" Unchecked="ExpressOptionCheck"/>
                 </MenuItem>
             </Menu>
             <Label FontSize="12">Phone Number (Optional)</Label>
