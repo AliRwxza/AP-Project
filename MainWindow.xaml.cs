@@ -37,7 +37,6 @@ namespace WpfApp3
         private void LoginButtonClick (object sender, RoutedEventArgs e)
         {
             object user = SQL.FindUSer(LoginPageUsernameBox.Text);
-
             // if the person is a employee:
             if (user is Employee)
             {
@@ -52,6 +51,7 @@ namespace WpfApp3
                 }
             }
 
+            // else if the person is a customer :
             else if (user is Customer)
             {
                 if (((Customer)user).Password == LoginPagePasswordBoxTxt.Text)
