@@ -36,18 +36,23 @@ namespace WpfApp3
 
         private void LoginButtonClick (object sender, RoutedEventArgs e)
         {
+            object user = SQL.FindUSer(LoginPageUsernameBox.Text);
             // if the person is a employee:
-            if (true)
+            if (user is Employee)
             {
                 EmployeePanel employeePanel = new EmployeePanel();
                 employeePanel.Show();
                 
             }
-
             // else if the person is a customer :
-            else
+            else if (user is Customer) 
             {
                 // open customer panel
+            }
+            // username not found
+            else
+            {
+
             }
             Close();
         }
