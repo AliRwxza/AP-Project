@@ -16,22 +16,11 @@ namespace WpfApp3
         public double Weight { get; set; }
         public PostType postType { get; set; }
         public string Phone { get; set; }
-        PackageStatus _status;
-        public PackageStatus Status
-        {
-            get { return _status; }
-            set
-            {
-                if (_status != PackageStatus.Recieved)
-                {
-                    _status = value;
-                }
-            }
-        }
+        public PackageStatus Status { get; set; }
         public string CustomerSSN { get; set; }
         public DateTime Date { get; set; }
         public string Comment { get; set; }
-        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN, DateTime Date)
+        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN)
         {
             this.OrderID = OrderID;
             this.SenderAddress = SenderAddress;
@@ -43,14 +32,10 @@ namespace WpfApp3
             this.Phone = Phone;
             this.Status = PackageStatus.Registered;
             this.CustomerSSN = CustomerSSN;
-            this.Date = Date;
+            Date = DateTime.Now;
             SQL.AddTable<Order>();
-            SQL.InsertIntoTable(this);
+            //SQL.InsertIntoTable(this);
         }
-        /// <summary>
-        /// محاسبه هزینه پست
-        /// </summary>
-        /// <returns></returns>
         public double Calculate()
         {
             double Fee = 10000;
