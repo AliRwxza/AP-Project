@@ -44,7 +44,10 @@ namespace WpfApp3
         {
             if (IdValidation)
             {
-                // if (Id exists) update the window:
+                foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
+                {
+
+                }
                 FirstPage.Visibility = Visibility.Collapsed;
                 SecondPage.Visibility = Visibility.Visible;
                 BackButton.Visibility = Visibility.Visible;

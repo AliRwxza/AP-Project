@@ -22,6 +22,9 @@ namespace WpfApp3
     {
         public MainWindow ()
         {
+            SQL.AddEmployeeTable();
+            SQL.AddCustomerTable();
+            SQL.AddOrderTable();
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
         }
@@ -54,7 +57,7 @@ namespace WpfApp3
             // else if the person is a customer :
             else if (user is Customer)
             {
-                if (((Customer)user).Password == LoginPagePasswordBoxTxt.Text)
+                if (((Customer)user).Password == LoginPagePasswordBox.Password)
                 {
                     CustomerPanel customerPanel = new CustomerPanel();
                     customerPanel.Show();
@@ -66,11 +69,15 @@ namespace WpfApp3
 
             }
             // username not found
-            else if (user == null)
+            else if (user is object)
             {
                 MessageBox.Show("Error: Username not found!");
             }
-            Close();
+            else if (user == null)
+            {
+                MessageBox.Show("Invalid username!");
+            }
+            //Close();
         }
 
         private void SignUpButtonClick (object sender, RoutedEventArgs e)

@@ -55,6 +55,7 @@ namespace WpfApp3
         {
             GetEmailWindow getEmailWindow = new GetEmailWindow ();
             getEmailWindow.Show ();
+
         }
     }
 }

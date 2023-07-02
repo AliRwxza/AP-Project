@@ -137,7 +137,7 @@ namespace WpfApp3
             string Username = RandomUsername();
             string Password = RandomPassword();
 
-            Customer customer = new Customer(SsnField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, PhoneNumberField.Text, 0, Username, Password);
+            Customer customer = new Customer(SsnField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, PhoneNumberField.Text, 1000000, Username, Password);
             
             SQL.InsertIntoTable(customer);
 

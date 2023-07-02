@@ -26,8 +26,6 @@ namespace WpfApp3
             this.Wallet = Wallet;
             this.UserName = UserName;
             this.Password = Password;
-            SQL.AddTable<Customer>();
-            //SQL.InsertIntoTable(this);
         }
     }
 }

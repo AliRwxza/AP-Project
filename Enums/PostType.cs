@@ -11,10 +11,10 @@ namespace WpfApp3
         /// <summary>
         /// معمولی
         /// </summary>
-        Regular,
+        Ordinary,
         /// <summary>
         /// پیشتاز
         /// </summary>
-        Vanguard
+        Express
     }
 }

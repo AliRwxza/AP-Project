@@ -19,6 +19,6 @@ namespace WpfApp3
         /// <summary>
         /// شکستنی
         /// </summary>
-        Breakable
+        Fragile
     }
 }
