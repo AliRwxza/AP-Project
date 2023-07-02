@@ -162,20 +162,20 @@ namespace WpfApp3
 
         private void UsernameField_TextChanged (object sender, TextChangedEventArgs e)
         {
+            UsernameField.Style = Validation.UserName(UsernameField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[3] = Validation.UserName(UsernameField.Text);
 
-
-
-            Regex nameValidationPattern = new Regex(@"^[a-zA-Z0-9]{3,32}$");
-            if (!nameValidationPattern.IsMatch(UsernameField.Text))
-            {
-                UsernameField.Style = (Style)FindResource("TextBoxError");
-                bools[3] = false;
-            }
-            else if (nameValidationPattern.IsMatch(UsernameField.Text))
-            {
-                UsernameField.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[3] = true;
-            }
+            //Regex nameValidationPattern = new Regex(@"^[a-zA-Z0-9]{3,32}$");
+            //if (!nameValidationPattern.IsMatch(UsernameField.Text))
+            //{
+            //    UsernameField.Style = (Style)FindResource("TextBoxError");
+            //    bools[3] = false;
+            //}
+            //else if (nameValidationPattern.IsMatch(UsernameField.Text))
+            //{
+            //    UsernameField.Style = (Style)FindResource("SignUpPageTextBox");
+            //    bools[3] = true;
+            //}
         }
 
         private void PasswordEntry1Txt_TextChanged (object sender, TextChangedEventArgs e) => PasswordEntry1.Password = PasswordEntry1Txt.Text;

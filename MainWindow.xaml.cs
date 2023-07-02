@@ -30,7 +30,7 @@ namespace WpfApp3
         {
             if (LoginPagePasswordBox.Password.ToString() == LoginPageUsernameBox.Text.ToString())
             {
-                MessageBox.Show("Login Successful.");
+                //MessageBox.Show("Login Successful.");
             }
         }
 
@@ -40,7 +40,7 @@ namespace WpfApp3
             // if the person is a employee:
             if (user is Employee)
             {
-                if (((Employee)user).Password == LoginPagePasswordBoxTxt.Text)
+                if (((Employee)user).Password == LoginPagePasswordBox.Password)
                 {
                     EmployeePanel employeePanel = new EmployeePanel();
                     employeePanel.Show();

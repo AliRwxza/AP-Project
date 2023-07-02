@@ -59,9 +59,8 @@ namespace WpfApp3
             try
             {
                 ExecuteQuery(createTableQuery);
-                //MessageBox.Show("Table created successfully!");
             }
-            catch { }//MessageBox.Show("An error occured while creating table!"); }
+            catch { }
         }
         public static string CreateTableQuery<T>()
         {

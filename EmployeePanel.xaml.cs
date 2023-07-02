@@ -53,36 +53,14 @@ namespace WpfApp3
 
         private void ReceiptEmailButtonClick (object sender, RoutedEventArgs e)
         {
-            string fromAddress = "alireza.rahimi1328@gmail.com";
+            string fromAddress = GlobalVariables.SourceEmail;
             string toAddress = "mr.alza43@gmail.com"; // Replace with the recipient's email address
             string subject = "Package Delivery Report";
             string message = "Your Package with the [Id number] was delivered\n" + // replace the Id number
                 "Now you let us know your opinion. ";
 
             // send an email with the message above
-            SendEmail(fromAddress, toAddress, subject, message);
+            Email.SendEmail(fromAddress, toAddress, subject, message);
         }
-
-        static void SendEmail (string fromAddress, string toAddress, string subject, string body)
-        {
-            try
-            {
-                MailMessage mail = new MailMessage(fromAddress, toAddress, subject, body);
-
-                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-
-                smtpClient.Credentials = new NetworkCredential("alireza.rahimi1328@gmail.com", "keesvlwywkydxquz"); // Replace with your email and password
-                smtpClient.EnableSsl = true;
-
-                smtpClient.Send(mail);
-
-                MessageBox.Show("Email sent successfully.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed to send E-mail. Error message: " + ex.Message);
-            }
-        }
-
     }
 }
