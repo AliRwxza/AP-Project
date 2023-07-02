@@ -12,10 +12,10 @@ namespace WpfApp3
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string Phone { get; set; }
-        public double Wallet { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string Phone { get; set; }
+        public double Wallet { get; set; }
         public Customer(string SSN, string FirstName, string LastName, string Email, string Phone, double Wallet, string UserName, string Password)
         {
             this.SSN = SSN;
@@ -27,7 +27,7 @@ namespace WpfApp3
             this.UserName = UserName;
             this.Password = Password;
             SQL.AddTable<Customer>();
-            SQL.InsertIntoTable(this);
+            //SQL.InsertIntoTable(this);
         }
     }
 }
