@@ -473,7 +473,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Style="{DynamicResource CustomerButton3}" Grid.Column="0" Grid.Row="1" Margin="40 0 0 40" FontSize="28" Content="Wallet">
+            <Button Name="WalletButton" Style="{DynamicResource CustomerButton3}" Grid.Column="0" Grid.Row="1" Margin="40 0 0 40" FontSize="28" Content="Wallet" Click="WalletButton_Click">
                 <Button.Background>
                     <LinearGradientBrush StartPoint="0,1" EndPoint="0.8,0">
                         <GradientStop Color="#f88dad" Offset="0"/>
@@ -481,7 +481,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Style="{DynamicResource CustomerButton4}" Grid.Column="1" Grid.Row="1" Margin="0 0 40 40">
+            <Button Name="ChangeUsernamePasswordButton" Style="{DynamicResource CustomerButton4}" Grid.Column="1" Grid.Row="1" Margin="0 0 40 40" Click="ChangeUsernamePasswordButton_Click">
                 <StackPanel>
                     <TextBlock FontSize="24">Set Username</TextBlock>
                     <TextBlock FontSize="24">or Passsword</TextBlock>
@@ -512,7 +512,8 @@
             <Button Name="OrdersReportFirstPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="OrdersReportFirstPageBackButton_Click"/>
             <Label FontSize="25" Margin="60 100 0 10">Order ID</Label>
-            <TextBox Style="{DynamicResource TextBox}" Name="OrderIdField" TextAlignment="Center" Width="230" Height="30" Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
+            <TextBox Style="{DynamicResource TextBox}" FontSize="22" Name="OrderIdField" TextAlignment="Center" Width="230" Height="30" 
+                     Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
             <Button Style="{DynamicResource SearchButton}" Name="SearchButton" Background="#8696FE" Width="120" Height="60" FontSize="23" Click="SearchButton_Click">Search</Button>
         </StackPanel>
         <StackPanel Name="OrdersReportSecondPage" Visibility="Collapsed" Grid.Column="1" Background="#F0F0F0">
@@ -596,7 +597,7 @@
             <Button Style="{DynamicResource SearchButton}" Width="240" Height="60" FontSize="22" HorizontalAlignment="Right"
                     Margin="0 95 50 0" Background="#C5DFF8" Click="IncreaseBalanceButton_Click">Increase Balance</Button>
         </StackPanel>
-        <Grid Name="ThirdFeatureSecondPageLeftColumn" Visibility="Visible" Grid.Column="0">
+        <Grid Name="ThirdFeatureSecondPageLeftColumn" Visibility="Collapsed" Grid.Column="0">
             <StackPanel Grid.Column="0">
                 <StackPanel.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -607,7 +608,7 @@
                 <TextBlock HorizontalAlignment="Center" Margin="0 70 0 0" FontSize="40">Charge</TextBlock>
                 <TextBlock HorizontalAlignment="Center" Margin="0 0 0 0" FontSize="40">Wallet</TextBlock>
                 <Label Content="Charging amount :" FontSize="15" Margin="5 50 0 0"/>
-                <TextBox Name="ChargeAmountField" Style="{DynamicResource TextBox}" Width="200" Height="20" MaxLength="8"
+                <TextBox Name="ChargeAmountField" TextAlignment="Center" Style="{DynamicResource TextBox}" Width="200" Height="20" MaxLength="8"
                          PreviewTextInput="OnlyNumbers_PreviewTextInput" Margin="10 0 0 0" HorizontalAlignment="Left"/>
             </StackPanel>
             
@@ -615,7 +616,7 @@
         <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Visible" Background="White">
             <Grid>
                 <Grid.Background>
-                    <ImageBrush ImageSource="C:\Users\user\Downloads\milad-fakurian-tGTa40GKSRI-unsplash.jpg"/>
+                    <ImageBrush ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
                 </Grid.Background>
                 <Button Name="WalletChargeBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="WalletChargeBackButton_Click"/>
