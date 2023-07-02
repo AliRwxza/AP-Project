@@ -53,14 +53,9 @@ namespace WpfApp3
 
         private void ReceiptEmailButtonClick (object sender, RoutedEventArgs e)
         {
-            string fromAddress = GlobalVariables.SourceEmail;
-            string toAddress = "mr.alza43@gmail.com"; // Replace with the recipient's email address
-            string subject = "Package Delivery Report";
-            string message = "Your Package with the [Id number] was delivered\n" + // replace the Id number
-                "You can tell us your opinion about the delivery in the app.";
+            GetEmailWindow getEmailWindow = new GetEmailWindow ();
+            getEmailWindow.Show ();
 
-            // send an email with the message above
-            Email.SendEmail(fromAddress, toAddress, subject, message);
         }
     }
 }

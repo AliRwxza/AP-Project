@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,7 +55,7 @@ namespace WpfApp3
             }
 
             // else if the person is a customer :
-            else if (user is Customer) 
+            else if (user is Customer)
             {
                 if (((Customer)user).Password == LoginPagePasswordBox.Password)
                 {
@@ -66,7 +66,7 @@ namespace WpfApp3
                 {
                     MessageBox.Show("Error: Wrong password!");
                 }
-                
+
             }
             // username not found
             else if (user is object)

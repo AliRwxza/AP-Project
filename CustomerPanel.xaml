@@ -359,7 +359,51 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border1}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border1}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#DB005B"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <SolidColorBrush x:Key="TextBox.Static.Border2" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border2" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border2" Color="#FF569DE5"/>
+        <Style x:Key="Cvv2TextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border2}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" CornerRadius="6" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border2}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border2}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -429,7 +473,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Style="{DynamicResource CustomerButton3}" Grid.Column="0" Grid.Row="1" Margin="40 0 0 40" FontSize="28" Content="Wallet">
+            <Button Name="WalletButton" Style="{DynamicResource CustomerButton3}" Grid.Column="0" Grid.Row="1" Margin="40 0 0 40" FontSize="28" Content="Wallet" Click="WalletButton_Click">
                 <Button.Background>
                     <LinearGradientBrush StartPoint="0,1" EndPoint="0.8,0">
                         <GradientStop Color="#f88dad" Offset="0"/>
@@ -437,7 +481,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Style="{DynamicResource CustomerButton4}" Grid.Column="1" Grid.Row="1" Margin="0 0 40 40">
+            <Button Name="ChangeUsernamePasswordButton" Style="{DynamicResource CustomerButton4}" Grid.Column="1" Grid.Row="1" Margin="0 0 40 40" Click="ChangeUsernamePasswordButton_Click">
                 <StackPanel>
                     <TextBlock FontSize="24">Set Username</TextBlock>
                     <TextBlock FontSize="24">or Passsword</TextBlock>
@@ -468,7 +512,8 @@
             <Button Name="OrdersReportFirstPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="OrdersReportFirstPageBackButton_Click"/>
             <Label FontSize="25" Margin="60 100 0 10">Order ID</Label>
-            <TextBox Style="{DynamicResource TextBox}" Name="OrderIdField" Width="230" Height="30" Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
+            <TextBox Style="{DynamicResource TextBox}" FontSize="22" Name="OrderIdField" TextAlignment="Center" Width="230" Height="30" 
+                     Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
             <Button Style="{DynamicResource SearchButton}" Name="SearchButton" Background="#8696FE" Width="120" Height="60" FontSize="23" Click="SearchButton_Click">Search</Button>
         </StackPanel>
         <StackPanel Name="OrdersReportSecondPage" Visibility="Collapsed" Grid.Column="1" Background="#F0F0F0">
@@ -497,18 +542,118 @@
                 </Rectangle.Fill>
             </Rectangle>
             <Grid>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="0 0 0 50">Order</TextBlock>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="0 30 0 0">Details</TextBlock>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="0 0 0 50">Orders</TextBlock>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Margin="0 30 0 0">Report</TextBlock>
             </Grid>
         </Grid>
-        <StackPanel Grid.Column="1" Visibility="Collapsed" Background="#DAF5FF" Grid.ColumnSpan="2">
-            <Label Margin="0 40 0 0" FontSize="13" Content="Customer SSN : value from DB"/>
+        <StackPanel Name="SecondFeatureWindow" Grid.Column="1" Visibility="Collapsed" Background="#DAF5FF" Grid.ColumnSpan="2">
+            <Button Name="SecondFeatureBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
+                    Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="SecondFeatureBackButton_Click"/>
+            <Label Margin="0 0 0 0" FontSize="13" Content="Customer SSN : value from DB"/>
             <Separator Margin="10 5 10 0"/>
+            <Menu Width="92" Height="22" HorizontalAlignment="Left" Margin="5 20 0 5" Background="White">
+                <MenuItem Name="MainMenu" Header="Package Type" FontSize="13">
+                    <MenuItem Name="ObjectOption" Header="Object" IsCheckable="True" Checked="ObjectOptionCheck" Unchecked="ObjectOptionCheck"/>
+                    <Separator Margin="5 0"/>
+                    <MenuItem Name="DocumentOption" Header="Document" IsCheckable="True" Checked="DocumentOptionUnCheck" Unchecked="DocumentOptionUnCheck"/>
+                    <Separator Margin="5 0"/>
+                    <MenuItem Name="FragileOption" Header="Fragile" IsCheckable="True" Checked="FragileOptionCheck" Unchecked="FragileOptionCheck"/>
+                </MenuItem>
+            </Menu>
             <Label FontSize="13" Margin="0 8 0 0">Paid Price</Label>
-            <TextBox Name="PaidPriceField" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0 20 0" TextChanged="PaidPriceField_TextChanged"/>
+            <TextBox Name="PaidPriceField" Style="{DynamicResource TextBox}" Width="60" TextAlignment="Center" HorizontalAlignment="Left" Margin="5 0 20 0" TextChanged="PaidPriceField_TextChanged"/>
             <Label Margin="0 8 0 0" FontSize="13">Weight in Kg</Label>
-            <TextBox Name="WeightBox" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0" TextChanged="WeightBox_TextChanged"/>
+            <TextBox Name="WeightBox" Style="{DynamicResource TextBox}" Width="60" TextAlignment="Center" HorizontalAlignment="Left" Margin="5 0" TextChanged="WeightBox_TextChanged"/>
+            <Menu Margin="5 20 0 0" Width="89" Height="22" HorizontalAlignment="Left" Background="White">
+                <MenuItem Name="MainMenu2" Header="Delivery Type" FontSize="13">
+                    <MenuItem Name="OrdinaryOption" Header="Ordinary" IsCheckable="True" Checked="OrdinaryOptionCheck" Unchecked="OrdinaryOptionCheck"/>
+                    <Separator Margin="5 0"/>
+                    <MenuItem Name="ExpressOption" Header="Express" IsCheckable="True" Checked="ExpressOptionCheck" Unchecked="ExpressOptionCheck"/>
+                </MenuItem>
+            </Menu>
             <Button Name="SecondFeatureSearchButton" Background="#E3DFFD" Width="175" Height="50" Margin="30" FontSize="30" Click="SearchOrdersButton_Click" Style="{DynamicResource SearchButton}">Search</Button>
         </StackPanel>
+        <Grid Name="ThirdFeatureFirstPageLeftColumn" Visibility="Collapsed" Grid.Column="0">
+            <Grid Grid.Column="0">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#8EC3B0" Offset="0"/>
+                        <GradientStop Color="#B9BBDF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 0" FontSize="40">Wallet</TextBlock>
+            </Grid>
+        </Grid>
+        <StackPanel Name="ThirdFeatureFirstPage" Grid.Column="1" Visibility="Collapsed">
+            <StackPanel.Background>
+                <ImageBrush  ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
+            </StackPanel.Background>
+            <Button Name="ThirdFeatureFirstPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
+                    Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="ThirdFeatureFirstPageBackButton_Click"/>
+            
+            <Label Margin="10 20 0 0" FontSize="20">Your current balance is :</Label>
+            <TextBlock Margin="15 0" FontSize="25" Text="5500000 (Change it)"/>
+
+            <Button Style="{DynamicResource SearchButton}" Width="240" Height="60" FontSize="22" HorizontalAlignment="Right"
+                    Margin="0 95 50 0" Background="#C5DFF8" Click="IncreaseBalanceButton_Click">Increase Balance</Button>
+        </StackPanel>
+        <Grid Name="ThirdFeatureSecondPageLeftColumn" Visibility="Collapsed" Grid.Column="0">
+            <StackPanel Grid.Column="0">
+                <StackPanel.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#8EC3B0" Offset="0"/>
+                        <GradientStop Color="#B9BBDF" Offset="1"/>
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <TextBlock HorizontalAlignment="Center" Margin="0 70 0 0" FontSize="40">Charge</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Margin="0 0 0 0" FontSize="40">Wallet</TextBlock>
+                <Label Content="Charging amount :" FontSize="15" Margin="5 50 0 0"/>
+                <TextBox Name="ChargeAmountField" TextAlignment="Center" Style="{DynamicResource TextBox}" Width="200" Height="20" MaxLength="8"
+                         PreviewTextInput="OnlyNumbers_PreviewTextInput" Margin="10 0 0 0" HorizontalAlignment="Left"/>
+            </StackPanel>
+            
+        </Grid>
+        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Visible" Background="White">
+            <Grid>
+                <Grid.Background>
+                    <ImageBrush ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
+                </Grid.Background>
+                <Button Name="WalletChargeBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
+                    Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="WalletChargeBackButton_Click"/>
+                <Rectangle Margin="50 100" RadiusX="20" RadiusY="20">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="#0A0A0A"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <StackPanel Margin="50 100">
+                    <Grid Height="50" Width="385" Margin="20 80 20 0">
+                        <Rectangle Height="50" RadiusX="10" RadiusY="10">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#FFFFFF"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBox PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="15 0 0 0" TextAlignment="Center" BorderThickness="0"/>
+                        <TextBlock FontSize="33" Text="-" Margin="85 0 0 0" Foreground="LightGray"/>
+                        <TextBox PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="105 0 0 0" TextAlignment="Center" BorderThickness="0"/>
+                        <TextBlock FontSize="33" Text="-" Margin="180 0 0 0" Foreground="LightGray"/>
+                        <TextBox PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="205 0 0 0" TextAlignment="Center" BorderThickness="0"/>
+                        <TextBlock FontSize="33" Text="-" Margin="280 0 0 0" Foreground="LightGray"/>
+                        <TextBox PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="305 0 0 0" TextAlignment="Center" BorderThickness="0"/>
+                    </Grid>
+                    <Grid Margin="4 0 0 0">
+                        <TextBox PreviewTextInput="OnlyNumbers_PreviewTextInput" MaxLength="4" Name="Cvv2Field" Style="{DynamicResource Cvv2TextBox}" TextAlignment="Center" Margin="20 20 0 0" Height="20" Width="50" HorizontalAlignment="Left" TextChanged="Changed_CVV2"/>
+                        <TextBlock Name="PlaceHolderCVV2" Margin="20 34 0 0" Width="50" Height="30" HorizontalAlignment="Left" 
+                                   TextAlignment="Center" Foreground="LightGray" FontSize="12">CVV2</TextBlock>
+                        <TextBox MaxLength="2" PreviewTextInput="OnlyNumbers_PreviewTextInput" Name="MmField" Style="{DynamicResource Cvv2TextBox}" Margin="0 20 26 0" TextAlignment="Center" Width="25" Height="20" HorizontalAlignment="Right" TextChanged="Changed_MM"/>
+                        <TextBlock Name="PlaceHolderMM" Margin="0 25 26 0" Width="25" Height="20" TextAlignment="Center" HorizontalAlignment="Right" Text="MM" Foreground="LightGray" FontSize="10"/>
+                        <TextBlock Margin="0 18 51 0" Width="15" Height="20" TextAlignment="Center" HorizontalAlignment="Right" Text="/" FontSize="15" Foreground="LightGray"/>
+                        <TextBox MaxLength="2" PreviewTextInput="OnlyNumbers_PreviewTextInput" Name="YyField" Style="{DynamicResource Cvv2TextBox}" Margin="0 20 65 0" TextAlignment="Center" Width="25" Height="20" HorizontalAlignment="Right" TextChanged="Changed_YY"/>
+                        <TextBlock Name="PlaceHolderYY" Margin="0 23 65 0" Width="25" Height="20" TextAlignment="Center" HorizontalAlignment="Right" Text="YY" Foreground="LightGray" FontSize="12"/>
+                    </Grid>
+                </StackPanel>
+                <Button Height="55" Width="120" Background="Yellow" Style="{DynamicResource SearchButton}"
+                        FontSize="28" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 50 23" Click="PayButton_Click">Pay</Button>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

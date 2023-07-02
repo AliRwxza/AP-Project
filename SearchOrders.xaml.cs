@@ -87,13 +87,6 @@ namespace WpfApp3
 
         /////////////////////////////////////////////////////////
 
-        private void ValuableCheckBoxCheck (object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        /////////////////////////////////////////////////////////
-
         private void OrdinaryOptionCheck (object sender, RoutedEventArgs e)
         {
             
