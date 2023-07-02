@@ -36,27 +36,25 @@ namespace WpfApp3
 
         private void LoginButtonClick (object sender, RoutedEventArgs e)
         {
-            // object user = SQL.FindUSer(LoginPageUsernameBox.Text);
+            object user = SQL.FindUSer(LoginPageUsernameBox.Text);
             // if the person is a employee:
-            if (true) // user is Employee
+            if (user is Employee) // user is Employee
             {
-                //if (((Employee)user).Password == LoginPagePasswordBox.Password)
-                //{
-                //    EmployeePanel employeePanel = new EmployeePanel();
-                //    employeePanel.Show();
-                //}
-                //else
-                //{
-                //    MessageBox.Show("Error: Wrong password!");
-                //}
-                EmployeePanel employeePanel = new EmployeePanel();
-                employeePanel.Show();
+                if (((Employee)user).Password == LoginPagePasswordBox.Password)
+                {
+                    EmployeePanel employeePanel = new EmployeePanel();
+                    employeePanel.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Error: Wrong password!");
+                }
             }
 
             // else if the person is a customer :
-            else if (true) //user is Customer
+            else if (user is Customer) 
             {
-                if (true) // ((Customer)user).Password == LoginPagePasswordBoxTxt.Text
+                if (((Customer)user).Password == LoginPagePasswordBoxTxt.Text)
                 {
                     CustomerPanel customerPanel = new CustomerPanel();
                     customerPanel.Show();
