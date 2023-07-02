@@ -512,7 +512,7 @@
             <Button Name="OrdersReportFirstPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="OrdersReportFirstPageBackButton_Click"/>
             <Label FontSize="25" Margin="60 100 0 10">Order ID</Label>
-            <TextBox Style="{DynamicResource TextBox}" Name="OrderIdField" Width="230" Height="30" Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
+            <TextBox Style="{DynamicResource TextBox}" Name="OrderIdField" TextAlignment="Center" Width="230" Height="30" Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
             <Button Style="{DynamicResource SearchButton}" Name="SearchButton" Background="#8696FE" Width="120" Height="60" FontSize="23" Click="SearchButton_Click">Search</Button>
         </StackPanel>
         <StackPanel Name="OrdersReportSecondPage" Visibility="Collapsed" Grid.Column="1" Background="#F0F0F0">
@@ -560,9 +560,9 @@
                 </MenuItem>
             </Menu>
             <Label FontSize="13" Margin="0 8 0 0">Paid Price</Label>
-            <TextBox Name="PaidPriceField" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0 20 0" TextChanged="PaidPriceField_TextChanged"/>
+            <TextBox Name="PaidPriceField" Style="{DynamicResource TextBox}" Width="60" TextAlignment="Center" HorizontalAlignment="Left" Margin="5 0 20 0" TextChanged="PaidPriceField_TextChanged"/>
             <Label Margin="0 8 0 0" FontSize="13">Weight in Kg</Label>
-            <TextBox Name="WeightBox" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0" TextChanged="WeightBox_TextChanged"/>
+            <TextBox Name="WeightBox" Style="{DynamicResource TextBox}" Width="60" TextAlignment="Center" HorizontalAlignment="Left" Margin="5 0" TextChanged="WeightBox_TextChanged"/>
             <Menu Margin="5 20 0 0" Width="89" Height="22" HorizontalAlignment="Left" Background="White">
                 <MenuItem Name="MainMenu2" Header="Delivery Type" FontSize="13">
                     <MenuItem Name="OrdinaryOption" Header="Ordinary" IsCheckable="True" Checked="OrdinaryOptionCheck" Unchecked="OrdinaryOptionCheck"/>
@@ -572,7 +572,7 @@
             </Menu>
             <Button Name="SecondFeatureSearchButton" Background="#E3DFFD" Width="175" Height="50" Margin="30" FontSize="30" Click="SearchOrdersButton_Click" Style="{DynamicResource SearchButton}">Search</Button>
         </StackPanel>
-        <Grid Name="ThirdFeatureLeftColumn" Visibility="Visible" Grid.Column="0">
+        <Grid Name="ThirdFeatureLeftColumn" Visibility="Collapsed" Grid.Column="0">
             <StackPanel Grid.Column="0">
                 <StackPanel.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -588,7 +588,7 @@
             </StackPanel>
             
         </Grid>
-        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Visible" Background="White">
+        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Collapsed" Background="White">
             <Grid>
                 <Grid.Background>
                     <ImageBrush ImageSource="C:\Users\user\Downloads\milad-fakurian-tGTa40GKSRI-unsplash.jpg"/>
