@@ -47,11 +47,11 @@ namespace WpfApp3
             }
             if (MainMenu.Header.ToString() != "Package Type")
             {
-                orders = orders.Where(x => x.Content == Enum.Parse<PackageContent>(MainMenu.Header.ToString())).ToList();
+                orders = orders.Where(x => x.Content == Enum.Parse<PackageContent>(MainMenu.Name)).ToList();
             }
             if (MainMenu2.Header.ToString() != "Delivery Type")
             {
-                orders = orders.Where(x => x.postType == Enum.Parse<PostType>(MainMenu2.Header.ToString())).ToList();
+                orders = orders.Where(x => x.postType == Enum.Parse<PostType>(MainMenu2.Name)).ToList();
             }
             try
             {
@@ -68,7 +68,7 @@ namespace WpfApp3
 
                 MessageBox.Show("Search completed! Now you can see the search result in the .csv file in the app directory.");
             }
-            catch (Exception ex) 
+            catch
             {
                 //MessageBox.Show(ex.Message);
                 MessageBox.Show("Please close the file and search again!");

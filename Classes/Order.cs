@@ -31,7 +31,7 @@ namespace WpfApp3
             this.Weight = Weight;
             this.postType = postType;
             this.Phone = Phone;
-            this.Status = PackageStatus.Registered;
+            this.Status = Status;
             this.CustomerSSN = CustomerSSN;
             this.Date = Date;
             Comment = "";

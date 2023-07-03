@@ -19,11 +19,17 @@ namespace WpfApp3
     /// </summary>
     public partial class OrderDetails : Window
     {
+        //Order order;
         static bool IdValidation = false;
         public OrderDetails ()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            //order = SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)).ToList()[0];
+            //foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
+            //{
+            //    MainMenu.Header = order.Status.ToString();
+            //}
         }
 
         private void OrderIdField_TextChanged (object sender, TextChangedEventArgs e)
@@ -39,74 +45,132 @@ namespace WpfApp3
                 IdValidation = false;
             }
         }
-
         private void SearchButton_Click (object sender, RoutedEventArgs e)
         {
             if (IdValidation)
             {
                 foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
                 {
+                    switch (order.Status.ToString())
+                    {
+                        case "Submitted":
+                            MainMenu.Header = "Submitted";
+                            Submitted.IsChecked = true;
+                            break;
+                        case "ReadyToSend":
+                            MainMenu.Header = "Ready to Send";
+                            ReadyToSend.IsChecked = true;
+                            break;
+                        case "OnTheWay":
+                            MainMenu.Header = "On the Way";
+                            OnTheWay.IsChecked = true;
+                            break;
+                        case "Delivered":
+                            MainMenu.Header = "Delivered";
+                            Delivered.IsChecked = true;
+                            break;
+                    }
+                    
+                    MainMenu.Name = order.Status.ToString();
 
                 }
-                FirstPage.Visibility = Visibility.Collapsed;
-                SecondPage.Visibility = Visibility.Visible;
-                BackButton.Visibility = Visibility.Visible;
-
-                //else :
-                // MessageBox.Show("This Order ID does not exist.");
+                foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
+                {
+                    FirstPage.Visibility = Visibility.Collapsed;
+                    SecondPage.Visibility = Visibility.Visible;
+                    BackButton.Visibility = Visibility.Visible;
+                    SenderAddressField.Text = order.SenderAddress;
+                    ReceiverAddressField.Text = order.RecieverAddress;
+                    PackageTypeField.Text = order.Content.ToString();
+                    ContainsValuableField.Text = (bool)order.HasExpensiveContent ? "Contains valueable content" : "Doesn't contain valueable content";
+                    WeightField.Text = $"Weight: {order.Weight}";
+                    PostTypeField.Text = $"Post Type: {order.postType}";
+                    PhoneNumberField.Text = order.Phone != "" ? $"Phone: {order.Phone}" : "No phone number has been set";
+                    return;
+                }   
+                MessageBox.Show("This Order ID does not exist.");
+            }
+            else
+            {
+                MessageBox.Show("Invalid Order ID!");
             }
         }
 
         private void SubmittedOption_Checked (object sender, RoutedEventArgs e)
         {
-            if (SubmittedOption.IsChecked == true)
+            if (Submitted.IsChecked == true)
             {
                 MainMenu.Header = "Submitted";
-                ReadyToSendOption.IsChecked = false;
-                OnTheWayOption.IsChecked = false;
+                MainMenu.Name = "Submitted";
+                ReadyToSend.IsChecked = false;
+                OnTheWay.IsChecked = false;
+                foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
+                {
+                    order.Status = PackageStatus.Submitted;
+                    SQL.UpdateTable(order);
+                }
             }
         }
 
         private void ReadyToSendOption_Checked (object sender, RoutedEventArgs e)
         {
-            if (ReadyToSendOption.IsChecked == true)
+            if (ReadyToSend.IsChecked == true)
             {
                 MainMenu.Header = "Ready to Send";
-                SubmittedOption.IsChecked = false;
-                OnTheWayOption.IsChecked = false;
+                MainMenu.Name = "ReadyToSend";
+                Submitted.IsChecked = false;
+                OnTheWay.IsChecked = false;
+                foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
+                {
+                    order.Status = PackageStatus.ReadyToSend;
+                    SQL.UpdateTable(order);
+                }
             }
         }
 
         private void OnTheWayOption_Checked (object sender, RoutedEventArgs e)
         {
-            if (OnTheWayOption.IsChecked == true)
+            if (OnTheWay.IsChecked == true)
             {
                 MainMenu.Header = "On the Way";
-                SubmittedOption.IsChecked = false;
-                ReadyToSendOption.IsChecked = false;
+                MainMenu.Name = "OnTheWay";
+                Submitted.IsChecked = false;
+                ReadyToSend.IsChecked = false;
+                foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
+                {
+                    order.Status = PackageStatus.OnTheWay;
+                    SQL.UpdateTable(order);
+                }
             }
         }
 
         private void DeliveredOption_Checked (object sender, RoutedEventArgs e)
         {
-            if (DeliveredOption.IsChecked == true)
+            if (Delivered.IsChecked == true)
             {
                 MainMenu.Header = "Delivered";
+                MainMenu.Name = "Delivered";
 
-                SubmittedOption.IsChecked = false;
-                ReadyToSendOption.IsChecked = false;
-                OnTheWayOption.IsChecked = false;
+                Submitted.IsChecked = false;
+                ReadyToSend.IsChecked = false;
+                OnTheWay.IsChecked = false;
 
                 MainMenu.IsCheckable = false;
-                SubmittedOption.IsCheckable = false;
-                ReadyToSendOption.IsCheckable = false;
-                OnTheWayOption.IsCheckable = false;
-                DeliveredOption.IsCheckable = false;
+                Submitted.IsCheckable = false;
+                ReadyToSend.IsCheckable = false;
+                OnTheWay.IsCheckable = false;
+                Delivered.IsCheckable = false;
 
-                SubmittedOption.IsEnabled = false;
-                ReadyToSendOption.IsEnabled = false;
-                OnTheWayOption.IsEnabled = false;
-                DeliveredOption.IsEnabled = false;
+                Submitted.IsEnabled = false;
+                ReadyToSend.IsEnabled = false;
+                OnTheWay.IsEnabled = false;
+                Delivered.IsEnabled = false;
+
+                foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
+                {
+                    order.Status = PackageStatus.Delivered;
+                    SQL.UpdateTable(order);
+                }
             }
         }
 
@@ -115,6 +179,12 @@ namespace WpfApp3
             FirstPage.Visibility = Visibility.Visible;
             SecondPage.Visibility = Visibility.Collapsed;
             BackButton.Visibility = Visibility.Collapsed;
+            //foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
+            //{
+            //    order.Status = Enum.Parse<PackageStatus>(MainMenu.Name);
+            //    SQL.UpdateTable(order);
+            //}
+                
         }
     }
 }

@@ -140,7 +140,7 @@ namespace WpfApp3
             string tableName = type.Name;
             PropertyInfo[] properties = type.GetProperties();
             string columns = string.Join(", ", properties.Select(p => $"{p.Name} = @{p.Name}"));
-            string UpdateQuery = $"UPDATE {tableName} SET {columns}";
+            string UpdateQuery = $"UPDATE [{tableName}] SET {columns}";
             string connectionString = GlobalVariables.ConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -151,15 +151,7 @@ namespace WpfApp3
                     //command.Parameters.AddWithValue($"@LastOrderID", Order.LastOrderID);
                     for (int i = 0; i < properties.Count(); i++)
                     {
-                        command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance).ToString());
-                        //if (properties[i].PropertyType == typeof(Enum))
-                        //{
-                        //    command.Parameters.AddWithValue($"@{properties[i].Name}", (Enum.Parse(typeof(properties[i].PropertyType), properties[i].GetValue(instance)))));
-                        //}
-                        //else
-                        //{
-                        //    command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance).ToString());
-                        //}
+                        command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance));
                     }
                 }
                 connection.Close();
@@ -338,9 +330,7 @@ namespace WpfApp3
 
                     
                 }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show("Error reading data: " + ex.Message);
+                catch {
                     return true;
                 }
             }
@@ -376,14 +366,13 @@ namespace WpfApp3
 
 
                 }
-                catch (Exception ex)
+                catch
                 {
-                    //MessageBox.Show("Error reading data: " + ex.Message);
                     return true;
                 }
             }
         }
-        public static object FindUSer(string username)
+        public static object? FindUSer(string username)
         {
             if (!Validation.UserName(username))
             {
