@@ -12,7 +12,7 @@ namespace WpfApp3
         public string SenderAddress { get; set; }
         public string RecieverAddress { get; set; }
         public PackageContent Content { get; set; }
-        public bool? HasExpensiveContent { get; set; }
+        public bool HasExpensiveContent { get; set; }
         public double Weight { get; set; }
         public PostType postType { get; set; }
         public string Phone { get; set; }
@@ -20,7 +20,7 @@ namespace WpfApp3
         public string CustomerSSN { get; set; }
         public DateTime Date { get; set; }
         public string Comment { get; set; }
-        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool? HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN, DateTime Date)
+        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN, DateTime Date)
         {
             this.OrderID = OrderID;
             this.SenderAddress = SenderAddress;

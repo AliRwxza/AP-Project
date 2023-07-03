@@ -585,9 +585,6 @@
             </Grid>
         </Grid>
         <StackPanel Name="ThirdFeatureFirstPage" Grid.Column="1" Visibility="Collapsed">
-            <StackPanel.Background>
-                <ImageBrush  ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
-            </StackPanel.Background>
             <Button Name="ThirdFeatureFirstPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="ThirdFeatureFirstPageBackButton_Click"/>
             
@@ -615,9 +612,6 @@
         </Grid>
         <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Visible" Background="White">
             <Grid>
-                <Grid.Background>
-                    <ImageBrush ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
-                </Grid.Background>
                 <Button Name="WalletChargeBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="WalletChargeBackButton_Click"/>
                 <Rectangle Margin="50 100" RadiusX="20" RadiusY="20">

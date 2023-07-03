@@ -35,11 +35,7 @@ namespace WpfApp3
 
         private void Button_Click (object sender, RoutedEventArgs e)
         {
-            string fromAddress = GlobalVariables.SourceEmail;
-            string toAddress = EmailField.Text; // Replace with the recipient's email address
-            string subject = "Package Delivery Report";
-            string message = "Your Package with the [Id number] was delivered\n" + // replace the Id number
-                "Now you can let us know your opinion. ";
+
         }
     }
 }
