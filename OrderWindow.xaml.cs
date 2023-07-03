@@ -139,7 +139,7 @@ namespace WpfApp3
             if (ValuableCheckBox.IsChecked == true)
                 ratio += 1;
 
-            if (double.TryParse(WeightBox.Text, out double weight) && weight > 0.5)
+            if (double.TryParse(WeightBox.Text, out double weight))
             {
                 ratio += Math.Floor(weight/0.5) * 0.2;
             }
@@ -183,9 +183,10 @@ namespace WpfApp3
             if (customer.Wallet >= Price)
             {
                 customer.Wallet -= Price;
+                SQL.UpdateTable<Customer>(customer);
                 PostType postType = Enum.Parse<PostType>(MainMenu2.Header.ToString());
                 PackageContent Content = Enum.Parse<PackageContent>(MainMenu.Header.ToString());
-                Order order = new Order(SenderAddressBox.Text, ReceiverAddressBox.Text, Content, ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Registered, customer.SSN);
+                Order order = new Order(SQL.ReadOrdersData().Count() + 1, SenderAddressBox.Text, ReceiverAddressBox.Text, Content, ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Submitted, customer.SSN, DateTime.Now);
                 SQL.InsertIntoTable(order);
                 //MessageBox.Show("Order registered!");
             }
@@ -228,6 +229,11 @@ namespace WpfApp3
         }
 
         private void MainMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MainMenu2_Click(object sender, RoutedEventArgs e)
         {
 
         }

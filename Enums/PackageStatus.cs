@@ -11,7 +11,7 @@ namespace WpfApp3
         /// <summary>
         /// ثبت شده
         /// </summary>
-        Registered,
+        Submitted,
         /// <summary>
         /// آماده ارسال
         /// </summary>
@@ -19,10 +19,10 @@ namespace WpfApp3
         /// <summary>
         /// در حال ارسال
         /// </summary>
-        Sending,
+        OnTheWay,
         /// <summary>
         /// تحویل داده شده
         /// </summary>
-        Recieved
+        Delivered
     }
 }

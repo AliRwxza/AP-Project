@@ -40,9 +40,6 @@ namespace WpfApp3
             string subject = "Package Delivery Report";
             string message = "Your Package with the [Id number] was delivered\n" + // replace the Id number
                 "Now you can let us know your opinion. ";
-
-            // send an email with the message above
-            Email.SendEmail(fromAddress, toAddress, subject, message);
         }
     }
 }

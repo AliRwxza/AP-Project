@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -140,8 +141,7 @@ namespace WpfApp3
             Customer customer = new Customer(SsnField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, PhoneNumberField.Text, 1000000, Username, Password);
             
             SQL.InsertIntoTable(customer);
-
-            Email.SendEmail(GlobalVariables.SourceEmail, customer.Email, "Your username and password", $"Welcome to Post Company!\nUsername is: {Username}\nPassword is: {Password}");
+            new Thread(() => Email.SendEmail(GlobalVariables.SourceEmail, customer.Email, "Your username and password", $"Welcome to Post Company!\nUsername is: {Username}\nPassword is: {Password}")).Start(); 
             // generate a random and unique username and password(both must be unique)
             // E-mail the username and password to the customer
             // add the customer information

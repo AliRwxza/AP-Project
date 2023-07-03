@@ -182,11 +182,11 @@
         <StackPanel Name="SecondPage" Grid.Column="1" Visibility="Collapsed" Background="#ECF8F9">
             <TextBlock Name="DeliveryStatus" FontSize="20" Margin="5 15 0 0" Text="Delivery Status"/>
             <Menu Width="125" Margin="5 0" HorizontalAlignment="Left">
-                <MenuItem Name="MainMenu" Header="Submitted" FontSize="15" Background="White" Width="125" >
-                    <MenuItem Name="SubmittedOption" Header="Submitted" IsCheckable="True" IsChecked="False" Checked="SubmittedOption_Checked" Unchecked="SubmittedOption_Checked"/>
-                    <MenuItem Name="ReadyToSendOption" Header="Ready to Send" IsCheckable="True" IsChecked="False" Checked="ReadyToSendOption_Checked" Unchecked="ReadyToSendOption_Checked"/>
-                    <MenuItem Name="OnTheWayOption" Header="On the Way" IsCheckable="True" IsChecked="False" Checked="OnTheWayOption_Checked" Unchecked="OnTheWayOption_Checked"/>
-                    <MenuItem Name="DeliveredOption" Header="Delivered" IsCheckable="True" IsChecked="False" Checked="DeliveredOption_Checked" Unchecked="DeliveredOption_Checked"/>
+                <MenuItem Name="MainMenu" FontSize="15" Background="White" Width="125" >
+                    <MenuItem Name="Submitted" Header="Submitted" IsCheckable="True" IsChecked="False" Checked="SubmittedOption_Checked" Unchecked="SubmittedOption_Checked"/>
+                    <MenuItem Name="ReadyToSend" Header="Ready to Send" IsCheckable="True" IsChecked="False" Checked="ReadyToSendOption_Checked" Unchecked="ReadyToSendOption_Checked"/>
+                    <MenuItem Name="OnTheWay" Header="On the Way" IsCheckable="True" IsChecked="False" Checked="OnTheWayOption_Checked" Unchecked="OnTheWayOption_Checked"/>
+                    <MenuItem Name="Delivered" Header="Delivered" IsCheckable="True" IsChecked="False" Checked="DeliveredOption_Checked" Unchecked="DeliveredOption_Checked"/>
                 </MenuItem>
             </Menu>
             <Separator Width="300" HorizontalAlignment="Left" Margin="10 10 0 0"/>
