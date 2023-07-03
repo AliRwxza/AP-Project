@@ -193,7 +193,7 @@
             <TextBox Name="WeightBox" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0" TextChanged="WeightBox_TextChanged"></TextBox>
             <Label FontSize="13">Delivery Type</Label>
             <Menu Margin="5 0 0 0" Width="83" HorizontalAlignment="Left" Background="White">
-                <MenuItem Name="MainMenu2" Header="Not Selected">
+                <MenuItem Name="MainMenu2" Header="Not Selected" Click="MainMenu2_Click">
                     <MenuItem Name="Ordinary" Header="Ordinary" IsCheckable="True" Checked="OrdinaryOptionCheck" Unchecked="OrdinaryOptionCheck"/>
                     <Separator Margin="5 0"/>
                     <MenuItem Name="Express" Header="Express" IsCheckable="True" Checked="ExpressOptionCheck" Unchecked="ExpressOptionCheck"/>

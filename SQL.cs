@@ -46,7 +46,7 @@ namespace WpfApp3
         }
         public static void AddOrderTable()
         {
-            string createTableQuery = "CREATE TABLE [Order] (LastOrderID INT, OrderID INT PRIMARY KEY, SenderAddress VARCHAR(100), RecieverAddress VARCHAR(100), Content VARCHAR(100), HasExpensiveContent BIT, Weight FLOAT, postType VARCHAR(100), Phone VARCHAR(100), Status VARCHAR(100), CustomerSSN VARCHAR(100), Date DATE, Comment VARCHAR(100))";
+            string createTableQuery = "CREATE TABLE [Order] (OrderID INT, SenderAddress VARCHAR(100), RecieverAddress VARCHAR(100), Content VARCHAR(100), HasExpensiveContent BIT, Weight FLOAT, postType VARCHAR(100), Phone VARCHAR(100), Status VARCHAR(100), CustomerSSN VARCHAR(100), Date DATE, Comment VARCHAR(100))";
             try
             {
                 ExecuteQuery(createTableQuery);
@@ -104,15 +104,15 @@ namespace WpfApp3
 
             string columns = string.Join(", ", properties.Select(p => p.Name));
             string values = string.Join(", ", properties.Select(p => $"@{p.Name}"));
-            string insertQuery;
-            if (instance is Order)
-            {
-                insertQuery = $"INSERT INTO [{tableName}] (LastOrderID, {columns}) VALUES (@LastOrderID, {values})";
-            }
-            else
-            {
-                insertQuery = $"INSERT INTO {tableName} ({columns}) VALUES ({values})";
-            }
+            string insertQuery = $"INSERT INTO [{tableName}] ({columns}) VALUES ({values})";
+            //if (instance is Order)
+            //{
+            //    insertQuery = $"INSERT INTO [{tableName}] ({columns}) VALUES ({values})";
+            //}
+            //else
+            //{
+            //    insertQuery = $"INSERT INTO {tableName} ({columns}) VALUES ({values})";
+            //}
             
             string connectionString = GlobalVariables.ConnectionString;
 
@@ -121,10 +121,10 @@ namespace WpfApp3
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(insertQuery, connection))
                 {
-                    command.Parameters.AddWithValue($"@LastOrderID", Order.LastOrderID);
+                    //command.Parameters.AddWithValue($"@LastOrderID", Order.LastOrderID);
                     for (int i = 0; i < properties.Count(); i++)
                     {
-                        command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance).ToString());
+                        command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance));
                     }
                     command.ExecuteNonQuery();
                 }
@@ -134,32 +134,38 @@ namespace WpfApp3
             //}
             //catch { MessageBox.Show($"An error while adding {type.Name}!"); }
         }
-        public static void UpdateEmployeeTable(Employee employee) //----------------------------------------------------------------------------------
+        public static void UpdateTable<T>(T instance)
         {
-            string updateQuery = $"UPDATE Employee SET EmployeeID = @{employee.EmployeeID}, FirstName = @{employee.FirstName}, LastName = @{employee.LastName}, Email = @{employee.Email}, UserName = @{employee.UserName}, Password = @{employee.Password}";
-            try
+            Type type = typeof(T);
+            string tableName = type.Name;
+            PropertyInfo[] properties = type.GetProperties();
+            string columns = string.Join(", ", properties.Select(p => $"{p.Name} = @{p.Name}"));
+            string UpdateQuery = $"UPDATE {tableName} SET {columns}";
+            string connectionString = GlobalVariables.ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                ExecuteQuery(updateQuery);
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(UpdateQuery, connection))
+                {
+                    //command.Parameters.AddWithValue($"@LastOrderID", Order.LastOrderID);
+                    for (int i = 0; i < properties.Count(); i++)
+                    {
+                        command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance).ToString());
+                        //if (properties[i].PropertyType == typeof(Enum))
+                        //{
+                        //    command.Parameters.AddWithValue($"@{properties[i].Name}", (Enum.Parse(typeof(properties[i].PropertyType), properties[i].GetValue(instance)))));
+                        //}
+                        //else
+                        //{
+                        //    command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance).ToString());
+                        //}
+                    }
+                }
+                connection.Close();
             }
-            catch { MessageBox.Show("An error occured while updating employee!"); }
-        }
-        public static void UpdateCustomerTable(Customer customer)
-        {
-            string updateQuery = $"UPDATE Customer SET SSN = @{customer.SSN}, FirstName = @{customer.FirstName}, LastName = @{customer.LastName}, Email = @{customer.Email}, UserName = @{customer.UserName}, Password = @{customer.Password}, Phone = @{customer.Phone}, Wallet = @{customer.Wallet}";
-            try
-            {
-                ExecuteQuery(updateQuery);
-            }
-            catch { MessageBox.Show("An error occured while updating customer!"); }
-        }
-        public static void UpdateOrderTable(Order order)
-        {
-            string updateQuery = $"UPDATE Order SET OrderID = @{order.OrderID}, SenderAddress = @{order.SenderAddress}, RecieverAddress = @{order.RecieverAddress}, Content = @{order.Content}, HasExpensiveContent = @{order.HasExpensiveContent}, Weight = @{order.Weight}, postType = @{order.postType}, Phone = @{order.Phone}, Status = @{order.Status}, CustomerSSN = @{order.CustomerSSN}, Date = @{order.Date}, Comment = @{order.Comment}";
-            try
-            {
-                ExecuteQuery(updateQuery);
-            }
-            catch { MessageBox.Show("An error occured while updating order!"); }
+            //MessageBox.Show($"{type.Name} updated successfully!");
+
         }
         public static List<Employee> ReadEmployeesData()
         {
@@ -249,51 +255,57 @@ namespace WpfApp3
         public static List<Order> ReadOrdersData()
         {
             List<Order> Orders = new List<Order>();
-            using (SqlConnection connection = new SqlConnection(GlobalVariables.ConnectionString))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM [Order]", connection))
+                using (SqlConnection connection = new SqlConnection(GlobalVariables.ConnectionString))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("SELECT * FROM [Order]", connection))
                     {
-                        // Check if there are any rows returned
-                        if (reader.HasRows)
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            // Read and process each row
-                            while (reader.Read())
+                            // Check if there are any rows returned
+                            if (reader.HasRows)
                             {
-                                //try
-                                //{
-                                int LastOrderID = reader.GetInt32(0);
-                                int OrderID = reader.GetInt32(1);
-                                string SenderAddress = reader.GetString(2);
-                                string RecieverAddress = reader.GetString(3);
-                                string Content = reader.GetString(4);
-                                bool HasExpensiveContent = reader.GetBoolean(5);
-                                double Weight = reader.GetDouble(6);
-                                string postType = reader.GetString(7);
-                                string Phone = reader.GetString(8);
-                                string Status = reader.GetString(9);
-                                string CustomerSSN = reader.GetString(10);
-                                DateTime date = reader.GetDateTime(11);
-                                string Comment = reader.GetString(12);
-                                Order.LastOrderID--;
-                                Order order = new Order(SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status), CustomerSSN);
-                                order.Comment = Comment;
-                                Orders.Add(order);
-                                if (order.OrderID > Order.LastOrderID)
+                                // Read and process each row
+                                while (reader.Read())
                                 {
-                                    Order.LastOrderID = order.OrderID;
+                                    //try
+                                    //{
+                                    int OrderID = reader.GetInt32(0);
+                                    string SenderAddress = reader.GetString(1);
+                                    string RecieverAddress = reader.GetString(2);
+                                    string Content = reader.GetString(3);
+                                    bool HasExpensiveContent = reader.GetBoolean(4);
+                                    double Weight = reader.GetDouble(5);
+                                    string postType = reader.GetString(6);
+                                    string Phone = reader.GetString(7);
+                                    string Status = reader.GetString(8);
+                                    string CustomerSSN = reader.GetString(9);
+                                    DateTime date = reader.GetDateTime(10);
+                                    string Comment = reader.GetString(11);
+                                    Order order = new Order(OrderID, SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status), CustomerSSN, date);
+                                    order.Comment = Comment;
+                                    Orders.Add(order);
+                                    if (order.OrderID > Order.LastOrderID)
+                                    {
+                                        Order.LastOrderID = order.OrderID;
+                                    }
+                                    //}
+                                    //catch { }
                                 }
-                                //}
-                                //catch { }
                             }
                         }
                     }
                 }
-                connection.Close();
+                return Orders;
             }
-            return Orders;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return Orders;
+            }
+            
         }
         public static bool UserExist(string Username)
         {

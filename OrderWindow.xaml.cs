@@ -183,9 +183,15 @@ namespace WpfApp3
             if (customer.Wallet >= Price)
             {
                 customer.Wallet -= Price;
+                SQL.UpdateTable(customer);
                 PostType postType = Enum.Parse<PostType>(MainMenu2.Header.ToString());
                 PackageContent Content = Enum.Parse<PackageContent>(MainMenu.Header.ToString());
-                Order order = new Order(SenderAddressBox.Text, ReceiverAddressBox.Text, Content, ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Registered, customer.SSN);
+                List<Order> orders = SQL.ReadOrdersData();
+                if (orders.Count() != 0)
+                {
+                    Order.LastOrderID = orders.Select(x => x.OrderID).Max();
+                }
+                Order order = new Order(Order.LastOrderID + 1, SenderAddressBox.Text, ReceiverAddressBox.Text, Content, ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Registered, customer.SSN, DateTime.Now);
                 SQL.InsertIntoTable(order);
                 //MessageBox.Show("Order registered!");
             }
@@ -228,6 +234,11 @@ namespace WpfApp3
         }
 
         private void MainMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MainMenu2_Click(object sender, RoutedEventArgs e)
         {
 
         }

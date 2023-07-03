@@ -21,14 +21,9 @@ namespace WpfApp3
         public string CustomerSSN { get; set; }
         public DateTime Date { get; set; }
         public string Comment { get; set; }
-        public Order(string SenderAddress, string RecieverAddress, PackageContent Content, bool? HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN)
+        public Order(int OrderID, string SenderAddress, string RecieverAddress, PackageContent Content, bool? HasExpensiveContent, double Weight, PostType postType, string Phone, PackageStatus Status, string CustomerSSN, DateTime Date)
         {
-            List<Order> orders = SQL.ReadOrdersData();
-            if (orders.Count() != 0)
-            {
-                LastOrderID = orders.Select(x => x.OrderID).Max();
-            }
-            OrderID = LastOrderID + 1;
+            this.OrderID = OrderID;
             this.SenderAddress = SenderAddress;
             this.RecieverAddress = RecieverAddress;
             this.Content = Content;
@@ -38,7 +33,7 @@ namespace WpfApp3
             this.Phone = Phone;
             this.Status = PackageStatus.Registered;
             this.CustomerSSN = CustomerSSN;
-            Date = DateTime.Now;
+            this.Date = Date;
             Comment = "";
         }
         public double Calculate()

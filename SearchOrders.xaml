@@ -177,7 +177,7 @@
                 <MenuItem Name="MainMenu" Header="Package Type" FontSize="13">
                     <MenuItem Name="Object" Header="Object" IsCheckable="True" Checked="ObjectOptionCheck" Unchecked="ObjectOptionCheck"/>
                     <Separator Margin="5 0"/>
-                    <MenuItem Name="Document" Header="Document" IsCheckable="True" Checked="DocumentOptiUnCheck" Unchecked="DocumentOptiUnCheck"/>
+                    <MenuItem Name="Document" Header="Document" IsCheckable="True" Checked="DocumentOptionCheck" Unchecked="DocumentOptionCheck"/>
                     <Separator Margin="5 0"/>
                     <MenuItem Name="Fragile" Header="Fragile" IsCheckable="True" Checked="FragileOptionCheck" Unchecked="FragileOptionCheck"/>
                 </MenuItem>
@@ -188,9 +188,9 @@
             <TextBox Name="WeightBox" Style="{DynamicResource TextBox}" Width="60" HorizontalAlignment="Left" Margin="5 0" TextChanged="WeightBox_TextChanged"/>
             <Menu Margin="5 20 0 0" Width="89" Height="22" HorizontalAlignment="Left" Background="White">
                 <MenuItem Name="MainMenu2" Header="Delivery Type" FontSize="13">
-                    <MenuItem Name="OrdinaryOption" Header="Ordinary" IsCheckable="True" Checked="OrdinaryOptionCheck" Unchecked="OrdinaryOptionCheck"/>
+                    <MenuItem Name="Ordinary" Header="Ordinary" IsCheckable="True" Checked="OrdinaryOptionCheck" Unchecked="OrdinaryOptionCheck"/>
                     <Separator Margin="5 0"/>
-                    <MenuItem Name="ExpressOption" Header="Express" IsCheckable="True" Checked="ExpressOptionCheck" Unchecked="ExpressOptionCheck"/>
+                    <MenuItem Name="Express" Header="Express" IsCheckable="True" Checked="ExpressOptionCheck" Unchecked="ExpressOptionCheck"/>
                 </MenuItem>
             </Menu>
             <Button Name="SearchOrdersButton" Style="{DynamicResource OrderPageButton}" Background="#9FE2BF" Width="175" Height="50" Margin="30" FontSize="30" Click="SearchOrdersButton_Click">Search</Button>
