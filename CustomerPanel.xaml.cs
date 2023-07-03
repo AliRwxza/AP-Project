@@ -59,7 +59,11 @@ namespace WpfApp3
 
         private void ChangeUsernamePasswordButton_Click (object sender, RoutedEventArgs e)
         {
+            MainPanel.Visibility = Visibility.Collapsed;
+            MainPanelLeftColumn.Visibility = Visibility.Collapsed;
 
+            FourthFeatureLeftColumn.Visibility = Visibility.Visible;
+            FourthFeatureWindow.Visibility = Visibility.Visible;
         }
 
         //////////////////////////
@@ -293,6 +297,81 @@ namespace WpfApp3
 
             ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Visible;
             ThirdFeatureFirstPage.Visibility = Visibility.Visible;
+        }
+
+        //////////////////////////////////////////////////// FOURTH FEATURE
+
+        private void ChangeUsernameButton_Click (object sender, RoutedEventArgs e)
+        {
+            if (NewUsernameField.Text.Length == 0)
+            {
+                MessageBox.Show("New username field can't be empty.");
+                NewUsernameField.Style = (Style)FindResource("TextBoxError");
+            }
+            else if (Validation.UserName(NewUsernameField.Text))
+            {
+                MessageBox.Show("Username must be between 3 and 32 letters and alphanumeric only.");
+                NewUsernameField.Style = (Style)FindResource("TextBoxError");
+            }
+            // check the password
+            else if (false)
+            {
+                MessageBox.Show("Wrong password.");
+                UsernameChangePasswordField.Style = (Style)FindResource("TextBoxError");
+            }
+        }
+
+        private void ChangePasswordButton_Click (object sender, RoutedEventArgs e)
+        {
+            if (NewPasswordField.Text.Length == 0)
+            {
+                MessageBox.Show("Empty password field.");
+                NewPasswordField.Style = (Style)FindResource("TextBoxError");
+
+            }
+            else if (NewPasswordAgainField.Text.Length == 0)
+            {
+                MessageBox.Show("You need to enter the password again.");
+                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+            }
+            else if (NewPasswordField.Text != NewPasswordAgainField.Text)
+            {
+                MessageBox.Show("Entered passwords do not match");
+                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+            }
+            else if (!Validation.Password(NewPasswordField.Text))
+            {
+                MessageBox.Show("Password must have atleat 1 capital letter, 1 small letter, a number, and have atleast 8 letters overall.");
+                NewPasswordField.Style = (Style)FindResource("TextBoxError");
+                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+            }
+            // check if the password is wrong
+            else if (false)
+            {
+                MessageBox.Show("Wrong password. Try again.");
+                PasswordChangePasswordField.Style = (Style)FindResource("TextBoxError");
+            }
+            else
+            {
+                try
+                {
+                    // change the password
+                    MessageBox.Show("Password Changed Successfully.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed changing your password. Error message :" + ex.Message);
+                }
+            }
+        }
+
+        private void FourthFeatureBackButton_Click (object sender, RoutedEventArgs e)
+        {
+            FourthFeatureLeftColumn.Visibility = Visibility.Collapsed;
+            FourthFeatureWindow.Visibility = Visibility.Collapsed;
+
+            MainPanelLeftColumn.Visibility = Visibility.Visible;
+            MainPanel.Visibility = Visibility.Visible;
         }
 
         //////////////////////////////////////////////////// GLOBAL
