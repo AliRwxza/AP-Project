@@ -26,9 +26,9 @@ namespace WpfApp3
 
                 MessageBox.Show("Email sent successfully.");
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show("Failed to send E-mail. Error message: " + ex.Message);
+                //MessageBox.Show("Failed to send E-mail");
             }
         }
     }

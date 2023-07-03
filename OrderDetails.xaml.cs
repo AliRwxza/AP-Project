@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,7 @@ namespace WpfApp3
     {
         //Order order;
         static bool IdValidation = false;
+        static bool EmailSent = true;
         public OrderDetails ()
         {
             InitializeComponent();
@@ -49,6 +51,16 @@ namespace WpfApp3
         {
             if (IdValidation)
             {
+                Submitted.IsEnabled = true;
+                ReadyToSend.IsEnabled = true;
+                OnTheWay.IsEnabled = true;
+                Delivered.IsEnabled = true;
+                MainMenu.IsEnabled = true;
+                Submitted.IsCheckable = true;
+                ReadyToSend.IsCheckable = true;
+                OnTheWay.IsCheckable = true;
+                Delivered.IsCheckable = true;
+
                 foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
                 {
                     switch (order.Status.ToString())
@@ -56,26 +68,28 @@ namespace WpfApp3
                         case "Submitted":
                             MainMenu.Header = "Submitted";
                             Submitted.IsChecked = true;
+                            EmailSent = false;
                             break;
                         case "ReadyToSend":
                             MainMenu.Header = "Ready to Send";
                             ReadyToSend.IsChecked = true;
+                            EmailSent = false;
                             break;
                         case "OnTheWay":
                             MainMenu.Header = "On the Way";
                             OnTheWay.IsChecked = true;
+                            EmailSent = false;
                             break;
                         case "Delivered":
                             MainMenu.Header = "Delivered";
+                            MainMenu.IsEnabled = false;
+                            EmailSent = true;
                             Delivered.IsChecked = true;
                             break;
                     }
                     
                     MainMenu.Name = order.Status.ToString();
 
-                }
-                foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
-                {
                     FirstPage.Visibility = Visibility.Collapsed;
                     SecondPage.Visibility = Visibility.Visible;
                     BackButton.Visibility = Visibility.Visible;
@@ -104,10 +118,11 @@ namespace WpfApp3
                 MainMenu.Name = "Submitted";
                 ReadyToSend.IsChecked = false;
                 OnTheWay.IsChecked = false;
+                Delivered.IsChecked = false;
                 foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
                 {
                     order.Status = PackageStatus.Submitted;
-                    SQL.UpdateTable(order);
+                    SQL.UpdateTable<Order>(order);
                 }
             }
         }
@@ -120,10 +135,11 @@ namespace WpfApp3
                 MainMenu.Name = "ReadyToSend";
                 Submitted.IsChecked = false;
                 OnTheWay.IsChecked = false;
+                Delivered.IsChecked = false;
                 foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
                 {
                     order.Status = PackageStatus.ReadyToSend;
-                    SQL.UpdateTable(order);
+                    SQL.UpdateTable<Order>(order);
                 }
             }
         }
@@ -136,10 +152,11 @@ namespace WpfApp3
                 MainMenu.Name = "OnTheWay";
                 Submitted.IsChecked = false;
                 ReadyToSend.IsChecked = false;
+                Delivered.IsChecked = false;
                 foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
                 {
                     order.Status = PackageStatus.OnTheWay;
-                    SQL.UpdateTable(order);
+                    SQL.UpdateTable<Order>(order);
                 }
             }
         }
@@ -154,7 +171,7 @@ namespace WpfApp3
                 Submitted.IsChecked = false;
                 ReadyToSend.IsChecked = false;
                 OnTheWay.IsChecked = false;
-
+                MainMenu.IsEnabled = false;
                 MainMenu.IsCheckable = false;
                 Submitted.IsCheckable = false;
                 ReadyToSend.IsCheckable = false;
@@ -168,8 +185,16 @@ namespace WpfApp3
 
                 foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
                 {
+                    foreach (var customer in SQL.ReadCustomersData().Where(x => x.SSN == order.CustomerSSN))
+                    {
+                        if (!EmailSent)
+                        {
+                            EmailSent = true;
+                            new Thread(() => Email.SendEmail(GlobalVariables.SourceEmail, customer.Email, "Package Delivery Report", $"Your Package with ID {order.OrderID} was delivered! We hope that you're satisfied with our services.\nYou can let us know about your opinion in the app.")).Start();
+                        }
+                    }
                     order.Status = PackageStatus.Delivered;
-                    SQL.UpdateTable(order);
+                    SQL.UpdateTable<Order>(order);
                 }
             }
         }

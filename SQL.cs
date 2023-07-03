@@ -37,7 +37,7 @@ namespace WpfApp3
         }
         public static void AddCustomerTable()
         {
-            string createTableQuery = "CREATE TABLE Customer (SSN VARCHAR(100) PRIMARY KEY, FirstName VARCHAR(100), LastName VARCHAR(100), Email VARCHAR(100), UserName VARCHAR(100), Password VARCHAR(100), Phone VARCHAR(100), Wallet FLOAT)";
+            string createTableQuery = "CREATE TABLE Customer (SSN VARCHAR(100), FirstName VARCHAR(100), LastName VARCHAR(100), Email VARCHAR(100), UserName VARCHAR(100), Password VARCHAR(100), Phone VARCHAR(100), Wallet FLOAT)";
             try
             {
                 ExecuteQuery(createTableQuery);
@@ -134,13 +134,29 @@ namespace WpfApp3
             //}
             //catch { MessageBox.Show($"An error while adding {type.Name}!"); }
         }
-        public static void UpdateTable<T>(T instance)
+        public static void UpdateTable<T>(object instance)
         {
             Type type = typeof(T);
             string tableName = type.Name;
             PropertyInfo[] properties = type.GetProperties();
             string columns = string.Join(", ", properties.Select(p => $"{p.Name} = @{p.Name}"));
-            string UpdateQuery = $"UPDATE [{tableName}] SET {columns}";
+            //string a = $"SELECT * FROM [{tableName}] WHERE "
+            string UpdateQuery = $"UPDATE [{tableName}] SET {columns} WHERE ";
+            if (instance is Order)
+            {
+                Order o = (Order)instance;
+                UpdateQuery += $"OrderID = {o.OrderID}";
+            }
+            if (instance is Customer)
+            {
+                Customer c = (Customer)instance;
+                UpdateQuery += $"SSN = {c.SSN}";
+            }
+            if (instance is Employee)
+            {
+                Employee e = (Employee)instance;
+                UpdateQuery += $"EmployeeID = {e.EmployeeID}";
+            }
             string connectionString = GlobalVariables.ConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -153,6 +169,7 @@ namespace WpfApp3
                     {
                         command.Parameters.AddWithValue($"@{properties[i].Name}", properties[i].GetValue(instance));
                     }
+                    command.ExecuteNonQuery();
                 }
                 connection.Close();
             }
@@ -279,10 +296,6 @@ namespace WpfApp3
                                     Order order = new Order(OrderID, SenderAddress, RecieverAddress, Enum.Parse<PackageContent>(Content), HasExpensiveContent, Weight, Enum.Parse<PostType>(postType), Phone, Enum.Parse<PackageStatus>(Status), CustomerSSN, date);
                                     order.Comment = Comment;
                                     Orders.Add(order);
-                                    if (order.OrderID > Order.LastOrderID)
-                                    {
-                                        Order.LastOrderID = order.OrderID;
-                                    }
                                     //}
                                     //catch { }
                                 }

@@ -8,7 +8,6 @@ namespace WpfApp3
 {
     public class Order
     {
-        public static int LastOrderID = 0;
         public int OrderID { get; set; }
         public string SenderAddress { get; set; }
         public string RecieverAddress { get; set; }
