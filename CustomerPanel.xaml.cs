@@ -66,6 +66,14 @@ namespace WpfApp3
             FourthFeatureWindow.Visibility = Visibility.Visible;
         }
 
+        private void Logout_Click (object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+
+            Close();
+        }
+
         //////////////////////////
 
         private void ObjectOptionCheck (object sender, EventArgs e)
@@ -129,6 +137,14 @@ namespace WpfApp3
                 // EXTRACT THE INFORMATION AND PUT IT IN THE SECOND PAGE
                 OrdersReportFirstPage.Visibility = Visibility.Collapsed;
                 OrdersReportSecondPage.Visibility = Visibility.Visible;
+                if (true) // the package was delivered
+                {
+                    SubmitOpinionHyperlink.Visibility = Visibility.Visible;
+                }
+                else // the package was not delivered
+                {
+                    SubmitOpinionHyperlink.Visibility = Visibility.Collapsed;
+                }
             }
             else
                 MessageBox.Show("Not a valid ID.");
@@ -179,10 +195,48 @@ namespace WpfApp3
             // the search range must contain every single order done by any of the employees
         }
 
+        private void SubmitOpinion_Click (object sender, RoutedEventArgs e)
+        {
+            OrdersReportSecondPage.Visibility = Visibility.Collapsed;
+            GetCustomerOpinionPage.Visibility = Visibility.Visible;
+        }
+
+        private void SubmitOpinionButton_Click (object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (CustomerOpinionField.Text.Length == 0)
+                {
+                    MessageBox.Show("This field can't be empty.");
+                }
+                else if (CustomerOpinionField.Text.Length >= 10)
+                {
+                    // save the opinion
+                    MessageBox.Show("Saved successfully.");
+                }
+                else
+                {
+                    MessageBox.Show("This field must contain atleast 10 characters.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed saving your opinion. Error message : " + ex.Message);
+            }
+        }
+
+        // IF CLICKED, GO BACK TO ORDERS REPORT FIRST PAGE
         private void OrdersReportSecondPageBackButton_Click (object sender, RoutedEventArgs e)
         {
             OrdersReportSecondPage.Visibility = Visibility.Collapsed;
             OrdersReportFirstPage.Visibility = Visibility.Visible;
+        }
+
+        // IF CLICKED, GO BACK TO ORDERS REPORT SECOND PAGE
+        private void OrdersThirdPageBackButton_Click (object sender, RoutedEventArgs e)
+        {
+            GetCustomerOpinionPage.Visibility = Visibility.Collapsed;
+            OrdersReportSecondPage.Visibility = Visibility.Visible;
         }
 
         //////////////////////////////////////////////////// THIRD FEATURE
@@ -205,7 +259,7 @@ namespace WpfApp3
             MainPanelLeftColumn.Visibility = Visibility.Visible;
         }
 
-        //////////////////////////////////////////////////// SECOND PAGE ( WALLET CHARGE )
+        //////////////////////// SECOND PAGE ( WALLET CHARGE )
         private void Changed_CVV2 (object sender, EventArgs e)
         {
             Regex Cvv2Pattern = new Regex(@"^\d{3,4}$");

@@ -23,6 +23,7 @@ namespace WpfApp3
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
         private void EmailField_TextChanged (object sender, TextChangedEventArgs e)

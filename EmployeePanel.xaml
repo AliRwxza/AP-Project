@@ -128,6 +128,9 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>-->
+        <TextBlock Margin="10 5" Panel.ZIndex="50">
+                <Hyperlink FontSize="15" Foreground="Black" TextDecorations="None" Click="Logout_Click">Log out</Hyperlink>
+        </TextBlock>
         <Rectangle Grid.Column="0">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
