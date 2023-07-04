@@ -427,6 +427,9 @@
             <ColumnDefinition Width="383*"/>
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
+        <TextBlock Margin="10 5" Panel.ZIndex="50">
+                <Hyperlink FontSize="15" Foreground="Black" TextDecorations="None" Click="Logout_Click">Log out</Hyperlink>
+        </TextBlock>
         <Grid Name="MainPanelLeftColumn" Visibility="Visible" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,383,0">
             <Rectangle Grid.Column="0">
                 <Rectangle.Fill>
@@ -436,6 +439,7 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
+            
             <Grid Grid.Column="0">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Foreground="#4682B4">Panel</TextBlock>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Foreground="#4682B4" Margin="0 0 0 85">Customer</TextBlock>
@@ -532,6 +536,18 @@
             <TextBlock Name="WeightField" FontSize="18" Margin="5 0" Text="Weight: "/>
             <TextBlock Name="PostTypeField" FontSize="18" Margin="5 10" Text="Post Type"/>
             <TextBlock Name="PhoneNumberField" FontSize="18" Margin="5 0" Text="Phone Number [if added]"/>
+            <TextBlock Name="SubmitOpinionHyperlink" Margin="10 5">
+                <Hyperlink FontSize="15" Click="SubmitOpinion_Click">Submit Opinion</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Name="GetCustomerOpinionPage" Grid.ColumnSpan="2" Visibility="Collapsed" Grid.Column="1" Background="#F0F0F0">
+            <Button Name="OrdersThirdPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
+                    Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="OrdersThirdPageBackButton_Click"/>
+            <Label FontSize="17" Margin="10 30 0 0">Customer Opinion</Label>
+            <TextBox Name="CustomerOpinionField" TextWrapping="Wrap" AcceptsReturn="True" Margin="15 0"
+                     Style="{DynamicResource TextBox}" Height="150" ToolTip="Must contain atleat 10 characters."/>
+            <Button Style="{DynamicResource SearchButton}" HorizontalAlignment="Right" FontSize="18" Width="170" Height="60"
+                    Margin="15 20" Background="AliceBlue" Click="SubmitOpinionButton_Click">Submit Opinion</Button>
         </StackPanel>
         <Grid Name="SecondFeatureLeftColumn" Grid.Column="0" Visibility="Collapsed" Grid.ColumnSpan="2" Margin="0,0,383,0">
             <Rectangle>

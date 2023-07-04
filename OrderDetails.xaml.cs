@@ -211,5 +211,21 @@ namespace WpfApp3
             //}
                 
         }
+
+        private void CustomerOpinion_Click (object sender, RoutedEventArgs e)
+        {
+            SecondPage.Visibility = Visibility.Collapsed;
+            BackButton.Visibility = Visibility.Collapsed;
+
+            CustomerOpinionPage.Visibility = Visibility.Visible;
+        }
+
+        private void CustomerOpinionPageBackButton_Click (object sender, RoutedEventArgs e)
+        {
+            CustomerOpinionPage.Visibility = Visibility.Collapsed;
+
+            SecondPage.Visibility = Visibility.Visible;
+            BackButton.Visibility = Visibility.Visible;
+        }
     }
 }
