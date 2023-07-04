@@ -601,6 +601,7 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 0" FontSize="40">Wallet</TextBlock>
             </Grid>
         </Grid>
+
         <StackPanel Name="ThirdFeatureFirstPage" Grid.Column="1" Visibility="Collapsed" Grid.ColumnSpan="2">
             <StackPanel.Background>
                 <ImageBrush  ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
@@ -632,9 +633,6 @@
         </Grid>
         <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Collapsed" Background="White" Grid.ColumnSpan="2">
             <Grid>
-                <Grid.Background>
-                    <ImageBrush ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
-                </Grid.Background>
                 <Button Name="WalletChargeBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="WalletChargeBackButton_Click"/>
                 <Rectangle Margin="50 100" RadiusX="20" RadiusY="20">

@@ -45,13 +45,25 @@ namespace WpfApp3
             {
                 orders = orders.OrderBy(x => Math.Abs(x.Weight - double.Parse(WeightBox.Text))).ToList();
             }
-            if (MainMenu.Header.ToString() != "Package Type")
+            if (!Object.IsChecked)
             {
-                orders = orders.Where(x => x.Content == Enum.Parse<PackageContent>(MainMenu.Name)).ToList();
+                orders = orders.Where(x => x.Content != PackageContent.Object).ToList();
             }
-            if (MainMenu2.Header.ToString() != "Delivery Type")
+            if (!Document.IsChecked)
             {
-                orders = orders.Where(x => x.postType == Enum.Parse<PostType>(MainMenu2.Name)).ToList();
+                orders = orders.Where(x => x.Content != PackageContent.Document).ToList();
+            }
+            if (!Fragile.IsChecked)
+            {
+                orders = orders.Where(x => x.Content != PackageContent.Fragile).ToList();
+            }
+            if (!Ordinary.IsChecked)
+            {
+                orders = orders.Where(x => x.postType != PostType.Ordinary).ToList();
+            }
+            if (!Express.IsChecked)
+            {
+                orders = orders.Where(x => x.postType != PostType.Express).ToList();
             }
             try
             {
@@ -83,72 +95,64 @@ namespace WpfApp3
 
         private void ObjectOptionCheck (object sender, EventArgs e)
         {
-            if (Object.IsChecked)
-            {
-                Document.IsChecked = false;
-                Fragile.IsChecked = false;
-                MainMenu.Header = "Object";
-            }
-            else
-            {
-                MainMenu.Header = "Not Selected";
-            }
+            //if (Object.IsChecked)
+            //{
+            //    MainMenu.Header = "Object";
+            //}
+            //else
+            //{
+            //    MainMenu.Header = "Not Selected";
+            //}
         }
 
         private void DocumentOptionCheck (object sender, EventArgs e)
         {
-            if (Document.IsChecked)
-            {
-                Object.IsChecked = false;
-                Fragile.IsChecked = false;
-                MainMenu.Header = "Document";
-            }
-            else
-            {
-                MainMenu.Header = "Not Selected";
-            }
+            //if (Document.IsChecked)
+            //{
+            //    MainMenu.Header = "Document";
+            //}
+            //else
+            //{
+            //    MainMenu.Header = "Not Selected";
+            //}
         }
 
         private void FragileOptionCheck (object sender, EventArgs e)
         {
-            if (Fragile.IsChecked)
-            {
-                Object.IsChecked = false;
-                Document.IsChecked = false;
-                MainMenu.Header = "Fragile";
-            }
-            else
-            {
-                MainMenu.Header = "Not Selected";
-            }
+            //if (Fragile.IsChecked)
+            //{
+            //    MainMenu.Header = "Fragile";
+            //}
+            //else
+            //{
+            //    MainMenu.Header = "Not Selected";
+            //}
         }
 
         /////////////////////////////////////////////////////////
 
         private void OrdinaryOptionCheck (object sender, RoutedEventArgs e)
         {
-            if (Ordinary.IsChecked == true)
-            {
-                Express.IsChecked = false;
-                MainMenu2.Header = "Ordinary";
-            }
-            else
-            {
-                MainMenu2.Header = "Not Selected";
-            }
+            //if (Ordinary.IsChecked == true)
+            //{
+            //    MainMenu2.Header = "Ordinary";
+            //}
+            //else
+            //{
+            //    MainMenu2.Header = "Not Selected";
+            //}
         }
 
         private void ExpressOptionCheck (object sender, RoutedEventArgs e)
         {
-            if (Express.IsChecked == true)
-            {
-                Ordinary.IsChecked = false;
-                MainMenu2.Header = "Express";
-            }
-            else
-            {
-                MainMenu2.Header = "Not Selected";
-            }
+            //if (Express.IsChecked == true)
+            //{
+            //    MainMenu2.Header = "Express";
+            //}
+            //else
+            //{
+            //    MainMenu2.Header = "Not Selected";
+            //}
         }
 
         private void SsnField_TextChanged (object sender, TextChangedEventArgs e)
@@ -206,6 +210,11 @@ namespace WpfApp3
             {
                 PaidPriceField.Style = (Style)FindResource("TextBox");
             }
+        }
+
+        private void MainMenu_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

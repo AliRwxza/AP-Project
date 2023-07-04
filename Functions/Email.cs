@@ -24,7 +24,7 @@ namespace WpfApp3
 
                 smtpClient.Send(mail);
 
-                MessageBox.Show("Email sent successfully.");
+                //MessageBox.Show("Email sent successfully.");
             }
             catch
             {

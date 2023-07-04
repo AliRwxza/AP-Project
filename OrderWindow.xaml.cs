@@ -186,7 +186,7 @@ namespace WpfApp3
                 SQL.UpdateTable<Customer>(customer);
                 PostType postType = Enum.Parse<PostType>(MainMenu2.Header.ToString());
                 PackageContent Content = Enum.Parse<PackageContent>(MainMenu.Header.ToString());
-                Order order = new Order(SQL.ReadOrdersData().Count() + 1, SenderAddressBox.Text, ReceiverAddressBox.Text, Content, ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Submitted, customer.SSN, DateTime.Now);
+                Order order = new Order(SQL.ReadOrdersData().Count() + 1, SenderAddressBox.Text, ReceiverAddressBox.Text, Content, (bool)ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Submitted, customer.SSN, DateTime.Now);
                 SQL.InsertIntoTable(order);
                 //MessageBox.Show("Order registered!");
             }
