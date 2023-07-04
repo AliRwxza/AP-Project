@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp3"
         mc:Ignorable="d"
-        Title="TakeCustomerIdNumber" Height="85" Width="400">
+        Title="Customer SSN" Height="85" Width="400">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">

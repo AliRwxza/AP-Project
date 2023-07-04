@@ -59,7 +59,19 @@ namespace WpfApp3
 
         private void ChangeUsernamePasswordButton_Click (object sender, RoutedEventArgs e)
         {
+            MainPanel.Visibility = Visibility.Collapsed;
+            MainPanelLeftColumn.Visibility = Visibility.Collapsed;
 
+            FourthFeatureLeftColumn.Visibility = Visibility.Visible;
+            FourthFeatureWindow.Visibility = Visibility.Visible;
+        }
+
+        private void Logout_Click (object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+
+            Close();
         }
 
         //////////////////////////
@@ -125,6 +137,14 @@ namespace WpfApp3
                 // EXTRACT THE INFORMATION AND PUT IT IN THE SECOND PAGE
                 OrdersReportFirstPage.Visibility = Visibility.Collapsed;
                 OrdersReportSecondPage.Visibility = Visibility.Visible;
+                if (true) // the package was delivered
+                {
+                    SubmitOpinionHyperlink.Visibility = Visibility.Visible;
+                }
+                else // the package was not delivered
+                {
+                    SubmitOpinionHyperlink.Visibility = Visibility.Collapsed;
+                }
             }
             else
                 MessageBox.Show("Not a valid ID.");
@@ -175,10 +195,48 @@ namespace WpfApp3
             // the search range must contain every single order done by any of the employees
         }
 
+        private void SubmitOpinion_Click (object sender, RoutedEventArgs e)
+        {
+            OrdersReportSecondPage.Visibility = Visibility.Collapsed;
+            GetCustomerOpinionPage.Visibility = Visibility.Visible;
+        }
+
+        private void SubmitOpinionButton_Click (object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (CustomerOpinionField.Text.Length == 0)
+                {
+                    MessageBox.Show("This field can't be empty.");
+                }
+                else if (CustomerOpinionField.Text.Length >= 10)
+                {
+                    // save the opinion
+                    MessageBox.Show("Saved successfully.");
+                }
+                else
+                {
+                    MessageBox.Show("This field must contain atleast 10 characters.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed saving your opinion. Error message : " + ex.Message);
+            }
+        }
+
+        // IF CLICKED, GO BACK TO ORDERS REPORT FIRST PAGE
         private void OrdersReportSecondPageBackButton_Click (object sender, RoutedEventArgs e)
         {
             OrdersReportSecondPage.Visibility = Visibility.Collapsed;
             OrdersReportFirstPage.Visibility = Visibility.Visible;
+        }
+
+        // IF CLICKED, GO BACK TO ORDERS REPORT SECOND PAGE
+        private void OrdersThirdPageBackButton_Click (object sender, RoutedEventArgs e)
+        {
+            GetCustomerOpinionPage.Visibility = Visibility.Collapsed;
+            OrdersReportSecondPage.Visibility = Visibility.Visible;
         }
 
         //////////////////////////////////////////////////// THIRD FEATURE
@@ -201,7 +259,7 @@ namespace WpfApp3
             MainPanelLeftColumn.Visibility = Visibility.Visible;
         }
 
-        //////////////////////////////////////////////////// SECOND PAGE ( WALLET CHARGE )
+        //////////////////////// SECOND PAGE ( WALLET CHARGE )
         private void Changed_CVV2 (object sender, EventArgs e)
         {
             Regex Cvv2Pattern = new Regex(@"^\d{3,4}$");
@@ -293,6 +351,81 @@ namespace WpfApp3
 
             ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Visible;
             ThirdFeatureFirstPage.Visibility = Visibility.Visible;
+        }
+
+        //////////////////////////////////////////////////// FOURTH FEATURE
+
+        private void ChangeUsernameButton_Click (object sender, RoutedEventArgs e)
+        {
+            if (NewUsernameField.Text.Length == 0)
+            {
+                MessageBox.Show("New username field can't be empty.");
+                NewUsernameField.Style = (Style)FindResource("TextBoxError");
+            }
+            else if (Validation.UserName(NewUsernameField.Text))
+            {
+                MessageBox.Show("Username must be between 3 and 32 letters and alphanumeric only.");
+                NewUsernameField.Style = (Style)FindResource("TextBoxError");
+            }
+            // check the password
+            else if (false)
+            {
+                MessageBox.Show("Wrong password.");
+                UsernameChangePasswordField.Style = (Style)FindResource("TextBoxError");
+            }
+        }
+
+        private void ChangePasswordButton_Click (object sender, RoutedEventArgs e)
+        {
+            if (NewPasswordField.Text.Length == 0)
+            {
+                MessageBox.Show("Empty password field.");
+                NewPasswordField.Style = (Style)FindResource("TextBoxError");
+
+            }
+            else if (NewPasswordAgainField.Text.Length == 0)
+            {
+                MessageBox.Show("You need to enter the password again.");
+                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+            }
+            else if (NewPasswordField.Text != NewPasswordAgainField.Text)
+            {
+                MessageBox.Show("Entered passwords do not match");
+                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+            }
+            else if (!Validation.Password(NewPasswordField.Text))
+            {
+                MessageBox.Show("Password must have atleat 1 capital letter, 1 small letter, a number, and have atleast 8 letters overall.");
+                NewPasswordField.Style = (Style)FindResource("TextBoxError");
+                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+            }
+            // check if the password is wrong
+            else if (false)
+            {
+                MessageBox.Show("Wrong password. Try again.");
+                PasswordChangePasswordField.Style = (Style)FindResource("TextBoxError");
+            }
+            else
+            {
+                try
+                {
+                    // change the password
+                    MessageBox.Show("Password Changed Successfully.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed changing your password. Error message :" + ex.Message);
+                }
+            }
+        }
+
+        private void FourthFeatureBackButton_Click (object sender, RoutedEventArgs e)
+        {
+            FourthFeatureLeftColumn.Visibility = Visibility.Collapsed;
+            FourthFeatureWindow.Visibility = Visibility.Collapsed;
+
+            MainPanelLeftColumn.Visibility = Visibility.Visible;
+            MainPanel.Visibility = Visibility.Visible;
         }
 
         //////////////////////////////////////////////////// GLOBAL

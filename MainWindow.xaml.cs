@@ -47,6 +47,8 @@ namespace WpfApp3
                 {
                     EmployeePanel employeePanel = new EmployeePanel();
                     employeePanel.Show();
+
+                    Close();
                 }
                 else
                 {
@@ -61,12 +63,13 @@ namespace WpfApp3
                 {
                     CustomerPanel customerPanel = new CustomerPanel();
                     customerPanel.Show();
+
+                    Close();
                 }
                 else
                 {
                     MessageBox.Show("Error: Wrong password!");
                 }
-
             }
             // username not found
             else if (user is object)
@@ -77,7 +80,7 @@ namespace WpfApp3
             {
                 MessageBox.Show("Invalid username!");
             }
-            //Close();
+            
         }
 
         private void SignUpButtonClick (object sender, RoutedEventArgs e)
