@@ -603,7 +603,7 @@
         </Grid>
         <StackPanel Name="ThirdFeatureFirstPage" Grid.Column="1" Visibility="Collapsed" Grid.ColumnSpan="2">
             <StackPanel.Background>
-                <ImageBrush ImageSource="C:\Users\afiro\source\repos\AP-Project\Pictures\ThirdFeatureBackground.jpg"/>
+                <ImageBrush ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
             </StackPanel.Background>
             <Button Name="ThirdFeatureFirstPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="ThirdFeatureFirstPageBackButton_Click"/>
@@ -630,7 +630,10 @@
             </StackPanel>
 
         </Grid>
-        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Collapsed" Background="White" Grid.ColumnSpan="2">
+        <Grid Name="ChargeWalletWindow" Grid.Column="1" Visibility="Collapsed" Grid.ColumnSpan="2">
+            <Grid.Background>
+                <ImageBrush ImageSource="C:\Users\user\OneDrive\Documents\University\402-02\AP\!Project\WPF\WpfApp3\Pictures\ThirdFeatureBackground.jpg"/>
+            </Grid.Background>
             <Grid>
                 <Button Name="WalletChargeBackButton" Template="{StaticResource LeftArrowButtonTemplate}" HorizontalAlignment="Right" 
                     Visibility="Visible" Width="30" Height="20" Margin="5" VerticalAlignment="Top" Click="WalletChargeBackButton_Click"/>

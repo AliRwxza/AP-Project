@@ -176,7 +176,7 @@
         </StackPanel>
         <StackPanel Name="FirstPage" Grid.Column="1" Visibility="Visible" Background="#ECF8F9">
             <Label FontSize="25" Margin="60 100 0 10">Order ID</Label>
-            <TextBox Style="{DynamicResource TextBox}" Name="OrderIdField" Width="230" Height="30" Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
+            <TextBox FontSize="20" Style="{DynamicResource TextBox}" Name="OrderIdField" TextAlignment="Center" Width="230" Height="30" Margin="60 0 0 20" HorizontalAlignment="Left" TextChanged="OrderIdField_TextChanged"/>
             <Button Name="SearchButton" Style="{DynamicResource SearchButton}" Background="#8696FE" Width="120" Height="60" FontSize="23" Click="SearchButton_Click">Search</Button>
         </StackPanel>
         <Button Name="BackButton" Template="{StaticResource LeftArrowButtonTemplate}" Visibility="Visible" Width="30" Foreground="White"
