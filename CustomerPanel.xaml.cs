@@ -1,8 +1,4 @@
-﻿using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using iText.Layout.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -529,7 +525,7 @@ namespace WpfApp3
                                             LoggedInCustomer.Wallet += chargeAmount;
                                             SQL.UpdateTable<Customer>(LoggedInCustomer);
                                             // and ask if they want this action to get saved
-                                            PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this, LoggedInCustomer);
+                                            PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this);
                                             popUpWindow.Show();
                                             // will need date and time
                                             // will be making PDF
@@ -683,13 +679,13 @@ namespace WpfApp3
             return false;
         }
 
-        private void PayButton_Click (object sender, RoutedEventArgs e)
-        {
-            // check card number
-            // add the value 
-            PopUpWindow popUpWindow = new PopUpWindow();
-            popUpWindow.Show();
-        }
+        //private void PayButton_Click (object sender, RoutedEventArgs e)
+        //{
+        //    // check card number
+        //    // add the value 
+        //    PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this);
+        //    popUpWindow.Show();
+        //}
 
         private void MmField_PreviewTextInput (object sender, TextCompositionEventArgs e)
         {
