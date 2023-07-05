@@ -46,7 +46,7 @@ namespace WpfApp3
             {
                 if (((Employee)user).Password == LoginPagePasswordBox.Password)
                 {
-                    EmployeePanel employeePanel = new EmployeePanel();
+                    EmployeePanel employeePanel = new EmployeePanel((Employee)user);
                     employeePanel.Show();
 
                     Close();

@@ -39,7 +39,7 @@ namespace WpfApp3
         {
             try
             {
-                string path = "PaymentReciept.pdf"; // must be in this format : "Payment Reciept " + ID + ".pdf"
+                string path = $"PaymentReciept{LoggedInCustomer.UserName}{DateTime.Now.ToString().Replace('/', '-').Replace(':', '-').Replace(' ', '-')}.pdf"; // must be in this format : "Payment Reciept " + ID + ".pdf"
 
                 PdfWriter writer = new PdfWriter(path);
 

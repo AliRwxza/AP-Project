@@ -271,7 +271,7 @@ namespace WpfApp3
             }
             try
             {
-                using (StreamWriter writer = new StreamWriter("SearchResult.csv", false))
+                using (StreamWriter writer = new StreamWriter($"SearchResult{LoggedInCustomer.UserName}.csv", false))
                 {
                     writer.WriteLine("Order ID,Sender Address,Reciever Address,Content,Has Expensive Content,Weight,Post Type,Phone,Status,CustomerSSN,Date,Price,Comment");
                     foreach (var order in orders)
@@ -529,7 +529,7 @@ namespace WpfApp3
                                             LoggedInCustomer.Wallet += chargeAmount;
                                             SQL.UpdateTable<Customer>(LoggedInCustomer);
                                             // and ask if they want this action to get saved
-                                            PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this);
+                                            PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this, LoggedInCustomer);
                                             popUpWindow.Show();
                                             // will need date and time
                                             // will be making PDF
