@@ -40,10 +40,15 @@ namespace WpfApp3
             Regex PhoneRegex = new Regex(@"^09\d{9}$");
             return PhoneRegex.IsMatch(phone);
         }
-        public static bool EmployeeID (string id)
+        public static bool EmployeeID(string id)
         {
             Regex IDRegex = new Regex(@"^\d{2}9\d{2}$");
             return IDRegex.IsMatch(id);
+        }
+        public static bool CVV2(string cvv2)
+        {
+            Regex CVV2Regex = new Regex(@"^\d{3,4}$");
+            return CVV2Regex.IsMatch(cvv2);
         }
         public static bool LUHN (string number)
         {

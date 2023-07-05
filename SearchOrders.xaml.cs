@@ -45,26 +45,33 @@ namespace WpfApp3
             {
                 orders = orders.OrderBy(x => Math.Abs(x.Weight - double.Parse(WeightBox.Text))).ToList();
             }
-            if (!Object.IsChecked)
+            if (Object.IsChecked || Document.IsChecked || Fragile.IsChecked)
             {
-                orders = orders.Where(x => x.Content != PackageContent.Object).ToList();
+                if (!Object.IsChecked)
+                {
+                    orders = orders.Where(x => x.Content != PackageContent.Object).ToList();
+                }
+                if (!Document.IsChecked)
+                {
+                    orders = orders.Where(x => x.Content != PackageContent.Document).ToList();
+                }
+                if (!Fragile.IsChecked)
+                {
+                    orders = orders.Where(x => x.Content != PackageContent.Fragile).ToList();
+                }
             }
-            if (!Document.IsChecked)
+            if (Ordinary.IsChecked || Express.IsChecked)
             {
-                orders = orders.Where(x => x.Content != PackageContent.Document).ToList();
+                if (!Ordinary.IsChecked)
+                {
+                    orders = orders.Where(x => x.postType != PostType.Ordinary).ToList();
+                }
+                if (!Express.IsChecked)
+                {
+                    orders = orders.Where(x => x.postType != PostType.Express).ToList();
+                }
             }
-            if (!Fragile.IsChecked)
-            {
-                orders = orders.Where(x => x.Content != PackageContent.Fragile).ToList();
-            }
-            if (!Ordinary.IsChecked)
-            {
-                orders = orders.Where(x => x.postType != PostType.Ordinary).ToList();
-            }
-            if (!Express.IsChecked)
-            {
-                orders = orders.Where(x => x.postType != PostType.Express).ToList();
-            }
+
             try
             {
                 using (StreamWriter writer = new StreamWriter("SearchResult.csv", false))
@@ -213,6 +220,11 @@ namespace WpfApp3
         }
 
         private void MainMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MainMenu_Click_1(object sender, RoutedEventArgs e)
         {
 
         }

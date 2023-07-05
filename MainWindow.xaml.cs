@@ -27,6 +27,7 @@ namespace WpfApp3
             SQL.AddOrderTable();
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            LoginPageUsernameBox.Focus();
         }
 
         private void TextBox_TextChanged (object sender, TextChangedEventArgs e)
@@ -61,7 +62,7 @@ namespace WpfApp3
             {
                 if (((Customer)user).Password == LoginPagePasswordBox.Password)
                 {
-                    CustomerPanel customerPanel = new CustomerPanel();
+                    CustomerPanel customerPanel = new CustomerPanel((Customer)user);
                     customerPanel.Show();
 
                     Close();

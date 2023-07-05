@@ -1,17 +1,19 @@
 ﻿using iText.Kernel.Pdf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using iText.Kernel.Pdf;
+
 
 namespace WpfApp3
 {
@@ -20,11 +22,17 @@ namespace WpfApp3
     /// </summary>
     public partial class PopUpWindow : Window
     {
-        public PopUpWindow()
+        Customer LoggedInCustomer;
+        double ChargeAmount;
+        Window window;
+        public PopUpWindow(Customer LoggedInCustomer, double ChargeAmount, Window window)
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.LoggedInCustomer = LoggedInCustomer;
+            this.ChargeAmount = ChargeAmount;
+            this.window = window;
         }
 
         private void YesButton_Click (object sender, RoutedEventArgs e)
@@ -42,19 +50,31 @@ namespace WpfApp3
                 iText.Layout.Document document = new iText.Layout.Document(pdf);
 
                 // Add a new paragraph with the text content
-                document.Add(new iText.Layout.Element.Paragraph("This is the text content of the PDF file."));
+                document.Add(new iText.Layout.Element.Paragraph("Receipt"));
+                document.Add(new iText.Layout.Element.Paragraph($"Charge amount: {ChargeAmount}"));
+                document.Add(new iText.Layout.Element.Paragraph($"New balance: {LoggedInCustomer.Wallet}"));
+                document.Add(new iText.Layout.Element.Paragraph($"{DateTime.Now}"));
 
                 // Close the document
                 document.Close();
 
-                MessageBox.Show("Saved successfully.");
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Failed creating your reciept. Error message : " + ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show($"Failed creating the file. {ex.Message}"); }
+            MessageBox.Show("Balance updated successfully!");
+            CustomerPanel panel = new CustomerPanel(LoggedInCustomer);
+            panel.Show();
+            Close();
+            window.Close();
+        }
+        
+        private void NoButton_Click (object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Balance updated successfully!");
+            CustomerPanel panel = new CustomerPanel(LoggedInCustomer);
+            panel.Show();
+            Close();
+            window.Close();
         }
 
-        private void NoButton_Click (object sender, RoutedEventArgs e) => Close();
     }
 }

@@ -174,7 +174,7 @@
             <Label Margin="0 40 0 0" FontSize="13">Customer SSN</Label>
             <TextBox Name="SsnField" Style="{DynamicResource TextBox}" Width="175" HorizontalAlignment="Left" Margin="5 0 0 0" MaxLength="10" TextChanged="SsnField_TextChanged"/>
             <Menu Width="92" Height="22" HorizontalAlignment="Left" Margin="5 20 0 5" Background="White">
-                <MenuItem Name="MainMenu" Header="Package Type" FontSize="13">
+                <MenuItem Name="MainMenu" Header="Package Type" FontSize="13" Click="MainMenu_Click_1">
                     <MenuItem Name="Object" Header="Object" IsCheckable="True" Checked="ObjectOptionCheck" Unchecked="ObjectOptionCheck"/>
                     <Separator Margin="5 0"/>
                     <MenuItem Name="Document" Header="Document" IsCheckable="True" Checked="DocumentOptionCheck" Unchecked="DocumentOptionCheck"/>
