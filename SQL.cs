@@ -46,7 +46,7 @@ namespace WpfApp3
         }
         public static void AddOrderTable()
         {
-            string createTableQuery = "CREATE TABLE [Order] (OrderID INT, SenderAddress VARCHAR(100), RecieverAddress VARCHAR(100), Content VARCHAR(100), HasExpensiveContent BIT, Weight FLOAT, postType VARCHAR(100), Phone VARCHAR(100), Status VARCHAR(100), CustomerSSN VARCHAR(100), Date DATE, Comment VARCHAR(100))";
+            string createTableQuery = "CREATE TABLE [Order] (OrderID INT, SenderAddress VARCHAR(100), RecieverAddress VARCHAR(100), Content VARCHAR(100), HasExpensiveContent BIT, Weight FLOAT, postType VARCHAR(100), Phone VARCHAR(100), Status VARCHAR(100), CustomerSSN VARCHAR(100), Date DATE, Comment VARCHAR(500))";
             try
             {
                 ExecuteQuery(createTableQuery);
@@ -184,7 +184,7 @@ namespace WpfApp3
                 using (SqlConnection connection = new SqlConnection(GlobalVariables.ConnectionString))
                 {
                     connection.Open();
-                    using (SqlCommand command = new SqlCommand("SELECT * FROM Employee", connection))
+                    using (SqlCommand command = new SqlCommand("SELECT DISTINCT * FROM Employee", connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -225,7 +225,7 @@ namespace WpfApp3
             using (SqlConnection connection = new SqlConnection(GlobalVariables.ConnectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Customer", connection))
+                using (SqlCommand command = new SqlCommand("SELECT DISTINCT * FROM Customer", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -269,7 +269,7 @@ namespace WpfApp3
                 using (SqlConnection connection = new SqlConnection(GlobalVariables.ConnectionString))
                 {
                     connection.Open();
-                    using (SqlCommand command = new SqlCommand("SELECT * FROM [Order]", connection))
+                    using (SqlCommand command = new SqlCommand("SELECT DISTINCT * FROM [Order]", connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
