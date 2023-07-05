@@ -1,5 +1,4 @@
-﻿using iText.Kernel.Pdf;
-using System;
+﻿using System;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
@@ -15,8 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using iText.Kernel.Pdf;
-
 
 namespace WpfApp3
 {
