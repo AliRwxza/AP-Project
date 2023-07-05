@@ -61,7 +61,7 @@ namespace WpfApp3
             {
                 if (((Customer)user).Password == LoginPagePasswordBox.Password)
                 {
-                    CustomerPanel customerPanel = new CustomerPanel();
+                    CustomerPanel customerPanel = new CustomerPanel((Customer)user);
                     customerPanel.Show();
 
                     Close();

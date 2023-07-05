@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,18 +21,26 @@ namespace WpfApp3
     /// </summary>
     public partial class CustomerPanel : Window
     {
-        static bool IdValidation = false;
-        static bool weightValidation = false;
-        static bool priceValidation = false;
-        static bool chargeAmountValidation = false;
+        bool IdValidation = false;
+        bool weightValidation = false;
+        bool priceValidation = false;
+        bool YYValidation = false;
+        bool MMValidation = false;
+        bool chargeAmountValidation = false;
+        bool[] Card = {false, false, false, false};
+        Order order = null;
+        Customer LoggedInCustomer;
 
-        public CustomerPanel ()
+        public CustomerPanel (Customer customer)
         {
             InitializeComponent();
+            LoggedInCustomer = customer;
         }
 
         private void OrderDetailsButton_Click (object sender, RoutedEventArgs e)
         {
+            CustomerSSN.Content = $"Customer SSN: {LoggedInCustomer.SSN}";
+
             MainPanel.Visibility = Visibility.Collapsed;
             MainPanelLeftColumn.Visibility = Visibility.Collapsed;
 
@@ -41,6 +50,14 @@ namespace WpfApp3
 
         private void SecondFeatureBackButton_Click (object sender, RoutedEventArgs e)
         {
+            PaidPriceField.Text = string.Empty;
+            WeightBox.Text = string.Empty;
+            Fragile.IsChecked = false;
+            Document.IsChecked = false;
+            Object.IsChecked = false;
+            Ordinary.IsChecked = false;
+            Express.IsChecked = false;
+
             SecondFeatureWindow.Visibility = Visibility.Collapsed;
             SecondFeatureLeftColumn.Visibility = Visibility.Collapsed;
 
@@ -55,6 +72,7 @@ namespace WpfApp3
 
             ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Visible;
             ThirdFeatureFirstPage.Visibility = Visibility.Visible;
+            Balance.Text = LoggedInCustomer.Wallet.ToString();
         }
 
         private void ChangeUsernamePasswordButton_Click (object sender, RoutedEventArgs e)
@@ -107,6 +125,7 @@ namespace WpfApp3
 
         private void SearchAnOrder_Click (object sender, RoutedEventArgs e)
         {
+
             MainPanel.Visibility = Visibility.Collapsed;
             MainPanelLeftColumn.Visibility = Visibility.Collapsed;
 
@@ -117,14 +136,12 @@ namespace WpfApp3
         // VALIDATE THE ID FIELD
         private void OrderIdField_TextChanged (object sender, TextChangedEventArgs e)
         {
-            if (int.TryParse(OrderIdField.Text, out int Id))
+            if (int.TryParse(OrderIdField.Text, out int Id) || OrderIdField.Text == string.Empty)
             {
-                IdValidation = true;
                 OrderIdField.Style = (Style)FindResource("TextBox");
             }
             else
             {
-                IdValidation = false;
                 OrderIdField.Style = (Style)FindResource("TextBoxError");
             }
         }
@@ -132,19 +149,35 @@ namespace WpfApp3
         // IF VALID, GO TO THE SECOND PAGE
         private void SearchButton_Click (object sender, RoutedEventArgs e)
         {
-            if (IdValidation)
+            List<Order> orders = SQL.ReadOrdersData().Where(x => x.CustomerSSN == LoggedInCustomer.SSN).ToList();
+            if (int.TryParse(OrderIdField.Text, out int Id))
             {
-                // EXTRACT THE INFORMATION AND PUT IT IN THE SECOND PAGE
-                OrdersReportFirstPage.Visibility = Visibility.Collapsed;
-                OrdersReportSecondPage.Visibility = Visibility.Visible;
-                if (true) // the package was delivered
+                foreach (var order in orders)
                 {
-                    SubmitOpinionHyperlink.Visibility = Visibility.Visible;
+                    if (order.OrderID == Id)
+                    {
+                        this.order = order;
+                        OrdersReportFirstPage.Visibility = Visibility.Collapsed;
+                        OrdersReportSecondPage.Visibility = Visibility.Visible;
+                        SenderAddressField.Text = order.SenderAddress;
+                        ReceiverAddressField.Text = order.RecieverAddress;
+                        PackageTypeField.Text = order.Content.ToString();
+                        ContainsValuableField.Text = order.HasExpensiveContent ? "Contains valueable content" : "Does not have valueable content";
+                        WeightField.Text = $"Weight: {order.Weight}";
+                        PostTypeField.Text = $"Post type: {order.postType}";
+                        PhoneNumberField.Text = order.Phone != string.Empty ? order.Phone : "No phone number has been submitted";
+                        if (order.Status == PackageStatus.Delivered) // the package was delivered
+                        {
+                            SubmitOpinionHyperlink.Visibility = Visibility.Visible;
+                        }
+                        else // the package was not delivered
+                        {
+                            SubmitOpinionHyperlink.Visibility = Visibility.Collapsed;
+                        }
+                        return;
+                    }
                 }
-                else // the package was not delivered
-                {
-                    SubmitOpinionHyperlink.Visibility = Visibility.Collapsed;
-                }
+                MessageBox.Show("Order ID not found!");
             }
             else
                 MessageBox.Show("Not a valid ID.");
@@ -153,6 +186,9 @@ namespace WpfApp3
         // IF CLICKED, GO BACK TO THE MAIN PANEL
         private void OrdersReportFirstPageBackButton_Click (object sender, RoutedEventArgs e)
         {
+            OrderIdField.Text = string.Empty;
+            order = null;
+            OrderIdField.Style = (Style)FindResource("TextBox");
             OrdersReportFirstPage.Visibility = Visibility.Collapsed;
             OrdersReportLeftColumn.Visibility = Visibility.Collapsed;
 
@@ -165,12 +201,12 @@ namespace WpfApp3
             if (double.TryParse(PaidPriceField.Text, out double price))
             {
                 PaidPriceField.Style = (Style)FindResource("TextBox");
-                weightValidation = true;
+                priceValidation = true;
             }
             else
             {
                 PaidPriceField.Style = (Style)FindResource("TextBoxError");
-                weightValidation = false;
+                priceValidation = false;
             }
         }
 
@@ -179,17 +215,69 @@ namespace WpfApp3
             if (double.TryParse(WeightBox.Text, out double weight))
             {
                 WeightBox.Style = (Style)FindResource("TextBox");
-                priceValidation = true;
+                weightValidation = true;
             }
             else
             {
                 WeightBox.Style = (Style)FindResource("TextBoxError");
-                priceValidation = false;
+                weightValidation = false;
             }
         }
 
         private void SearchOrdersButton_Click (object sender, RoutedEventArgs e)
         {
+            List<Order> orders = SQL.ReadOrdersData().Where(x => x.CustomerSSN == LoggedInCustomer.SSN).ToList();
+
+            if (priceValidation)
+            {
+                orders = orders.OrderBy(x => Math.Abs(x.Calculate() - double.Parse(PaidPriceField.Text))).ToList();
+            }
+            if (weightValidation)
+            {
+                orders = orders.OrderBy(x => Math.Abs(x.Weight - double.Parse(WeightBox.Text))).ToList();
+            }
+            if (Object.IsChecked || Document.IsChecked || Fragile.IsChecked)
+            {
+                if (!Object.IsChecked)
+                {
+                    orders = orders.Where(x => x.Content != PackageContent.Object).ToList();
+                }
+                if (!Document.IsChecked)
+                {
+                    orders = orders.Where(x => x.Content != PackageContent.Document).ToList();
+                }
+                if (!Fragile.IsChecked)
+                {
+                    orders = orders.Where(x => x.Content != PackageContent.Fragile).ToList();
+                }
+            }
+            if (Ordinary.IsChecked || Express.IsChecked)
+            {
+                if (!Ordinary.IsChecked)
+                {
+                    orders = orders.Where(x => x.postType != PostType.Ordinary).ToList();
+                }
+                if (!Express.IsChecked)
+                {
+                    orders = orders.Where(x => x.postType != PostType.Express).ToList();
+                }
+            }
+            try
+            {
+                using (StreamWriter writer = new StreamWriter("SearchResult.csv", false))
+                {
+                    writer.WriteLine("Order ID,Sender Address,Reciever Address,Content,Has Expensive Content,Weight,Post Type,Phone,Status,CustomerSSN,Date,Price,Comment");
+                    foreach (var order in orders)
+                    {
+                        writer.WriteLine($"{order.OrderID},{order.SenderAddress.Replace(',', '/')},{order.RecieverAddress.Replace(',', '/')},{order.Content},{order.HasExpensiveContent},{order.Weight},{order.postType},'{order.Phone,11},{order.Status,13},'{order.CustomerSSN,10},{order.Date.ToString().Substring(0, 8)},{order.Calculate()},{order.Comment.Replace(',', ' ')}");
+                        //writer.WriteLine(string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}"), order.OrderID, order.SenderAddress.Replace(',', '/'), order.RecieverAddress.Replace(',', '/'), order.Content, order.HasExpensiveContent, order.Weight, order.postType, order.Phone, order.Status, order.CustomerSSN, order.Calculate(), order.Date.ToString().Substring(0, 8), order.Comment.Replace(',', ' '));
+                    }
+                    writer.Close();
+                }
+
+                MessageBox.Show("Search completed! Now you can see the search result in the .csv file in the app directory.");
+            }
+            catch { MessageBox.Show("Please close the file and search again!"); }
             // search the data base
             // make a csv file for the results (sorted by order date)
             // the search range must contain every single order done by any of the employees
@@ -207,16 +295,24 @@ namespace WpfApp3
             {
                 if (CustomerOpinionField.Text.Length == 0)
                 {
-                    MessageBox.Show("This field can't be empty.");
+                    MessageBox.Show("This field can't be empty!");
                 }
-                else if (CustomerOpinionField.Text.Length >= 10)
+                else if (CustomerOpinionField.Text.Length < 10)
                 {
-                    // save the opinion
-                    MessageBox.Show("Saved successfully.");
+                    MessageBox.Show("This field must contain atleast 10 characters!");
+                }
+                else if (CustomerOpinionField.Text.Length >= 500)
+                {
+                    MessageBox.Show("Maximum limit of comment is 500 characters!");
                 }
                 else
                 {
-                    MessageBox.Show("This field must contain atleast 10 characters.");
+                    if (order != null)
+                    {
+                        order.Comment = CustomerOpinionField.Text;
+                        SQL.UpdateTable<Order>(order);
+                    }
+                    MessageBox.Show("Saved successfully.");
                 }
             }
             catch (Exception ex)
@@ -248,6 +344,14 @@ namespace WpfApp3
 
             ThirdFeatureSecondPageLeftColumn.Visibility = Visibility.Visible;
             ChargeWalletWindow.Visibility = Visibility.Visible;
+            First.Text = string.Empty;
+            Second.Text = string.Empty;
+            Third.Text = string.Empty;
+            Forth.Text = string.Empty;
+            Cvv2Field.Text = string.Empty;
+            MmField.Text = string.Empty;
+            YyField.Text = string.Empty;
+            ChargeAmountField.Text = string.Empty;
         }
 
         private void ThirdFeatureFirstPageBackButton_Click (object sender, RoutedEventArgs e)
@@ -260,8 +364,38 @@ namespace WpfApp3
         }
 
         //////////////////////// SECOND PAGE ( WALLET CHARGE )
+        
+        private void Changed_First(object sender, EventArgs e)
+        {
+            if (First.Text.Length == 3)
+            {
+                Second.Focus();
+            }
+        }
+        private void Changed_Second(object sender, EventArgs e)
+        {
+            if (Second.Text.Length == 4)
+            {
+                Third.Focus();
+            }
+        }
+        private void Changed_Third(object sender, EventArgs e)
+        {
+            if (Third.Text.Length == 4)
+            {
+                Forth.Focus();
+            }
+        }
+        private void Changed_Forth(object sender, EventArgs e)
+        {
+            if (Forth.Text.Length == 4)
+            {
+                Cvv2Field.Focus();
+            }
+        }
         private void Changed_CVV2 (object sender, EventArgs e)
         {
+            Cvv2Field.IsEnabled= true;
             Regex Cvv2Pattern = new Regex(@"^\d{3,4}$");
 
             if (Cvv2Field.Text == string.Empty)
@@ -274,10 +408,13 @@ namespace WpfApp3
                 PlaceHolderCVV2.Visibility = Visibility.Hidden;
 
                 if (Cvv2Pattern.IsMatch(Cvv2Field.Text))
+                {
                     Cvv2Field.Style = (Style)FindResource("TextBox");
+                }
                 else
                     Cvv2Field.Style = (Style)FindResource("TextBoxError");
             }
+            Cvv2Field.Style = (Style)FindResource("TextBox");
         }
 
         // must be less than or equal to 12
@@ -287,6 +424,7 @@ namespace WpfApp3
 
             if (MmField.Text == string.Empty)
             {
+                MMValidation = false;
                 PlaceHolderMM.Visibility = Visibility.Visible;
                 MmField.Style = (Style)FindResource("TextBoxError");
             }
@@ -295,9 +433,19 @@ namespace WpfApp3
                 PlaceHolderMM.Visibility = Visibility.Hidden;
 
                 if (patternMM.IsMatch(MmField.Text))
+                {
                     MmField.Style = (Style)FindResource("TextBox");
+                    MMValidation = true;
+                    if (YyField.Text == string.Empty)
+                    {
+                        YyField.Focus();
+                    }
+                }
                 else
+                {
                     MmField.Style = (Style)FindResource("TextBoxError");
+                    MMValidation = false;
+                }
             }
         }
 
@@ -309,40 +457,74 @@ namespace WpfApp3
             {
                 PlaceHolderYY.Visibility = Visibility.Visible;
                 YyField.Style = (Style)FindResource("TextBoxError");
+                YYValidation = false;
             }
             else
             {
                 PlaceHolderYY.Visibility = Visibility.Hidden;
 
                 if (PatternYY.IsMatch(YyField.Text))
-                    YyField.Style = (Style)FindResource("TextBox");
-                else
-                    YyField.Style = (Style)FindResource("TextBoxError");
-            }
-        }
-
-        private void PayButton_Click (object sender, EventArgs e)
-        {
-            // check card number and cvv2 and mm and yy too
-            if (chargeAmountValidation)
-            {
-                int chargeAmount = int.Parse(ChargeAmountField.Text);
-
-                if (chargeAmount > 10000)
                 {
-                    // add to the wallet
-
-                    // and ask if they want this action to get saved
-                    PopUpWindow popUpWindow = new PopUpWindow();
-                    popUpWindow.Show();
-
-                    // will need date and time
-                    // will be making PDF
+                    YyField.Style = (Style)FindResource("TextBox");
+                    YYValidation = true;
+                }
+                else
+                {
+                    YYValidation = false;
+                    YyField.Style = (Style)FindResource("TextBoxError");
                 }
             }
-            else
-                MessageBox.Show("Minimum value of charge amount is 10,000");
         }
+
+        private void PayButton_Click(object sender, EventArgs e)
+        {
+            string CardNumber = First.Text + Second.Text + Third.Text + Forth.Text;
+            if (CardNumber.Length == 16)
+            {
+                if (Validation.LUHN(CardNumber))
+                {
+                    if (Cvv2Field.Text != string.Empty)
+                    {
+                        if (Validation.CVV2(Cvv2Field.Text))
+                        {
+                            if (YyField.Text != string.Empty && MmField.Text != string.Empty)
+                            {
+                                if (MMValidation && YYValidation)
+                                {
+                                    //if (chargeAmountValidation)
+                                    //{
+                                    if (double.TryParse(ChargeAmountField.Text, out double chargeAmount))
+                                    {
+                                        if (chargeAmount >= 10000)
+                                        {
+                                            // add to the wallet
+                                            LoggedInCustomer.Wallet += chargeAmount;
+                                            // and ask if they want this action to get saved
+                                            bool Closed = false;
+                                            PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this);
+                                            popUpWindow.Show();
+                                            // will need date and time
+                                            // will be making PDF
+                                        }
+                                        else { MessageBox.Show("Minimum value of charge amount is 10,000!"); }
+                                    }
+                                    else { MessageBox.Show("Invalid charge amount!"); }
+                                    //}
+                                    //else { MessageBox.Show("Minimum value of charge amount is 10,000!"); }
+                                }
+                                else { MessageBox.Show("Invalid date!"); }
+                            }
+                            else { MessageBox.Show("Fill the date fields!"); }
+                        }
+                        else { MessageBox.Show("Invalid CVV2!"); }
+                    }
+                    else { MessageBox.Show("Fill the CVV2 field!"); }
+                }
+                else { MessageBox.Show("Invalid card number!"); }
+            }
+            else { MessageBox.Show("Fill the card number field."); }
+        }
+        
 
         private void WalletChargeBackButton_Click (object sender, RoutedEventArgs e)
         {
@@ -351,28 +533,51 @@ namespace WpfApp3
 
             ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Visible;
             ThirdFeatureFirstPage.Visibility = Visibility.Visible;
+
+            //Balance.Text = LoggedInCustomer.Wallet.ToString();
         }
 
         //////////////////////////////////////////////////// FOURTH FEATURE
 
         private void ChangeUsernameButton_Click (object sender, RoutedEventArgs e)
         {
-            if (NewUsernameField.Text.Length == 0)
+            try
             {
-                MessageBox.Show("New username field can't be empty.");
-                NewUsernameField.Style = (Style)FindResource("TextBoxError");
+                if (NewUsernameField.Text.Length == 0)
+                {
+                    MessageBox.Show("New username field can't be empty.");
+                    NewUsernameField.Style = (Style)FindResource("TextBoxError");
+                }
+                else if (!Validation.UserName(NewUsernameField.Text))
+                {
+                    if (SQL.UserExist(NewUsernameField.Text))
+                    {
+                        MessageBox.Show("This username already exists!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Username must be between 3 and 32 letters and alphanumeric only.");
+                    }
+                    NewUsernameField.Style = (Style)FindResource("TextBoxError");
+                }
+                else if (NewUsernameField.Text == LoggedInCustomer.UserName)
+                {
+                    MessageBox.Show("Username hasn't changed!");
+                }
+                // check the password
+                else if (UsernameChangePasswordField.Text != LoggedInCustomer.Password)
+                {
+                    MessageBox.Show("Wrong password.");
+                    UsernameChangePasswordField.Style = (Style)FindResource("TextBoxError");
+                }
+                else
+                {
+                    LoggedInCustomer.UserName = NewUsernameField.Text;
+                    SQL.UpdateTable<Customer>(LoggedInCustomer);
+                    MessageBox.Show("Username Changed Successfully.");
+                }
             }
-            else if (Validation.UserName(NewUsernameField.Text))
-            {
-                MessageBox.Show("Username must be between 3 and 32 letters and alphanumeric only.");
-                NewUsernameField.Style = (Style)FindResource("TextBoxError");
-            }
-            // check the password
-            else if (false)
-            {
-                MessageBox.Show("Wrong password.");
-                UsernameChangePasswordField.Style = (Style)FindResource("TextBoxError");
-            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }   
         }
 
         private void ChangePasswordButton_Click (object sender, RoutedEventArgs e)
@@ -400,7 +605,7 @@ namespace WpfApp3
                 NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
             }
             // check if the password is wrong
-            else if (false)
+            else if (LoggedInCustomer.Password != PasswordChangePasswordField.Text)
             {
                 MessageBox.Show("Wrong password. Try again.");
                 PasswordChangePasswordField.Style = (Style)FindResource("TextBoxError");
@@ -409,7 +614,11 @@ namespace WpfApp3
             {
                 try
                 {
-                    // change the password
+                    NewPasswordField.Style = (Style)FindResource("SignUpPageTextBox");
+                    NewPasswordAgainField.Style = (Style)FindResource("SignUpPageTextBox");
+                    
+                    LoggedInCustomer.Password = NewPasswordField.Text;
+                    SQL.UpdateTable<Customer>(LoggedInCustomer);
                     MessageBox.Show("Password Changed Successfully.");
                 }
                 catch (Exception ex)
