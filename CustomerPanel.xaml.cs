@@ -1,6 +1,11 @@
-﻿using System;
+﻿using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,6 +17,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Xps.Packaging;
+using System.Xml.Linq;
 
 namespace WpfApp3
 {
@@ -120,12 +127,12 @@ namespace WpfApp3
             if (int.TryParse(OrderIdField.Text, out int Id))
             {
                 IdValidation = true;
-                OrderIdField.Style = (Style)FindResource("TextBox");
+                OrderIdField.Style = (System.Windows.Style)FindResource("TextBox");
             }
             else
             {
                 IdValidation = false;
-                OrderIdField.Style = (Style)FindResource("TextBoxError");
+                OrderIdField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
         }
 
@@ -164,12 +171,12 @@ namespace WpfApp3
         {
             if (double.TryParse(PaidPriceField.Text, out double price))
             {
-                PaidPriceField.Style = (Style)FindResource("TextBox");
+                PaidPriceField.Style = (System.Windows.Style)FindResource("TextBox");
                 weightValidation = true;
             }
             else
             {
-                PaidPriceField.Style = (Style)FindResource("TextBoxError");
+                PaidPriceField.Style = (System.Windows.Style)FindResource("TextBoxError");
                 weightValidation = false;
             }
         }
@@ -178,12 +185,12 @@ namespace WpfApp3
         {
             if (double.TryParse(WeightBox.Text, out double weight))
             {
-                WeightBox.Style = (Style)FindResource("TextBox");
+                WeightBox.Style = (System.Windows.Style)FindResource("TextBox");
                 priceValidation = true;
             }
             else
             {
-                WeightBox.Style = (Style)FindResource("TextBoxError");
+                WeightBox.Style = (System.Windows.Style)FindResource("TextBoxError");
                 priceValidation = false;
             }
         }
@@ -267,16 +274,16 @@ namespace WpfApp3
             if (Cvv2Field.Text == string.Empty)
             {
                 PlaceHolderCVV2.Visibility = Visibility.Visible;
-                Cvv2Field.Style = (Style)FindResource("TextBoxError");
+                Cvv2Field.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             else
             {
                 PlaceHolderCVV2.Visibility = Visibility.Hidden;
 
                 if (Cvv2Pattern.IsMatch(Cvv2Field.Text))
-                    Cvv2Field.Style = (Style)FindResource("TextBox");
+                    Cvv2Field.Style = (System.Windows.Style)FindResource("TextBox");
                 else
-                    Cvv2Field.Style = (Style)FindResource("TextBoxError");
+                    Cvv2Field.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
         }
 
@@ -288,16 +295,16 @@ namespace WpfApp3
             if (MmField.Text == string.Empty)
             {
                 PlaceHolderMM.Visibility = Visibility.Visible;
-                MmField.Style = (Style)FindResource("TextBoxError");
+                MmField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             else
             {
                 PlaceHolderMM.Visibility = Visibility.Hidden;
 
                 if (patternMM.IsMatch(MmField.Text))
-                    MmField.Style = (Style)FindResource("TextBox");
+                    MmField.Style = (System.Windows.Style)FindResource("TextBox");
                 else
-                    MmField.Style = (Style)FindResource("TextBoxError");
+                    MmField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
         }
 
@@ -308,16 +315,16 @@ namespace WpfApp3
             if (YyField.Text == string.Empty)
             {
                 PlaceHolderYY.Visibility = Visibility.Visible;
-                YyField.Style = (Style)FindResource("TextBoxError");
+                YyField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             else
             {
                 PlaceHolderYY.Visibility = Visibility.Hidden;
 
                 if (PatternYY.IsMatch(YyField.Text))
-                    YyField.Style = (Style)FindResource("TextBox");
+                    YyField.Style = (System.Windows.Style)FindResource("TextBox");
                 else
-                    YyField.Style = (Style)FindResource("TextBoxError");
+                    YyField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
         }
 
@@ -360,18 +367,18 @@ namespace WpfApp3
             if (NewUsernameField.Text.Length == 0)
             {
                 MessageBox.Show("New username field can't be empty.");
-                NewUsernameField.Style = (Style)FindResource("TextBoxError");
+                NewUsernameField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             else if (Validation.UserName(NewUsernameField.Text))
             {
                 MessageBox.Show("Username must be between 3 and 32 letters and alphanumeric only.");
-                NewUsernameField.Style = (Style)FindResource("TextBoxError");
+                NewUsernameField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             // check the password
             else if (false)
             {
                 MessageBox.Show("Wrong password.");
-                UsernameChangePasswordField.Style = (Style)FindResource("TextBoxError");
+                UsernameChangePasswordField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
         }
 
@@ -380,30 +387,30 @@ namespace WpfApp3
             if (NewPasswordField.Text.Length == 0)
             {
                 MessageBox.Show("Empty password field.");
-                NewPasswordField.Style = (Style)FindResource("TextBoxError");
+                NewPasswordField.Style = (System.Windows.Style)FindResource("TextBoxError");
 
             }
             else if (NewPasswordAgainField.Text.Length == 0)
             {
                 MessageBox.Show("You need to enter the password again.");
-                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+                NewPasswordAgainField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             else if (NewPasswordField.Text != NewPasswordAgainField.Text)
             {
                 MessageBox.Show("Entered passwords do not match");
-                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+                NewPasswordAgainField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             else if (!Validation.Password(NewPasswordField.Text))
             {
                 MessageBox.Show("Password must have atleat 1 capital letter, 1 small letter, a number, and have atleast 8 letters overall.");
-                NewPasswordField.Style = (Style)FindResource("TextBoxError");
-                NewPasswordAgainField.Style = (Style)FindResource("TextBoxError");
+                NewPasswordField.Style = (System.Windows.Style)FindResource("TextBoxError");
+                NewPasswordAgainField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             // check if the password is wrong
             else if (false)
             {
                 MessageBox.Show("Wrong password. Try again.");
-                PasswordChangePasswordField.Style = (Style)FindResource("TextBoxError");
+                PasswordChangePasswordField.Style = (System.Windows.Style)FindResource("TextBoxError");
             }
             else
             {
@@ -444,6 +451,30 @@ namespace WpfApp3
                     return true;
 
             return false;
+        }
+
+        private void PayButton_Click (object sender, RoutedEventArgs e)
+        {
+            // check card number
+            // add the value 
+            PopUpWindow popUpWindow = new PopUpWindow();
+            popUpWindow.Show();
+        }
+
+        private void MmField_PreviewTextInput (object sender, TextCompositionEventArgs e)
+        {
+            int number;
+
+            if (!int.TryParse(e.Text, out number))
+                e.Handled = true;
+            else
+            {
+                int.TryParse(MmField.Text + e.Text, out number);
+                if (number > 12)
+                    e.Handled = true;
+                else
+                    chargeAmountValidation = true;
+            }
         }
     }
 }
