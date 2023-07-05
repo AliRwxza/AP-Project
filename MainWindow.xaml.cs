@@ -27,6 +27,7 @@ namespace WpfApp3
             SQL.AddOrderTable();
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            LoginPageUsernameBox.Focus();
         }
 
         private void TextBox_TextChanged (object sender, TextChangedEventArgs e)

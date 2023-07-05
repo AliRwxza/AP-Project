@@ -341,9 +341,9 @@ namespace WpfApp3
         {
             ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Collapsed;
             ThirdFeatureFirstPage.Visibility = Visibility.Collapsed;
-
             ThirdFeatureSecondPageLeftColumn.Visibility = Visibility.Visible;
             ChargeWalletWindow.Visibility = Visibility.Visible;
+            ChargeAmountField.Focus();
             First.Text = string.Empty;
             Second.Text = string.Empty;
             Third.Text = string.Empty;
@@ -367,7 +367,7 @@ namespace WpfApp3
         
         private void Changed_First(object sender, EventArgs e)
         {
-            if (First.Text.Length == 3)
+            if (First.Text.Length == 4)
             {
                 Second.Focus();
             }
@@ -395,7 +395,6 @@ namespace WpfApp3
         }
         private void Changed_CVV2 (object sender, EventArgs e)
         {
-            Cvv2Field.IsEnabled= true;
             Regex Cvv2Pattern = new Regex(@"^\d{3,4}$");
 
             if (Cvv2Field.Text == string.Empty)
@@ -406,7 +405,17 @@ namespace WpfApp3
             else
             {
                 PlaceHolderCVV2.Visibility = Visibility.Hidden;
-
+                if (Cvv2Field.Text.Length == 4)
+                {
+                    if (MmField.Text == string.Empty)
+                    {
+                        MmField.Focus();
+                    }
+                    else if (YyField.Text == string.Empty)
+                    {
+                        YyField.Focus();
+                    }
+                }
                 if (Cvv2Pattern.IsMatch(Cvv2Field.Text))
                 {
                     Cvv2Field.Style = (Style)FindResource("TextBox");
@@ -432,8 +441,14 @@ namespace WpfApp3
             {
                 PlaceHolderMM.Visibility = Visibility.Hidden;
 
-                if (patternMM.IsMatch(MmField.Text))
+                if (patternMM.IsMatch(MmField.Text) && int.TryParse(MmField.Text, out int MM))
                 {
+                    if (MM > 12 || MM < 0)
+                    {
+                        MmField.Style = (Style)FindResource("TextBoxError");
+                        MMValidation = false;
+                        return;
+                    }
                     MmField.Style = (Style)FindResource("TextBox");
                     MMValidation = true;
                     if (YyField.Text == string.Empty)
@@ -463,8 +478,14 @@ namespace WpfApp3
             {
                 PlaceHolderYY.Visibility = Visibility.Hidden;
 
-                if (PatternYY.IsMatch(YyField.Text))
+                if (PatternYY.IsMatch(YyField.Text) && int.TryParse(YyField.Text, out int YY))
                 {
+                    if (YY > 99 || YY < 0)
+                    {
+                        YYValidation = false;
+                        YyField.Style = (Style)FindResource("TextBoxError");
+                        return;
+                    }
                     YyField.Style = (Style)FindResource("TextBox");
                     YYValidation = true;
                 }
@@ -489,6 +510,7 @@ namespace WpfApp3
                         {
                             if (YyField.Text != string.Empty && MmField.Text != string.Empty)
                             {
+                                
                                 if (MMValidation && YYValidation)
                                 {
                                     //if (chargeAmountValidation)
@@ -499,8 +521,8 @@ namespace WpfApp3
                                         {
                                             // add to the wallet
                                             LoggedInCustomer.Wallet += chargeAmount;
+                                            SQL.UpdateTable<Customer>(LoggedInCustomer);
                                             // and ask if they want this action to get saved
-                                            bool Closed = false;
                                             PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this);
                                             popUpWindow.Show();
                                             // will need date and time

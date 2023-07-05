@@ -210,11 +210,7 @@
             <Button Name="CustomerOpinionPageBackButton" Template="{StaticResource LeftArrowButtonTemplate}" Visibility="Visible" Foreground="Black" Width="30"
                 Height="20" Margin="5" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Click="CustomerOpinionPageBackButton_Click"/>
             <Label FontSize="17" Margin="10 30 0 0">Customer Opinion</Label>
-            <TextBlock Name="CustomerOpinionField" Margin="15 0 40 0" TextWrapping="Wrap" Text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam, architecto
-modi! Facilis, cumque. Ullam architecto magni repudiandae, temporibus modi sequi
-natus a tempore quidem labore, eveniet quae blanditiis laboriosam quo ratione et
-impedit dolorem corrupti. Quam aperiam non possimus animi quia? Esse vitae amet
-molestiae perspiciatis repudiandae ex natus neque!"/>
+            <TextBlock Name="CustomerOpinionField" Margin="15 0 40 0" TextWrapping="Wrap" Text=""/>
         </StackPanel>
     </Grid>
 </Window>

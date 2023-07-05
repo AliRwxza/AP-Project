@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using iText.Kernel.Pdf;
 
 
 namespace WpfApp3
@@ -39,18 +38,25 @@ namespace WpfApp3
         {
             try
             {
-                using (FileStream stream = new FileStream("Receipt.pdf", FileMode.Create))
-                {
-                    PdfDocument document = new PdfDocument();
+                string path = "PaymentReciept.pdf"; // must be in this format : "Payment Reciept " + ID + ".pdf"
 
-                    PdfWriter writer = PdfWriter.GetInstance(document, stream);
-                    document.Open();
-                    document.Add(new Header("Receipt", "reciept"));
-                    document.Add(new Paragraph($"Charge amount: {ChargeAmount}"));
-                    document.Add(new Paragraph($"New balance: {LoggedInCustomer.Wallet}"));
-                    document.Add(new Paragraph($"{DateTime.Now}"));
-                    document.Close();
-                }
+                PdfWriter writer = new PdfWriter(path);
+
+                // Create a new PDF document
+                PdfDocument pdf = new PdfDocument(writer);
+
+                // Create a new iText document
+                iText.Layout.Document document = new iText.Layout.Document(pdf);
+
+                // Add a new paragraph with the text content
+                document.Add(new iText.Layout.Element.Paragraph("Receipt"));
+                document.Add(new iText.Layout.Element.Paragraph($"Charge amount: ChargeAmount"));
+                document.Add(new iText.Layout.Element.Paragraph($"New balance: LoggedInCustomer.Wallet"));
+                document.Add(new iText.Layout.Element.Paragraph($"DateTime.Now"));
+
+                // Close the document
+                document.Close();
+
             }
             catch (Exception ex) { MessageBox.Show($"Failed creating the file. {ex.Message}"); }
             MessageBox.Show("Balance updated successfully!");

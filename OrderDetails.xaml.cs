@@ -23,15 +23,11 @@ namespace WpfApp3
         //Order order;
         static bool IdValidation = false;
         static bool EmailSent = true;
+        Order order = null;
         public OrderDetails ()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
-            //order = SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)).ToList()[0];
-            //foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
-            //{
-            //    MainMenu.Header = order.Status.ToString();
-            //}
         }
 
         private void OrderIdField_TextChanged (object sender, TextChangedEventArgs e)
@@ -63,6 +59,7 @@ namespace WpfApp3
 
                 foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
                 {
+                    this.order = order;
                     switch (order.Status.ToString())
                     {
                         case "Submitted":
@@ -96,7 +93,7 @@ namespace WpfApp3
                     SenderAddressField.Text = order.SenderAddress;
                     ReceiverAddressField.Text = order.RecieverAddress;
                     PackageTypeField.Text = order.Content.ToString();
-                    ContainsValuableField.Text = (bool)order.HasExpensiveContent ? "Contains valueable content" : "Doesn't contain valueable content";
+                    ContainsValuableField.Text = order.HasExpensiveContent ? "Contains valueable content" : "Doesn't contain valueable content";
                     WeightField.Text = $"Weight: {order.Weight}";
                     PostTypeField.Text = $"Post Type: {order.postType}";
                     PhoneNumberField.Text = order.Phone != "" ? $"Phone: {order.Phone}" : "No phone number has been set";
@@ -204,16 +201,14 @@ namespace WpfApp3
             FirstPage.Visibility = Visibility.Visible;
             SecondPage.Visibility = Visibility.Collapsed;
             BackButton.Visibility = Visibility.Collapsed;
-            //foreach (var order in SQL.ReadOrdersData().Where(x => x.OrderID == int.Parse(OrderIdField.Text)))
-            //{
-            //    order.Status = Enum.Parse<PackageStatus>(MainMenu.Name);
-            //    SQL.UpdateTable(order);
-            //}
-                
         }
 
         private void CustomerOpinion_Click (object sender, RoutedEventArgs e)
         {
+            if (order != null)
+            {
+                CustomerOpinionField.Text = order.Comment != string.Empty ? order.Comment : "The customer hasn't submitted any opinion!";
+            }
             SecondPage.Visibility = Visibility.Collapsed;
             BackButton.Visibility = Visibility.Collapsed;
 
@@ -223,7 +218,8 @@ namespace WpfApp3
         private void CustomerOpinionPageBackButton_Click (object sender, RoutedEventArgs e)
         {
             CustomerOpinionPage.Visibility = Visibility.Collapsed;
-
+            CustomerOpinionField.Text = string.Empty;
+            order = null;
             SecondPage.Visibility = Visibility.Visible;
             BackButton.Visibility = Visibility.Visible;
         }

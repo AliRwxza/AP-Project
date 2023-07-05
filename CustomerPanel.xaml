@@ -647,13 +647,13 @@
                                 <SolidColorBrush Color="#FFFFFF"/>
                             </Rectangle.Fill>
                         </Rectangle>
-                        <TextBox Name="First" PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="15 0 0 0" TextAlignment="Center" BorderThickness="0"/>
+                        <TextBox Name="First" PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="15 0 0 0" TextAlignment="Center" BorderThickness="0" TextChanged="Changed_First"/>
                         <TextBlock FontSize="33" Text="-" Margin="85 0 0 0" Foreground="LightGray"/>
-                        <TextBox Name="Second" PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="105 0 0 0" TextAlignment="Center" BorderThickness="0"/>
+                        <TextBox Name="Second" PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="105 0 0 0" TextAlignment="Center" BorderThickness="0" TextChanged="Changed_Second"/>
                         <TextBlock FontSize="33" Text="-" Margin="180 0 0 0" Foreground="LightGray"/>
-                        <TextBox Name="Third" PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="205 0 0 0" TextAlignment="Center" BorderThickness="0"/>
+                        <TextBox Name="Third" PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="205 0 0 0" TextAlignment="Center" BorderThickness="0" TextChanged="Changed_Third"/>
                         <TextBlock FontSize="33" Text="-" Margin="280 0 0 0" Foreground="LightGray"/>
-                        <TextBox Name="Forth" PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="305 0 0 0" TextAlignment="Center" BorderThickness="0"/>
+                        <TextBox Name="Forth" PreviewTextInput="OnlyNumbers_PreviewTextInput" Width="65" Height="40" MaxLength="4" FontSize="30" HorizontalAlignment="Left" Margin="305 0 0 0" TextAlignment="Center" BorderThickness="0" TextChanged="Changed_Forth"/>
                     </Grid>
                     <Grid Margin="4 0 0 0">
                         <TextBox PreviewTextInput="OnlyNumbers_PreviewTextInput" MaxLength="4" Name="Cvv2Field" Style="{DynamicResource Cvv2TextBox}" TextAlignment="Center" Margin="20 20 0 0" Height="20" Width="50" HorizontalAlignment="Left" TextChanged="Changed_CVV2"/>
