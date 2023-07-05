@@ -28,10 +28,31 @@ namespace WpfApp3
 
         private void YesButton_Click (object sender, RoutedEventArgs e)
         {
-            // if (pdf created successfully)
-            MessageBox.Show("Saved successfully.");
-            // else
-            //MessageBox.Show("Failed creating the file.");
+            try
+            {
+                string path = "PaymentReciept.pdf"; // must be in this format : "Payment Reciept " + ID + ".pdf"
+
+                PdfWriter writer = new PdfWriter(path);
+
+                // Create a new PDF document
+                PdfDocument pdf = new PdfDocument(writer);
+
+                // Create a new iText document
+                iText.Layout.Document document = new iText.Layout.Document(pdf);
+
+                // Add a new paragraph with the text content
+                document.Add(new iText.Layout.Element.Paragraph("This is the text content of the PDF file."));
+                document.Add(new iText.Layout.Element.Paragraph($"{DateTime.Now}"));
+
+                // Close the document
+                document.Close();
+
+                MessageBox.Show("Saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed creating your reciept. Error message : " + ex.Message);
+            }
         }
 
         private void NoButton_Click (object sender, RoutedEventArgs e) => Close();
