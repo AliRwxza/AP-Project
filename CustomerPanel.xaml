@@ -707,10 +707,10 @@
                 <TextBlock FontSize="35" Margin="42 20">Password</TextBlock>
                 <Label Margin="10 5 0 0" FontSize="15">New Password</Label>
                 <TextBox Name="NewPasswordField" Style="{DynamicResource TextBox}" TextAlignment="Center" Height="30" FontSize="18"
-                         FontWeight="Light" Width="175" HorizontalAlignment="Left" Margin="15 0"/>
+                         FontWeight="Light" Width="175" HorizontalAlignment="Left" Margin="15 0" TextChanged="NewPasswordField_Changed"/>
                 <Label Margin="10 0 0 0" FontSize="15">New Password Again</Label>
                 <TextBox Name="NewPasswordAgainField" Style="{DynamicResource TextBox}" TextAlignment="Center" Height="30" FontSize="18"
-                         FontWeight="Light" Width="175" HorizontalAlignment="Left" Margin="15 0"/>
+                         FontWeight="Light" Width="175" HorizontalAlignment="Left" Margin="15 0" TextChanged="NewPasswordAgainField_Changed"/>
                 <Label Margin="10 0 0 0" FontSize="15">Current Password</Label>
                 <TextBox Name="PasswordChangePasswordField" Style="{DynamicResource TextBox}" TextAlignment="Center" Width="175" 
                          Height="30" FontSize="18" FontWeight="Light" HorizontalAlignment="Left" Margin="15 0"/>

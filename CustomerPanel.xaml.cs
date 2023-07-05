@@ -134,6 +134,7 @@ namespace WpfApp3
 
             OrdersReportLeftColumn.Visibility = Visibility.Visible;
             OrdersReportFirstPage.Visibility = Visibility.Visible;
+            OrderIdField.Focus();
         }
 
         // VALIDATE THE ID FIELD
@@ -267,7 +268,7 @@ namespace WpfApp3
             }
             try
             {
-                using (StreamWriter writer = new StreamWriter($"SearchResult{LoggedInCustomer.UserName}.csv", false))
+                using (StreamWriter writer = new StreamWriter($"SearchResult_customer_{LoggedInCustomer.SSN}.csv", false))
                 {
                     writer.WriteLine("Order ID,Sender Address,Reciever Address,Content,Has Expensive Content,Weight,Post Type,Phone,Status,CustomerSSN,Date,Price,Comment");
                     foreach (var order in orders)
@@ -596,6 +597,12 @@ namespace WpfApp3
                 }
                 else
                 {
+                    if (!Validation.UniqueUsername(NewUsernameField.Text))
+                    {
+                        MessageBox.Show("Username taken!");
+                        return;
+                    }
+                    
                     LoggedInCustomer.UserName = NewUsernameField.Text;
                     SQL.UpdateTable<Customer>(LoggedInCustomer);
                     MessageBox.Show("Username Changed Successfully.");
@@ -638,8 +645,8 @@ namespace WpfApp3
             {
                 try
                 {
-                    NewPasswordField.Style = (Style)FindResource("SignUpPageTextBox");
-                    NewPasswordAgainField.Style = (Style)FindResource("SignUpPageTextBox");
+                    NewPasswordField.Style = (Style)FindResource("TextBox");
+                    NewPasswordAgainField.Style = (Style)FindResource("TextBox");
                     
                     LoggedInCustomer.Password = NewPasswordField.Text;
                     SQL.UpdateTable<Customer>(LoggedInCustomer);
@@ -700,6 +707,28 @@ namespace WpfApp3
                     e.Handled = true;
                 else
                     chargeAmountValidation = true;
+            }
+        }
+        private void NewPasswordField_Changed(object sender, EventArgs e)
+        {
+            if (!Validation.Password(NewPasswordField.Text))
+            {
+                NewPasswordField.Style = (System.Windows.Style)FindResource("TextBoxError");
+            }
+            else
+            {
+                NewPasswordField.Style = (System.Windows.Style)FindResource("TextBox");
+            }
+        }
+        private void NewPasswordAgainField_Changed(object sender, EventArgs e)
+        {
+            if (!Validation.Password(NewPasswordField.Text))
+            {
+                NewPasswordAgainField.Style = (System.Windows.Style)FindResource("TextBoxError");
+            }
+            else
+            {
+                NewPasswordAgainField.Style = (System.Windows.Style)FindResource("TextBox");
             }
         }
     }

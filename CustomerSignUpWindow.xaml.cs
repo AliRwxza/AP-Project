@@ -33,99 +33,49 @@ namespace WpfApp3
         {
             FirstNameBox.Style = Validation.Name(FirstNameBox.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
             bools[0] = Validation.Name(FirstNameBox.Text);
-
-            //Regex nameValidationPattern = new Regex(@"^[a-zA-Z]{3,32}$");
-            //if (!nameValidationPattern.IsMatch(FirstNameBox.Text))
-            //{
-            //    FirstNameBox.Style = (Style)FindResource("TextBoxError");
-            //    bools[0] = false;
-            //}
-            //else
-            //{
-            //    FirstNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-            //    bools[0] = true;
-            //}
         }
 
         private void NameBox2_TextChanged(object sender, TextChangedEventArgs e)
         {
             LastNameBox.Style = Validation.Name(LastNameBox.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
             bools[1] = Validation.Name(LastNameBox.Text);
-
-            //Regex nameValidationPattern = new Regex(@"^[a-zA-Z]{3,32}$");
-            //if (!nameValidationPattern.IsMatch(LastNameBox.Text))
-            //{
-            //    LastNameBox.Style = (Style)FindResource("TextBoxError");
-            //    bools[1] = false;
-            //}
-            //else if (nameValidationPattern.IsMatch(LastNameBox.Text))
-            //{
-            //    LastNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-            //    bools[1] = true;
-            //}
         }
 
         private void Ssn_TextChanged (object sender, TextChangedEventArgs e)
         {
             SsnField.Style = Validation.SSN(SsnField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
             bools[2] = Validation.SSN(SsnField.Text);
-
-
-            //Regex SsnValidation = new Regex(@"^00\d{8}$");
-
-            //if (!SsnValidation.IsMatch(SsnField.Text))
-            //{
-            //    SsnField.Style = (Style)FindResource("TextBoxError");
-            //    bools[2] = false;
-            //}
-            //else if (SsnValidation.IsMatch(SsnField.Text))
-            //{
-            //    // hmmm
-            //    SsnField.Style = (Style)FindResource("SignUpPageTextBox");
-            //    bools[2] = true;
-            //}
         }
 
         private void EmailField_TextChanged (object sender, TextChangedEventArgs e)
         {
             EmailField.Style = Validation.Email(EmailField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
             bools[3] = Validation.Email(EmailField.Text);
-
-            //Regex emailValidation = new Regex(@"^[a-zA-Z]{3,32}@[a-zA-Z]{3,32}.[a-zA-Z]{2,3}$");
-            //if (!emailValidation.IsMatch(EmailField.Text))
-            //{
-            //    EmailField.Style = (Style)FindResource("TextBoxError");
-            //    bools[4] = false;
-            //}
-            //else if (emailValidation.IsMatch(EmailField.Text))
-            //{
-            //    EmailField.Style = (Style)FindResource("SignUpPageTextBox");
-            //    bools[4] = true;
-            //}
         }
 
         private void PhoneNumberField_TextChanged (object sender, TextChangedEventArgs e)
         {
             PhoneNumberField.Style = Validation.Phone(PhoneNumberField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
             bools[4] = Validation.Phone(PhoneNumberField.Text);
-
-            //Regex phonenumberPattern = new Regex(@"^09\d{9}$");
-
-            //if (!phonenumberPattern.IsMatch(PhoneNumberField.Text))
-            //{
-            //    PhoneNumberField.Style = (Style)FindResource("TextBoxError");
-            //    bools[4] = false;
-            //}
-            //else if (phonenumberPattern.IsMatch(PhoneNumberField.Text))
-            //{
-            //    PhoneNumberField.Style = (Style)FindResource("SignUpPageTextBox");
-            //    bools[4] = true;
-            //}
         }
 
         private void CustomerSignUpPageSubmitButtonClick (object sender, RoutedEventArgs e)
         {
-            
+            if (SQL.ReadCustomersData().Where(x => x.SSN == SsnField.Text).ToList().Count != 0)
+            {
+                MessageBox.Show("Someone else has registered with this ssn!");
+                return;
+            }
+            if (!Validation.UniqueEmail(EmailField.Text))
+            {
+                MessageBox.Show("This email is already in use! \nTry logging in.");
+                return;
+            }
+            if (!Validation.UniquePhone(PhoneNumberField.Text))
+            {
+                MessageBox.Show("Phone number in use! \nTry logging in.");
+                return;
+            }
             for (int i = 0; i < 5; i++)
             {
                 if (bools[i] == false)
@@ -142,9 +92,6 @@ namespace WpfApp3
             
             SQL.InsertIntoTable(customer);
             new Thread(() => Email.SendEmail(GlobalVariables.SourceEmail, customer.Email, "Your username and password", $"Welcome to Post Company!\nUsername is: {Username}\nPassword is: {Password}")).Start(); 
-            // generate a random and unique username and password(both must be unique)
-            // E-mail the username and password to the customer
-            // add the customer information
 
             Close();
         }

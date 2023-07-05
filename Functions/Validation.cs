@@ -79,5 +79,29 @@ namespace WpfApp3
             // The number is valid if the sum is divisible by 10
             return sum % 10 == 0;
         }
+        public static bool UniqueUsername (string Username)
+        {
+            if (SQL.ReadCustomersData().Where(x => x.UserName == Username).Any() || SQL.ReadEmployeesData().Where(x => x.UserName == Username).Any())
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool UniqueEmail(string Email)
+        {
+            if (SQL.ReadCustomersData().Where(x => x.Email == Email).Any() || SQL.ReadEmployeesData().Where(x => x.Email == Email).Any())
+            {
+                return false;
+            }
+            return true;
+        }
+        public static bool UniquePhone(string Phone)
+        {
+            if (SQL.ReadCustomersData().Where(x => x.Phone == Phone).Any())
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

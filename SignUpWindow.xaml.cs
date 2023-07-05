@@ -132,7 +132,12 @@ namespace WpfApp3
             //if (passwordVerification.IsMatch(PasswordEntry1.Password) && PasswordEntry1.Password == PasswordEntry2.Password)
             if (Validation.Password(PasswordEntry1.Password) && PasswordEntry1.Password == PasswordEntry2.Password)
             {
-                //MessageBox.Show("here");
+                if (SQL.ReadEmployeesData().Where(x => x.EmployeeID == IdField.Text).ToList().Count != 0)
+                {
+                    MessageBox.Show("Someone else has taken this employee id!");
+                    return;
+                }
+                
                 for (int i = 0; i < 5; i++)
                 {
                     if (!bools[i])
@@ -142,7 +147,16 @@ namespace WpfApp3
                         return;
                     }
                 }
-
+                if (!Validation.UniqueUsername(UsernameField.Text))
+                {
+                    MessageBox.Show("Username taken!");
+                    return;
+                }
+                if (!Validation.UniqueEmail(EmailField.Text))
+                {
+                    MessageBox.Show("This email is already in use! \nTry logging in.");
+                    return;
+                }
                 Employee employee = new Employee(IdField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, UsernameField.Text, PasswordEntry1.Password);
                 SQL.InsertIntoTable(employee);
                 //MessageBox.Show("Employee added!");
