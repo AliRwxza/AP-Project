@@ -601,7 +601,6 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 0" FontSize="40">Wallet</TextBlock>
             </Grid>
         </Grid>
-
         <StackPanel Name="ThirdFeatureFirstPage" Grid.Column="1" Visibility="Collapsed" Grid.ColumnSpan="2">
             <StackPanel.Background>
                 <ImageBrush ImageSource="C:\Users\afiro\source\repos\AP-Project\Pictures\ThirdFeatureBackground.jpg"/>
@@ -659,10 +658,10 @@
                         <TextBox PreviewTextInput="OnlyNumbers_PreviewTextInput" MaxLength="4" Name="Cvv2Field" Style="{DynamicResource Cvv2TextBox}" TextAlignment="Center" Margin="20 20 0 0" Height="20" Width="50" HorizontalAlignment="Left" TextChanged="Changed_CVV2"/>
                         <TextBlock Name="PlaceHolderCVV2" Margin="20 34 0 0" Width="50" Height="30" HorizontalAlignment="Left" 
                                    TextAlignment="Center" Foreground="LightGray" FontSize="12">CVV2</TextBlock>
-                        <TextBox MaxLength="2" PreviewTextInput="OnlyNumbers_PreviewTextInput" Name="MmField" Style="{DynamicResource Cvv2TextBox}" Margin="0 20 26 0" TextAlignment="Center" Width="25" Height="20" HorizontalAlignment="Right" TextChanged="Changed_MM"/>
+                        <TextBox PreviewTextInput="MmField_PreviewTextInput" MaxLength="2" Name="MmField" Style="{DynamicResource Cvv2TextBox}" Margin="0 20 26 0" TextAlignment="Center" Width="25" Height="20" HorizontalAlignment="Right" TextChanged="Changed_MM"/>
                         <TextBlock Name="PlaceHolderMM" Margin="0 25 26 0" Width="25" Height="20" TextAlignment="Center" HorizontalAlignment="Right" Text="MM" Foreground="LightGray" FontSize="10"/>
                         <TextBlock Margin="0 18 51 0" Width="15" Height="20" TextAlignment="Center" HorizontalAlignment="Right" Text="/" FontSize="15" Foreground="LightGray"/>
-                        <TextBox MaxLength="2" PreviewTextInput="OnlyNumbers_PreviewTextInput" Name="YyField" Style="{DynamicResource Cvv2TextBox}" Margin="0 20 65 0" TextAlignment="Center" Width="25" Height="20" HorizontalAlignment="Right" TextChanged="Changed_YY"/>
+                        <TextBox PreviewTextInput="OnlyNumbers_PreviewTextInput" MaxLength="2" Name="YyField" Style="{DynamicResource Cvv2TextBox}" Margin="0 20 65 0" TextAlignment="Center" Width="25" Height="20" HorizontalAlignment="Right" TextChanged="Changed_YY"/>
                         <TextBlock Name="PlaceHolderYY" Margin="0 23 65 0" Width="25" Height="20" TextAlignment="Center" HorizontalAlignment="Right" Text="YY" Foreground="LightGray" FontSize="12"/>
                     </Grid>
                 </StackPanel>

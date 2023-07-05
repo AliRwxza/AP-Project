@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iText.Kernel.Pdf;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -50,9 +51,9 @@ namespace WpfApp3
 
                 // Add a new paragraph with the text content
                 document.Add(new iText.Layout.Element.Paragraph("Receipt"));
-                document.Add(new iText.Layout.Element.Paragraph($"Charge amount: ChargeAmount"));
-                document.Add(new iText.Layout.Element.Paragraph($"New balance: LoggedInCustomer.Wallet"));
-                document.Add(new iText.Layout.Element.Paragraph($"DateTime.Now"));
+                document.Add(new iText.Layout.Element.Paragraph($"Charge amount: {ChargeAmount}"));
+                document.Add(new iText.Layout.Element.Paragraph($"New balance: {LoggedInCustomer.Wallet}"));
+                document.Add(new iText.Layout.Element.Paragraph($"{DateTime.Now}"));
 
                 // Close the document
                 document.Close();
