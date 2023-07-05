@@ -1,8 +1,4 @@
-﻿using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using iText.Layout.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -271,7 +267,7 @@ namespace WpfApp3
             }
             try
             {
-                using (StreamWriter writer = new StreamWriter("SearchResult.csv", false))
+                using (StreamWriter writer = new StreamWriter($"SearchResult{LoggedInCustomer.UserName}.csv", false))
                 {
                     writer.WriteLine("Order ID,Sender Address,Reciever Address,Content,Has Expensive Content,Weight,Post Type,Phone,Status,CustomerSSN,Date,Price,Comment");
                     foreach (var order in orders)
@@ -683,13 +679,13 @@ namespace WpfApp3
             return false;
         }
 
-        private void PayButton_Click (object sender, RoutedEventArgs e)
-        {
-            // check card number
-            // add the value 
-            PopUpWindow popUpWindow = new PopUpWindow();
-            popUpWindow.Show();
-        }
+        //private void PayButton_Click (object sender, RoutedEventArgs e)
+        //{
+        //    // check card number
+        //    // add the value 
+        //    PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this);
+        //    popUpWindow.Show();
+        //}
 
         private void MmField_PreviewTextInput (object sender, TextCompositionEventArgs e)
         {

@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using iText.Kernel.Pdf;
 
 
 namespace WpfApp3
@@ -39,7 +38,7 @@ namespace WpfApp3
         {
             try
             {
-                string path = "PaymentReciept.pdf"; // must be in this format : "Payment Reciept " + ID + ".pdf"
+                string path = $"PaymentReciept_{LoggedInCustomer.UserName}_{DateTime.Now.ToString().Replace('/', '-').Replace(':', '-').Replace(' ', '-')}.pdf"; // must be in this format : "Payment Reciept " + ID + ".pdf"
 
                 PdfWriter writer = new PdfWriter(path);
 
@@ -47,14 +46,18 @@ namespace WpfApp3
                 PdfDocument pdf = new PdfDocument(writer);
 
                 // Create a new iText document
-                iText.Layout.Document document = new iText.Layout.Document(pdf);
-
+                iText.Layout.Document document = new(pdf);
+                iText.Layout.Element.Paragraph paragraph = new iText.Layout.Element.Paragraph();
                 // Add a new paragraph with the text content
-                document.Add(new iText.Layout.Element.Paragraph("Receipt"));
-                document.Add(new iText.Layout.Element.Paragraph($"Charge amount: {ChargeAmount}"));
-                document.Add(new iText.Layout.Element.Paragraph($"New balance: {LoggedInCustomer.Wallet}"));
-                document.Add(new iText.Layout.Element.Paragraph($"{DateTime.Now}"));
-
+                paragraph.Add($"Receipt for customer {LoggedInCustomer.UserName}\n");
+                paragraph.Add($"Charge amount: {ChargeAmount}\n");
+                paragraph.Add($"New balance: {LoggedInCustomer.Wallet}\n");
+                paragraph.Add($"Date: {DateTime.Now}\n");
+                try
+                {
+                    document.Add(paragraph);
+                } 
+                catch { }
                 // Close the document
                 document.Close();
 

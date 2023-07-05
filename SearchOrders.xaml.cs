@@ -23,11 +23,12 @@ namespace WpfApp3
     public partial class SearchOrders : Window
     {
         static bool[] bools = { false, false, false };
-
-        public SearchOrders ()
+        Employee employee;
+        public SearchOrders (Employee employee)
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            this.employee = employee;
         }
 
         private void SearchOrdersButton_Click(object sender, RoutedEventArgs e)
@@ -74,7 +75,7 @@ namespace WpfApp3
 
             try
             {
-                using (StreamWriter writer = new StreamWriter("SearchResult.csv", false))
+                using (StreamWriter writer = new StreamWriter($"SearchResult{employee.UserName}.csv", false))
                 {
                     writer.WriteLine("Order ID,Sender Address,Reciever Address,Content,Has Expensive Content,Weight,Post Type,Phone,Status,CustomerSSN,Date,Price,Comment");
                     foreach (var order in orders)

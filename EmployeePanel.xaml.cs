@@ -21,10 +21,12 @@ namespace WpfApp3
     /// </summary>
     public partial class EmployeePanel : Window
     {
-        public EmployeePanel ()
+        Employee employee;
+        public EmployeePanel (Employee employee)
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            this.employee = employee;
         }
 
         private void CustomerSignUpButtonClick (object sender, RoutedEventArgs e)
@@ -41,7 +43,7 @@ namespace WpfApp3
 
         private void SearchOrdersButtonClick (object sender, RoutedEventArgs e)
         {
-            SearchOrders searchOrders = new SearchOrders ();
+            SearchOrders searchOrders = new SearchOrders (employee);
             searchOrders.Show ();
         }
 
