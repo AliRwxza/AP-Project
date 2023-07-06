@@ -88,7 +88,7 @@ namespace WpfApp3
             string Username = RandomUsername();
             string Password = RandomPassword();
 
-            Customer customer = new Customer(SsnField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, PhoneNumberField.Text, 1000000, Username, Password);
+            Customer customer = new Customer(SsnField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, PhoneNumberField.Text, 0, Username, Password);
             
             SQL.InsertIntoTable(customer);
             new Thread(() => Email.SendEmail(GlobalVariables.SourceEmail, customer.Email, "Your username and password", $"Welcome to Post Company!\nUsername is: {Username}\nPassword is: {Password}")).Start(); 

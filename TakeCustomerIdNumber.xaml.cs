@@ -21,26 +21,23 @@ namespace WpfApp3
     public partial class TakeCustomerIdNumber : Window
     {
         static bool validation = false;
-        Customer customer;
         public TakeCustomerIdNumber ()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            SsnInputBox.Focus();
         }
 
         private void SearchButtonClick (object sender, RoutedEventArgs e)
         {
-            // if customer is already a member
             if (validation)
             {
-                // if (ssn exists) :
                 List<Customer> Customers = SQL.ReadCustomersData(); 
                 for (int i = 0; i < Customers.Count(); i++)
                 {
                     if (Customers[i].SSN == SsnInputBox.Text)
                     {
-                        // go to the order-taking menu
                         Customer customer = Customers[i];
                         OrderWindow order = new OrderWindow(ref customer);
                         order.Show();
@@ -62,20 +59,6 @@ namespace WpfApp3
         {
             SsnInputBox.Style = Validation.SSN(SsnInputBox.Text) ? (Style)FindResource("CustomerSsnField") : (Style)FindResource("TextBoxError");
             validation = Validation.SSN(SsnInputBox.Text);
-
-
-            //Regex SsnValidation = new Regex(@"^00\d{8}$");
-
-            //if (!SsnValidation.IsMatch(SsnInputBox.Text))
-            //{
-            //    SsnInputBox.Style = (Style)FindResource("TextBoxError");
-            //    validation = false;
-            //}
-            //else if (SsnValidation.IsMatch(SsnInputBox.Text))
-            //{
-            //    SsnInputBox.Style = (Style)FindResource("CustomerSsnField");
-            //    validation = true;
-            //}
         }
     }
 }

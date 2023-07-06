@@ -32,17 +32,13 @@ namespace WpfApp3
 
         private void TextBox_TextChanged (object sender, TextChangedEventArgs e)
         {
-            if (LoginPagePasswordBox.Password.ToString() == LoginPageUsernameBox.Text.ToString())
-            {
-                //MessageBox.Show("Login Successful.");
-            }
+
         }
 
         private void LoginButtonClick (object sender, RoutedEventArgs e)
         {
             object user = SQL.FindUSer(LoginPageUsernameBox.Text);
-            // if the person is a employee:
-            if (user is Employee) // user is Employee
+            if (user is Employee) 
             {
                 if (((Employee)user).Password == LoginPagePasswordBox.Password)
                 {
@@ -56,8 +52,6 @@ namespace WpfApp3
                     MessageBox.Show("Error: Wrong password!");
                 }
             }
-
-            // else if the person is a customer :
             else if (user is Customer) 
             {
                 if (((Customer)user).Password == LoginPagePasswordBox.Password)
@@ -72,7 +66,6 @@ namespace WpfApp3
                     MessageBox.Show("Error: Wrong password!");
                 }
             }
-            // username not found
             else if (user is object)
             {
                 MessageBox.Show("Error: Username not found!");
@@ -81,7 +74,6 @@ namespace WpfApp3
             {
                 MessageBox.Show("Invalid username!");
             }
-            
         }
 
         private void SignUpButtonClick (object sender, RoutedEventArgs e)

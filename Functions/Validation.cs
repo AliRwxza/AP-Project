@@ -12,7 +12,7 @@ namespace WpfApp3
         public static bool UserName (string username)
         {
             Regex UserNameRegex = new Regex(@"^[a-zA-Z0-9]{3,32}$");
-            return UserNameRegex.IsMatch(username); //&& (!SQL.UserExist(username));
+            return UserNameRegex.IsMatch(username);
         }
         public static bool Password (string password)
         {
@@ -52,13 +52,9 @@ namespace WpfApp3
         }
         public static bool LUHN (string number)
         {
-            // Remove any non-digit characters from the input string
             string cleanedNumber = new string(number.Where(char.IsDigit).ToArray());
-
             int sum = 0;
             bool alternate = false;
-
-            // Iterate over the digits from right to left
             for (int i = cleanedNumber.Length - 1; i >= 0; i--)
             {
                 int digit = int.Parse(cleanedNumber[i].ToString());
@@ -71,12 +67,9 @@ namespace WpfApp3
                         digit = (digit % 10) + 1;
                     }
                 }
-
                 sum += digit;
                 alternate = !alternate;
             }
-
-            // The number is valid if the sum is divisible by 10
             return sum % 10 == 0;
         }
         public static bool UniqueUsername (string Username)

@@ -20,7 +20,6 @@ namespace WpfApp3
     /// </summary>
     public partial class OrderDetails : Window
     {
-        //Order order;
         static bool IdValidation = false;
         static bool EmailSent = true;
         Order order = null;
@@ -28,6 +27,7 @@ namespace WpfApp3
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            OrderIdField.Focus();
         }
 
         private void OrderIdField_TextChanged (object sender, TextChangedEventArgs e)

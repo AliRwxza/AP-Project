@@ -24,20 +24,31 @@ namespace WpfApp3
     /// </summary>
     public partial class CustomerPanel : Window
     {
-        bool IdValidation = false;
         bool weightValidation = false;
         bool priceValidation = false;
         bool YYValidation = false;
         bool MMValidation = false;
-        bool chargeAmountValidation = false;
         bool[] Card = {false, false, false, false};
         Order order = null;
         Customer LoggedInCustomer;
-
-        public CustomerPanel (Customer customer)
+        bool Charge = false;
+        public CustomerPanel (Customer customer, bool charge = false)
         {
             InitializeComponent();
+
             LoggedInCustomer = customer;
+            Charge = charge;
+            if (charge)
+            {
+                ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Collapsed;
+                ThirdFeatureFirstPage.Visibility = Visibility.Collapsed;
+                ThirdFeatureSecondPageLeftColumn.Visibility = Visibility.Visible;
+                ChargeWalletWindow.Visibility = Visibility.Visible;
+                ChargeAmountField.Focus();
+                Logout.IsEnabled = false;
+                Logout.FontSize = 1;
+                WalletChargeBackButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void OrderDetailsButton_Click (object sender, RoutedEventArgs e)
@@ -170,11 +181,11 @@ namespace WpfApp3
                         WeightField.Text = $"Weight: {order.Weight}";
                         PostTypeField.Text = $"Post type: {order.postType}";
                         PhoneNumberField.Text = order.Phone != string.Empty ? order.Phone : "No phone number has been submitted";
-                        if (order.Status == PackageStatus.Delivered) // the package was delivered
+                        if (order.Status == PackageStatus.Delivered) 
                         {
                             SubmitOpinionHyperlink.Visibility = Visibility.Visible;
                         }
-                        else // the package was not delivered
+                        else 
                         {
                             SubmitOpinionHyperlink.Visibility = Visibility.Collapsed;
                         }
@@ -213,7 +224,6 @@ namespace WpfApp3
                 priceValidation = false;
             }
         }
-
         private void WeightBox_TextChanged (object sender, TextChangedEventArgs e)
         {
             if (double.TryParse(WeightBox.Text, out double weight))
@@ -227,7 +237,6 @@ namespace WpfApp3
                 weightValidation = false;
             }
         }
-
         private void SearchOrdersButton_Click (object sender, RoutedEventArgs e)
         {
             List<Order> orders = SQL.ReadOrdersData().Where(x => x.CustomerSSN == LoggedInCustomer.SSN).ToList();
@@ -274,21 +283,20 @@ namespace WpfApp3
                     foreach (var order in orders)
                     {
                         writer.WriteLine($"{order.OrderID},{order.SenderAddress.Replace(',', '/')},{order.RecieverAddress.Replace(',', '/')},{order.Content},{order.HasExpensiveContent},{order.Weight},{order.postType},'{order.Phone,11},{order.Status,13},'{order.CustomerSSN,10},{order.Date.ToString().Substring(0, 8)},{order.Calculate()},{order.Comment.Replace(',', ' ')}");
-                        //writer.WriteLine(string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}"), order.OrderID, order.SenderAddress.Replace(',', '/'), order.RecieverAddress.Replace(',', '/'), order.Content, order.HasExpensiveContent, order.Weight, order.postType, order.Phone, order.Status, order.CustomerSSN, order.Calculate(), order.Date.ToString().Substring(0, 8), order.Comment.Replace(',', ' '));
                     }
                     writer.Close();
                 }
-
                 MessageBox.Show("Search completed! Now you can see the search result in the .csv file in the app directory.");
             }
             catch { MessageBox.Show("Please close the file and search again!"); }
-            // search the data base
-            // make a csv file for the results (sorted by order date)
-            // the search range must contain every single order done by any of the employees
         }
 
         private void SubmitOpinion_Click (object sender, RoutedEventArgs e)
         {
+            if (order != null)
+            {
+                CustomerOpinionField.Text = order.Comment;
+            }
             OrdersReportSecondPage.Visibility = Visibility.Collapsed;
             GetCustomerOpinionPage.Visibility = Visibility.Visible;
         }
@@ -429,8 +437,6 @@ namespace WpfApp3
             }
             Cvv2Field.Style = (Style)FindResource("TextBox");
         }
-
-        // must be less than or equal to 12
         private void Changed_MM (object sender, EventArgs e)
         {
             Regex patternMM = new Regex(@"^\d{2}$");
@@ -513,29 +519,20 @@ namespace WpfApp3
                         {
                             if (YyField.Text != string.Empty && MmField.Text != string.Empty)
                             {
-                                
                                 if (MMValidation && YYValidation)
                                 {
-                                    //if (chargeAmountValidation)
-                                    //{
                                     if (double.TryParse(ChargeAmountField.Text, out double chargeAmount))
                                     {
                                         if (chargeAmount >= 10000)
                                         {
-                                            // add to the wallet
                                             LoggedInCustomer.Wallet += chargeAmount;
                                             SQL.UpdateTable<Customer>(LoggedInCustomer);
-                                            // and ask if they want this action to get saved
-                                            PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this);
+                                            PopUpWindow popUpWindow = new PopUpWindow(LoggedInCustomer, chargeAmount, this, Charge);
                                             popUpWindow.Show();
-                                            // will need date and time
-                                            // will be making PDF
                                         }
                                         else { MessageBox.Show("Minimum value of charge amount is 10,000!"); }
                                     }
                                     else { MessageBox.Show("Invalid charge amount!"); }
-                                    //}
-                                    //else { MessageBox.Show("Minimum value of charge amount is 10,000!"); }
                                 }
                                 else { MessageBox.Show("Invalid date!"); }
                             }
@@ -558,8 +555,6 @@ namespace WpfApp3
 
             ThirdFeatureFirstPageLeftColumn.Visibility = Visibility.Visible;
             ThirdFeatureFirstPage.Visibility = Visibility.Visible;
-
-            //Balance.Text = LoggedInCustomer.Wallet.ToString();
         }
 
         //////////////////////////////////////////////////// FOURTH FEATURE
@@ -589,7 +584,6 @@ namespace WpfApp3
                 {
                     MessageBox.Show("Username hasn't changed!");
                 }
-                // check the password
                 else if (UsernameChangePasswordField.Text != LoggedInCustomer.Password)
                 {
                     MessageBox.Show("Wrong password.");
@@ -672,9 +666,7 @@ namespace WpfApp3
 
         private void OnlyNumbers_PreviewTextInput (object sender, TextCompositionEventArgs e)
         {
-            if (!int.TryParse(e.Text, out int number))
-                e.Handled = true;
-            chargeAmountValidation = true;
+
         }
 
         private bool ContainsAlphabeticCharacters (string input)
@@ -696,18 +688,7 @@ namespace WpfApp3
 
         private void MmField_PreviewTextInput (object sender, TextCompositionEventArgs e)
         {
-            int number;
 
-            if (!int.TryParse(e.Text, out number))
-                e.Handled = true;
-            else
-            {
-                int.TryParse(MmField.Text + e.Text, out number);
-                if (number > 12)
-                    e.Handled = true;
-                else
-                    chargeAmountValidation = true;
-            }
         }
         private void NewPasswordField_Changed(object sender, EventArgs e)
         {

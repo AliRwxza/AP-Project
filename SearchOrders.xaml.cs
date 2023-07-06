@@ -81,7 +81,6 @@ namespace WpfApp3
                     foreach (var order in orders)
                     {
                         writer.WriteLine($"{order.OrderID},{order.SenderAddress.Replace(',', '/')},{order.RecieverAddress.Replace(',', '/')},{order.Content},{order.HasExpensiveContent},{order.Weight},{order.postType},'{order.Phone,11},{order.Status, 13},'{order.CustomerSSN, 10},{order.Date.ToString().Substring(0, 8)},{order.Calculate()},{order.Comment.Replace(',', ' ')}");
-                        //writer.WriteLine(string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}"), order.OrderID, order.SenderAddress.Replace(',', '/'), order.RecieverAddress.Replace(',', '/'), order.Content, order.HasExpensiveContent, order.Weight, order.postType, order.Phone, order.Status, order.CustomerSSN, order.Calculate(), order.Date.ToString().Substring(0, 8), order.Comment.Replace(',', ' '));
                     }
                     writer.Close();
                 }
@@ -90,77 +89,37 @@ namespace WpfApp3
             }
             catch
             {
-                //MessageBox.Show(ex.Message);
                 MessageBox.Show("Please close the file and search again!");
             }
-
-            // search the data base
-            // make a csv file for the results (sorted by order date)
-            // the search range must contain every single order done by any of the employees
         }
 
         /////////////////////////////////////////////////////////
 
         private void ObjectOptionCheck (object sender, EventArgs e)
         {
-            //if (Object.IsChecked)
-            //{
-            //    MainMenu.Header = "Object";
-            //}
-            //else
-            //{
-            //    MainMenu.Header = "Not Selected";
-            //}
+
         }
 
         private void DocumentOptionCheck (object sender, EventArgs e)
         {
-            //if (Document.IsChecked)
-            //{
-            //    MainMenu.Header = "Document";
-            //}
-            //else
-            //{
-            //    MainMenu.Header = "Not Selected";
-            //}
+
         }
 
         private void FragileOptionCheck (object sender, EventArgs e)
         {
-            //if (Fragile.IsChecked)
-            //{
-            //    MainMenu.Header = "Fragile";
-            //}
-            //else
-            //{
-            //    MainMenu.Header = "Not Selected";
-            //}
+
         }
 
         /////////////////////////////////////////////////////////
 
         private void OrdinaryOptionCheck (object sender, RoutedEventArgs e)
         {
-            //if (Ordinary.IsChecked == true)
-            //{
-            //    MainMenu2.Header = "Ordinary";
-            //}
-            //else
-            //{
-            //    MainMenu2.Header = "Not Selected";
-            //}
+
         }
 
         private void ExpressOptionCheck (object sender, RoutedEventArgs e)
         {
-            //if (Express.IsChecked == true)
-            //{
-            //    MainMenu2.Header = "Express";
-            //}
-            //else
-            //{
-            //    MainMenu2.Header = "Not Selected";
-            //}
+
         }
 
         private void SsnField_TextChanged (object sender, TextChangedEventArgs e)

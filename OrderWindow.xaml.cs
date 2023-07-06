@@ -21,7 +21,6 @@ namespace WpfApp3
     /// </summary>
     public partial class OrderWindow : Window
     {
-        //static bool IsValuable = false;
         Customer customer;
         double Price;
         public OrderWindow (ref Customer customer)
@@ -29,6 +28,7 @@ namespace WpfApp3
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             this.customer = customer;
+            SenderAddressBox.Focus();
         }
 
         /////////////////////////////////////////////////////////
@@ -80,14 +80,7 @@ namespace WpfApp3
 
         private void ValuableCheckBoxCheck (object sender, RoutedEventArgs e)
         {
-            //if (ValuableCheckBox.IsChecked == true)
-            //{
-            //    IsValuable = true;
-            //}
-            //else
-            //{
-            //    IsValuable = false;
-            //}
+
         }
 
         /////////////////////////////////////////////////////////
@@ -123,7 +116,6 @@ namespace WpfApp3
             string errors = string.Empty;
             double ratio = 1;
 
-            // base value is 10k IRR
             switch (MainMenu.Header)
             {
                 case "Document":
@@ -188,24 +180,19 @@ namespace WpfApp3
                 PackageContent Content = Enum.Parse<PackageContent>(MainMenu.Header.ToString());
                 Order order = new Order(SQL.ReadOrdersData().Count() + 1, SenderAddressBox.Text, ReceiverAddressBox.Text, Content, (bool)ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Submitted, customer.SSN, DateTime.Now);
                 SQL.InsertIntoTable(order);
-                //MessageBox.Show("Order registered!");
+                Close();
             }
             else
             {
                 MessageBox.Show("Not enough balance in your wallet!");
+                CustomerPanel customerPanel = new CustomerPanel(customer, true);
+                customerPanel.Show();
                 // go to charging page
-                
             }
-            Close();
-            // check the customer's wallet
-            // if there were no problems, assign an ID number (based on the order's number)
-            // and take the order's money from customer's wallet
-            // set the order status to submitted
         }
 
         private void PhoneNumberField_TextChanged (object sender, TextChangedEventArgs e)
         {
-            // check the phone number format
             Regex phonenumberPattern = new Regex(@"^09\d{9}$");
 
             if (PhoneNumberField.Text != string.Empty && !phonenumberPattern.IsMatch(PhoneNumberField.Text))
