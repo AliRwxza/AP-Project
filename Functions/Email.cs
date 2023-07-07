@@ -23,13 +23,8 @@ namespace WpfApp3
                 smtpClient.EnableSsl = true;
 
                 smtpClient.Send(mail);
-
-                //MessageBox.Show("Email sent successfully.");
             }
-            catch
-            {
-                //MessageBox.Show("Failed to send E-mail");
-            }
+            catch { }
         }
     }
 }

@@ -26,7 +26,8 @@ namespace WpfApp3
         Customer LoggedInCustomer;
         double ChargeAmount;
         Window window;
-        public PopUpWindow(Customer LoggedInCustomer, double ChargeAmount, Window window)
+        bool Charge;
+        public PopUpWindow(Customer LoggedInCustomer, double ChargeAmount, Window window, bool Charge)
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
@@ -34,40 +35,34 @@ namespace WpfApp3
             this.LoggedInCustomer = LoggedInCustomer;
             this.ChargeAmount = ChargeAmount;
             this.window = window;
+            this.Charge = Charge;
         }
 
         private void YesButton_Click (object sender, RoutedEventArgs e)
         {
             try
             {
-                string path = $"PaymentReciept_{LoggedInCustomer.UserName}_{DateTime.Now.ToString().Replace('/', '-').Replace(':', '-').Replace(' ', '-')}.pdf"; // must be in this format : "Payment Reciept " + ID + ".pdf"
+                string time = DateTime.Now.ToString().Replace('/', '-').Replace(':', '-').Replace(' ', '-');
+                string path = $"PaymentReciept_{LoggedInCustomer.SSN}_{time}.pdf";
 
                 PdfWriter writer = new PdfWriter(path);
-
-                // Create a new PDF document
                 PdfDocument pdf = new PdfDocument(writer);
-
-                // Create a new iText document
                 iText.Layout.Document document = new(pdf);
                 iText.Layout.Element.Paragraph paragraph = new iText.Layout.Element.Paragraph();
-                // Add a new paragraph with the text content
                 paragraph.Add($"Receipt for customer {LoggedInCustomer.UserName}\n");
                 paragraph.Add($"Charge amount: {ChargeAmount}\n");
                 paragraph.Add($"New balance: {LoggedInCustomer.Wallet}\n");
                 paragraph.Add($"Date: {DateTime.Now}\n");
-                try
-                {
-                    document.Add(paragraph);
-                } 
-                catch { }
-                // Close the document
+                document.Add(paragraph);
                 document.Close();
-
             }
             catch (Exception ex) { MessageBox.Show($"Failed creating the file. {ex.Message}"); }
             MessageBox.Show("Balance updated successfully!");
-            CustomerPanel panel = new CustomerPanel(LoggedInCustomer);
-            panel.Show();
+            if (!Charge)
+            {
+                CustomerPanel panel = new CustomerPanel(LoggedInCustomer);
+                panel.Show();
+            }
             Close();
             window.Close();
         }
@@ -75,8 +70,11 @@ namespace WpfApp3
         private void NoButton_Click (object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Balance updated successfully!");
-            CustomerPanel panel = new CustomerPanel(LoggedInCustomer);
-            panel.Show();
+            if (!Charge)
+            {
+                CustomerPanel panel = new CustomerPanel(LoggedInCustomer);
+                panel.Show();
+            }
             Close();
             window.Close();
         }

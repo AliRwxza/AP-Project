@@ -428,7 +428,7 @@
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Margin="10 5" Panel.ZIndex="50">
-                <Hyperlink FontSize="15" Foreground="Black" TextDecorations="None" Click="Logout_Click">Log out</Hyperlink>
+                <Hyperlink FontSize="15" Foreground="Black" Name="Logout" TextDecorations="None" Click="Logout_Click" >Log out</Hyperlink>
         </TextBlock>
         <Grid Name="MainPanelLeftColumn" Visibility="Visible" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,383,0">
             <Rectangle Grid.Column="0">
@@ -456,8 +456,8 @@
             </Grid.RowDefinitions>
             <Button Name="OrderDetailsButton" Style="{DynamicResource CustomerButton}" Margin="40 40 0 0" Grid.Column="0" Grid.Row="0" Click="OrderDetailsButton_Click">
                 <StackPanel>
-                    <TextBlock FontSize="28">Orders</TextBlock>
-                    <TextBlock FontSize="28">Report</TextBlock>
+                    <TextBlock FontSize="28">‌ Search</TextBlock>
+                    <TextBlock FontSize="28">an Order</TextBlock>
                 </StackPanel>
                 <Button.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0.8,1">
@@ -468,8 +468,8 @@
             </Button>
             <Button Name="SearchAnOrder" Style="{DynamicResource CustomerButton2}" Grid.Column="1" Grid.Row="0" Margin="0 40 40 0" Click="SearchAnOrder_Click">
                 <StackPanel>
-                    <TextBlock FontSize="28">Search</TextBlock>
-                    <TextBlock FontSize="28">an Order</TextBlock>
+                    <TextBlock FontSize="28">Order</TextBlock>
+                    <TextBlock FontSize="28">Report</TextBlock>
                 </StackPanel>
                 <Button.Background>
                     <LinearGradientBrush StartPoint="0.8,0" EndPoint="0.15,1">
@@ -710,10 +710,10 @@
                 <TextBlock FontSize="35" Margin="42 20">Password</TextBlock>
                 <Label Margin="10 5 0 0" FontSize="15">New Password</Label>
                 <TextBox Name="NewPasswordField" Style="{DynamicResource TextBox}" TextAlignment="Center" Height="30" FontSize="18"
-                         FontWeight="Light" Width="175" HorizontalAlignment="Left" Margin="15 0"/>
+                         FontWeight="Light" Width="175" HorizontalAlignment="Left" Margin="15 0" TextChanged="NewPasswordField_Changed"/>
                 <Label Margin="10 0 0 0" FontSize="15">New Password Again</Label>
                 <TextBox Name="NewPasswordAgainField" Style="{DynamicResource TextBox}" TextAlignment="Center" Height="30" FontSize="18"
-                         FontWeight="Light" Width="175" HorizontalAlignment="Left" Margin="15 0"/>
+                         FontWeight="Light" Width="175" HorizontalAlignment="Left" Margin="15 0" TextChanged="NewPasswordAgainField_Changed"/>
                 <Label Margin="10 0 0 0" FontSize="15">Current Password</Label>
                 <TextBox Name="PasswordChangePasswordField" Style="{DynamicResource TextBox}" TextAlignment="Center" Width="175" 
                          Height="30" FontSize="18" FontWeight="Light" HorizontalAlignment="Left" Margin="15 0"/>
