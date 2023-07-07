@@ -1,5 +1,7 @@
-﻿using iText.Kernel.Pdf;
-using System;
+﻿using System;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
