@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,34 +22,58 @@ namespace WpfApp3
     {
         public MainWindow ()
         {
+            SQL.AddEmployeeTable();
+            SQL.AddCustomerTable();
+            SQL.AddOrderTable();
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            LoginPageUsernameBox.Focus();
         }
 
         private void TextBox_TextChanged (object sender, TextChangedEventArgs e)
         {
-            if (LoginPagePasswordBox.Password.ToString() == LoginPageUsernameBox.Text.ToString())
-            {
-                MessageBox.Show("Login Successful.");
-            }
+
         }
 
         private void LoginButtonClick (object sender, RoutedEventArgs e)
         {
-            // if the person is a employee:
-            if (true)
+            object user = SQL.FindUSer(LoginPageUsernameBox.Text);
+            if (user is Employee) 
             {
-                EmployeePanel employeePanel = new EmployeePanel();
-                employeePanel.Show();
-                
-            }
+                if (((Employee)user).Password == LoginPagePasswordBox.Password)
+                {
+                    EmployeePanel employeePanel = new EmployeePanel((Employee)user);
+                    employeePanel.Show();
 
-            // else if the person is a customer :
-            else
-            {
-                // open customer panel
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("Error: Wrong password!");
+                }
             }
-            Close();
+            else if (user is Customer) 
+            {
+                if (((Customer)user).Password == LoginPagePasswordBox.Password)
+                {
+                    CustomerPanel customerPanel = new CustomerPanel((Customer)user);
+                    customerPanel.Show();
+
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("Error: Wrong password!");
+                }
+            }
+            else if (user is object)
+            {
+                MessageBox.Show("Error: Username not found!");
+            }
+            else if (user == null)
+            {
+                MessageBox.Show("Invalid username!");
+            }
         }
 
         private void SignUpButtonClick (object sender, RoutedEventArgs e)
@@ -72,10 +96,10 @@ namespace WpfApp3
             {
                 LoginPagePasswordBox.Visibility = Visibility.Visible;
 
-                LoginPagePasswordBoxTxt.Text = string.Empty;
-
                 LoginPagePasswordBoxTxt.Visibility = Visibility.Collapsed;
             }
         }
+
+        private void LoginPagePasswordBoxTxt_TextChanged (object sender, TextChangedEventArgs e) => LoginPagePasswordBox.Password = LoginPagePasswordBoxTxt.Text;
     }
 }

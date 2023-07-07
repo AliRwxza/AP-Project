@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,23 +19,27 @@ namespace WpfApp3
     /// <summary>
     /// Interaction logic for Order.xaml
     /// </summary>
-    public partial class Order : Window
+    public partial class OrderWindow : Window
     {
-        public Order ()
+        Customer customer;
+        double Price;
+        public OrderWindow (ref Customer customer)
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
+            this.customer = customer;
+            SenderAddressBox.Focus();
         }
 
         /////////////////////////////////////////////////////////
 
         private void ObjectOptionCheck (object sender, EventArgs e)
         {
-            if (ObjectOption.IsChecked == true)
+            if (Object.IsChecked == true)
             {
 
-                DocumentOption.IsChecked = false;
-                FragileOption.IsChecked = false;
+                Document.IsChecked = false;
+                Fragile.IsChecked = false;
                 MainMenu.Header = "Object";
             }
             else
@@ -45,10 +50,10 @@ namespace WpfApp3
 
         private void DocumentOptiUnCheck (object sender, EventArgs e)
         {
-            if (DocumentOption.IsChecked == true)
+            if (Document.IsChecked == true)
             {
-                ObjectOption.IsChecked = false;
-                FragileOption.IsChecked= false;
+                Object.IsChecked = false;
+                Fragile.IsChecked= false;
                 MainMenu.Header = "Document";
             }
             else
@@ -59,10 +64,10 @@ namespace WpfApp3
 
         private void FragileOptionCheck (object sender, EventArgs e)
         {
-            if (FragileOption.IsChecked == true)
+            if (Fragile.IsChecked == true)
             {
-                ObjectOption.IsChecked = false;
-                DocumentOption.IsChecked = false;
+                Object.IsChecked = false;
+                Document.IsChecked = false;
                 MainMenu.Header = "Fragile";
             }
             else
@@ -75,23 +80,16 @@ namespace WpfApp3
 
         private void ValuableCheckBoxCheck (object sender, RoutedEventArgs e)
         {
-            if (ValuableCheckBox.IsChecked == true)
-            {
-                // save the value
-            }
-            else
-            {
-                // save the value
-            }
+
         }
 
         /////////////////////////////////////////////////////////
         
         private void OrdinaryOptionCheck(object sender, RoutedEventArgs e)
         {
-            if (OrdinaryOption.IsChecked == true)
+            if (Ordinary.IsChecked == true)
             {
-                ExpressOption.IsChecked = false;
+                Express.IsChecked = false;
                 MainMenu2.Header = "Ordinary";
             }
             else
@@ -102,9 +100,9 @@ namespace WpfApp3
 
         private void ExpressOptionCheck(object sender, RoutedEventArgs e)
         {
-            if (ExpressOption.IsChecked == true)
+            if (Express.IsChecked == true)
             {
-                OrdinaryOption.IsChecked = false;
+                Ordinary.IsChecked = false;
                 MainMenu2.Header = "Express";
             }
             else
@@ -118,7 +116,6 @@ namespace WpfApp3
             string errors = string.Empty;
             double ratio = 1;
 
-            // base value is 10k IRR
             switch (MainMenu.Header)
             {
                 case "Document":
@@ -133,16 +130,14 @@ namespace WpfApp3
             }
             if (ValuableCheckBox.IsChecked == true)
                 ratio += 1;
-            if (double.TryParse(WeightBox.Text, out double weight) && weight > 0.5)
+
+            if (double.TryParse(WeightBox.Text, out double weight))
             {
-                ratio += Math.Ceiling((weight - 0.5) * 2) * 0.2;
-                WeightBox.Style = (Style)FindResource("TextBox");
+                ratio += Math.Floor(weight/0.5) * 0.2;
             }
             else
-            {
                 errors += "Weight, ";
-                WeightBox.Style = (Style)FindResource("TextBoxError");
-            }
+
             switch (MainMenu2.Header)
             {
                 case "Not Selected":
@@ -152,10 +147,17 @@ namespace WpfApp3
                     ratio += 0.5;
                     break;
             }
-
-            PricaTag.Text = "Price : " + Math.Floor(10 * ratio);
-
-            if (errors !=  string.Empty)
+            Price = 10000 * ratio;
+            PricaTag.Text = "Price : " + Price;
+            if (SenderAddressBox.Text.Length == 0)
+            {
+                errors += "Sender Address, ";
+            }
+            if (ReceiverAddressBox.Text.Length == 0)
+            {
+                errors += "Receiver Address, ";
+            }
+            if (errors != string.Empty)
             {
                 MessageBox.Show("The mentioned fields have invalid values: " + errors.Remove(errors.Length - 2, 2));
             }
@@ -170,20 +172,57 @@ namespace WpfApp3
 
         private void SubmitOrderButtonClick (object sender, RoutedEventArgs e)
         {
-            // check the customer's wallet
-            // if there were no problems, assign an ID number (based on the order's number)
-            // and take the order's money from customer's wallet
+            if (customer.Wallet >= Price)
+            {
+                customer.Wallet -= Price;
+                SQL.UpdateTable<Customer>(customer);
+                PostType postType = Enum.Parse<PostType>(MainMenu2.Header.ToString());
+                PackageContent Content = Enum.Parse<PackageContent>(MainMenu.Header.ToString());
+                Order order = new Order(SQL.ReadOrdersData().Count() + 1, SenderAddressBox.Text, ReceiverAddressBox.Text, Content, (bool)ValuableCheckBox.IsChecked, double.Parse(WeightBox.Text), postType, PhoneNumberField.Text, PackageStatus.Submitted, customer.SSN, DateTime.Now);
+                SQL.InsertIntoTable(order);
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Not enough balance in your wallet!");
+                CustomerPanel customerPanel = new CustomerPanel(customer, true);
+                customerPanel.Show();
+                // go to charging page
+            }
         }
 
         private void PhoneNumberField_TextChanged (object sender, TextChangedEventArgs e)
         {
-            // check the phone number format
             Regex phonenumberPattern = new Regex(@"^09\d{9}$");
 
             if (PhoneNumberField.Text != string.Empty && !phonenumberPattern.IsMatch(PhoneNumberField.Text))
                 PhoneNumberField.Style = (Style)FindResource("TextBoxError");
             else if (PhoneNumberField.Text == string.Empty || phonenumberPattern.IsMatch(PhoneNumberField.Text))
                 PhoneNumberField.Style = (Style)FindResource("TextBox");
+        }
+
+        private void WeightBox_TextChanged (object sender, TextChangedEventArgs e)
+        {
+            if (double.TryParse(WeightBox.Text, out double temp))
+            {
+                WeightBox.Style = (Style)FindResource("TextBox");
+            }
+            else { WeightBox.Style = (Style)FindResource("TextBoxError"); }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void MainMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MainMenu2_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

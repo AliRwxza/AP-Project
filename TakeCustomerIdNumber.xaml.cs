@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,29 +20,45 @@ namespace WpfApp3
     /// </summary>
     public partial class TakeCustomerIdNumber : Window
     {
+        static bool validation = false;
         public TakeCustomerIdNumber ()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            SsnInputBox.Focus();
         }
 
         private void SearchButtonClick (object sender, RoutedEventArgs e)
         {
-            // if customer is already a member
-            if (SsnInputBox.Text == "a")
+            if (validation)
             {
-                // go to the order-taking menu
-                Order order = new Order();
-                order.Show();
+                List<Customer> Customers = SQL.ReadCustomersData(); 
+                for (int i = 0; i < Customers.Count(); i++)
+                {
+                    if (Customers[i].SSN == SsnInputBox.Text)
+                    {
+                        Customer customer = Customers[i];
+                        OrderWindow order = new OrderWindow(ref customer);
+                        order.Show();
+                        Close();
+                        return;
+                    }
+                }
+                MessageBox.Show("No customer was found with this SSN!\nTry registering the customer.");
+                CustomerSignUpWindow customerSignUpWindow = new CustomerSignUpWindow();
+                customerSignUpWindow.Show();
             }
-            // else, sign them up
             else
             {
-                CustomerSignUpWindow customerSignUpWindow = new CustomerSignUpWindow ();
-                customerSignUpWindow.Show ();
+                MessageBox.Show("Invalid SSN!");
             }
-            Close();
+        }
+
+        private void SsnInputBox_TextChanged (object sender, TextChangedEventArgs e)
+        {
+            SsnInputBox.Style = Validation.SSN(SsnInputBox.Text) ? (Style)FindResource("CustomerSsnField") : (Style)FindResource("TextBoxError");
+            validation = Validation.SSN(SsnInputBox.Text);
         }
     }
 }

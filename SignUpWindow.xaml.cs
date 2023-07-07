@@ -55,75 +55,40 @@ namespace WpfApp3
 
         private void NameBox_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex nameValidationPattern = new Regex(@"^[a-zA-Z]{3,32}$");
-
-            if (!nameValidationPattern.IsMatch(FirstNameBox.Text))
-            {
-                FirstNameBox.Style = (Style)FindResource("TextBoxError");
-                bools[0] = false;
-            }
-            else if (nameValidationPattern.IsMatch(FirstNameBox.Text))
-            {
-                FirstNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[0] = true;
-            }
+            FirstNameBox.Style = Validation.Name(FirstNameBox.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[0] = Validation.Name(FirstNameBox.Text);
         }
 
         private void NameBox2_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex nameValidationPattern = new Regex(@"^[a-zA-Z]{3,32}$");
-
-            if (!nameValidationPattern.IsMatch(LastNameBox.Text))
-            {
-                LastNameBox.Style = (Style)FindResource("TextBoxError");
-                bools[1] = false;
-            }
-            else if (nameValidationPattern.IsMatch(LastNameBox.Text))
-            {
-                LastNameBox.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[1] = true;
-            }
+            LastNameBox.Style = Validation.Name(LastNameBox.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[1] = Validation.Name(LastNameBox.Text);
         }
 
         private void Id_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex IdValidation = new Regex(@"^\d{2}9\d{2}$");
-
-            if (!IdValidation.IsMatch(IdField.Text))
-            {
-                IdField.Style = (Style)FindResource("TextBoxError");
-                bools[2] = false;
-            }
-            else if (IdValidation.IsMatch(IdField.Text))
-            {
-                IdField.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[2] = true;
-            }
+            IdField.Style = Validation.EmployeeID(IdField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[2] = Validation.EmployeeID(IdField.Text);
         }
 
         private void EmailField_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex emailValidation = new Regex(@"^[a-zA-Z]{3,32}@[a-zA-Z]{3,32}.[a-zA-Z]{2,3}$");
-
-            if (!emailValidation.IsMatch(EmailField.Text))
-            {
-                EmailField.Style = (Style)FindResource("TextBoxError");
-                bools[4] = false;
-            }
-            else if (emailValidation.IsMatch(EmailField.Text))
-            {
-                EmailField.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[4] = true;
-            }
+            EmailField.Style = Validation.Email(EmailField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[4] = Validation.Email(EmailField.Text);
         }
 
         private void SignUpPageSubmitButtonClick (object sender, RoutedEventArgs e)
         {
             Regex passwordVerification = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$");
 
-            if (passwordVerification.IsMatch(PasswordEntry1.Password) && PasswordEntry1.Password == PasswordEntry2.Password)
+            if (Validation.Password(PasswordEntry1.Password) && PasswordEntry1.Password == PasswordEntry2.Password)
             {
-                MessageBox.Show("here");
+                if (SQL.ReadEmployeesData().Where(x => x.EmployeeID == IdField.Text).ToList().Count != 0)
+                {
+                    MessageBox.Show("Someone else has taken this employee id!");
+                    return;
+                }
+                
                 for (int i = 0; i < 5; i++)
                 {
                     if (!bools[i])
@@ -133,10 +98,18 @@ namespace WpfApp3
                         return;
                     }
                 }
-
-
-                // continue and save the data
-
+                if (!Validation.UniqueUsername(UsernameField.Text))
+                {
+                    MessageBox.Show("Username taken!");
+                    return;
+                }
+                if (!Validation.UniqueEmail(EmailField.Text))
+                {
+                    MessageBox.Show("This email is already in use! \nTry logging in.");
+                    return;
+                }
+                Employee employee = new Employee(IdField.Text, FirstNameBox.Text, LastNameBox.Text, EmailField.Text, UsernameField.Text, PasswordEntry1.Password);
+                SQL.InsertIntoTable(employee);
                 Close();
             }
             else
@@ -153,18 +126,8 @@ namespace WpfApp3
 
         private void UsernameField_TextChanged (object sender, TextChangedEventArgs e)
         {
-            Regex nameValidationPattern = new Regex(@"^[a-zA-Z0-9]{3,32}$");
-
-            if (!nameValidationPattern.IsMatch(UsernameField.Text))
-            {
-                UsernameField.Style = (Style)FindResource("TextBoxError");
-                bools[3] = false;
-            }
-            else if (nameValidationPattern.IsMatch(UsernameField.Text))
-            {
-                UsernameField.Style = (Style)FindResource("SignUpPageTextBox");
-                bools[3] = true;
-            }
+            UsernameField.Style = Validation.UserName(UsernameField.Text) ? (Style)FindResource("SignUpPageTextBox") : (Style)FindResource("TextBoxError");
+            bools[3] = Validation.UserName(UsernameField.Text);
         }
 
         private void PasswordEntry1Txt_TextChanged (object sender, TextChangedEventArgs e) => PasswordEntry1.Password = PasswordEntry1Txt.Text;
